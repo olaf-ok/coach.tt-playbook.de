@@ -1,12 +1,14 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { page } from '$app/stores';
-  import { createTvClient } from '$lib/tv/client.svelte';
+  import QrScanner from '$lib/components/QrScanner.svelte';
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
   import { tvSession } from '$lib/tv/session.svelte';
+  import { decodeCode } from '$lib/tv/decodeCode';
 
   const client = tvSession.ensureClient();
   let codeInput = $state('');
+  let scannerOpen = $state(false);
 
   onMount(() => {
     const urlCode = $page.url.searchParams.get('code');
@@ -21,13 +23,21 @@
     client.pairAsTablet(codeInput);
   }
 
-  // Nach Pairing: bei Änderungen an currentExercise sync senden
+  function handleScanned(text: string) {
+    const code = decodeCode(text);
+    if (!code) return;
+    scannerOpen = false;
+    codeInput = code;
+    submit();
+  }
+
   $effect(() => {
     if (client.status !== 'paired') return;
     const ex = currentExercise.exercise;
-    // Triggern bei jeder Änderung
     void ex.strokes.length;
     void ex.name;
+    void ex.repetitions;
+    void ex.duration;
     client.sendSync(ex);
   });
 
@@ -48,8 +58,17 @@
       </p>
       <button type="button" class="secondary" onclick={() => client.disconnect()}>Trennen</button>
     </div>
+  {:else if scannerOpen}
+    <p class="sub">Richte die Kamera auf den QR-Code am TV.</p>
+    <QrScanner onDecoded={handleScanned} onCancel={() => (scannerOpen = false)} />
   {:else}
-    <p class="sub">Gib den 4-stelligen Code ein, der auf dem TV angezeigt wird.</p>
+    <p class="sub">Scanne den QR-Code am TV oder gib den 4-stelligen Code ein.</p>
+
+    <button type="button" class="primary scan-btn" onclick={() => (scannerOpen = true)}>
+      QR-Code scannen
+    </button>
+
+    <div class="divider"><span>oder</span></div>
 
     <form
       onsubmit={(e) => {
@@ -107,6 +126,28 @@
   .sub {
     color: var(--color-text-secondary);
     margin: 0;
+  }
+  .scan-btn {
+    align-self: flex-start;
+  }
+  .divider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+  }
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+  }
+  .divider span {
+    padding: 0 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
   }
   form {
     display: flex;
