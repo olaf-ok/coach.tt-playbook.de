@@ -27,9 +27,14 @@
   </div>
 
   <div class="bottom">
-    <button type="button" class="tab" aria-label="Einstellungen" disabled>
+    <a
+      href="/connect-tv"
+      class="tab"
+      class:active={$page.url.pathname.startsWith('/connect-tv')}
+      aria-label="TV verbinden"
+    >
       <span class="tab-icon">⚙</span>
-    </button>
+    </a>
   </div>
 </aside>
 
@@ -68,10 +73,6 @@
   .tab.active {
     background: var(--bg-elevated);
     color: var(--color-text-primary);
-  }
-  .tab[disabled] {
-    opacity: 0.4;
-    cursor: not-allowed;
   }
   .tab-icon {
     font-size: 20px;

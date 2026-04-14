@@ -1,0 +1,179 @@
+<script lang="ts">
+  import { onMount, onDestroy } from 'svelte';
+  import { page } from '$app/stores';
+  import { createTvClient } from '$lib/tv/client.svelte';
+  import { currentExercise } from '$lib/stores/currentExercise.svelte';
+  import { tvSession } from '$lib/tv/session.svelte';
+
+  const client = tvSession.ensureClient();
+  let codeInput = $state('');
+
+  onMount(() => {
+    const urlCode = $page.url.searchParams.get('code');
+    if (urlCode && /^\d{4}$/.test(urlCode)) {
+      codeInput = urlCode;
+      submit();
+    }
+  });
+
+  function submit() {
+    if (!/^\d{4}$/.test(codeInput)) return;
+    client.pairAsTablet(codeInput);
+  }
+
+  // Nach Pairing: bei Änderungen an currentExercise sync senden
+  $effect(() => {
+    if (client.status !== 'paired') return;
+    const ex = currentExercise.exercise;
+    // Triggern bei jeder Änderung
+    void ex.strokes.length;
+    void ex.name;
+    client.sendSync(ex);
+  });
+
+  onDestroy(() => {
+    // Session bleibt aktiv über Navigation — nicht disconnecten
+  });
+</script>
+
+<section class="connect">
+  <h1>TV verbinden</h1>
+
+  {#if client.status === 'paired'}
+    <div class="success">
+      <p>✓ Verbunden mit TV</p>
+      <p class="hint">
+        Änderungen an der aktuellen Übung werden automatisch an den TV gesendet. Wechsle zurück
+        zum <a href="/draw">Zeichnen</a>.
+      </p>
+      <button type="button" class="secondary" onclick={() => client.disconnect()}>Trennen</button>
+    </div>
+  {:else}
+    <p class="sub">Gib den 4-stelligen Code ein, der auf dem TV angezeigt wird.</p>
+
+    <form
+      onsubmit={(e) => {
+        e.preventDefault();
+        submit();
+      }}
+    >
+      <input
+        type="text"
+        inputmode="numeric"
+        pattern="\d{4}"
+        maxlength="4"
+        bind:value={codeInput}
+        placeholder="1234"
+        aria-label="TV-Code"
+        autocomplete="off"
+      />
+      <button type="submit" class="primary" disabled={!/^\d{4}$/.test(codeInput)}>Verbinden</button>
+    </form>
+
+    {#if client.status === 'connecting'}
+      <p class="status">Verbinde…</p>
+    {:else if client.status === 'error'}
+      <p class="error">
+        {#if client.errorReason === 'unknown-code'}Code unbekannt. TV neu öffnen und neuen Code nutzen.
+        {:else if client.errorReason === 'already-paired'}TV ist bereits mit einem anderen Tablet verbunden.
+        {:else if client.errorReason === 'connection-failed'}Kein Server erreichbar. Dev-Server starten (`npm run server:dev`).
+        {:else}Fehler: {client.errorReason}
+        {/if}
+      </p>
+    {/if}
+
+    <p class="hint">
+      TV öffnet zunächst <span class="path">/tv</span> im Browser.
+    </p>
+  {/if}
+</section>
+
+<style>
+  .connect {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .sub {
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  form {
+    display: flex;
+    gap: 12px;
+  }
+  input {
+    flex: 1;
+    padding: 14px 18px;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 8px;
+    text-align: center;
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+    color: var(--color-text-primary);
+  }
+  input:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 0;
+  }
+  .primary,
+  .secondary {
+    padding: 14px 22px;
+    border-radius: var(--radius-button);
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .primary {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .primary[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .secondary {
+    background: var(--bg-surface);
+    color: var(--color-text-primary);
+  }
+  .success {
+    background: var(--bg-surface);
+    border-radius: var(--radius-panel);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .success p:first-child {
+    color: var(--color-success, #34c759);
+    font-weight: 600;
+  }
+  .hint {
+    color: var(--color-text-secondary);
+    font-size: 14px;
+  }
+  .path {
+    color: var(--color-text-primary);
+    font-family: ui-monospace, monospace;
+  }
+  .status {
+    color: var(--color-text-secondary);
+  }
+  .error {
+    color: var(--color-danger);
+  }
+  a {
+    color: var(--color-accent);
+  }
+</style>

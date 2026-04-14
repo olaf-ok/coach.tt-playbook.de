@@ -5,6 +5,7 @@
   import { StrokeInputController } from '$lib/canvas/StrokeInput';
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
   import { saveExercise, loadExercise } from '$lib/db/exercises';
+  import { tvSession } from '$lib/tv/session.svelte';
   import type { Point } from '$lib/types/exercise';
 
   let selectedStrokeId = $state<string | null>(null);
@@ -14,6 +15,18 @@
   const input = new StrokeInputController((n) => {
     warningMessage = `Viele Schläge (${n}) — Farben wiederholen sich ab hier. Übung ggf. in mehrere aufteilen.`;
     setTimeout(() => (warningMessage = null), 5000);
+  });
+
+  $effect(() => {
+    if (!tvSession.hasClient()) return;
+    const client = tvSession.ensureClient();
+    if (client.status !== 'paired') return;
+    const ex = currentExercise.exercise;
+    void ex.strokes.length;
+    void ex.name;
+    void ex.repetitions;
+    void ex.duration;
+    client.sendSync(ex);
   });
 
   function handleTap(rel: Point) {
