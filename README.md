@@ -34,8 +34,8 @@ npm run preview
 
 ## Phasen
 
-- **A — Frontend-Kern** (aktuell): Zeichnen, Speichern, Laden einer Übung
-- B — Archiv + Playlists
-- C — TV-Pairing
-- D — Account + Stripe
-- E — i18n + Einstellungen + Onboarding + Polish
+- **A ✓ Frontend-Kern**: Zeichnen, Speichern, Laden einer Übung
+- **B ✓ Archiv + Playlists**: Grid mit Thumbnails, Suche, Filter; Playlists mit Split-View und Drag-Reorder
+- C — Übungen aus Archiv zum Bearbeiten laden
+- D — TV-Pairing (QR + Pairing)
+- E — Account + Stripe, i18n, Einstellungen, Onboarding, Polish
