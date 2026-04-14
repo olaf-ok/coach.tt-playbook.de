@@ -1,11 +1,16 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { pathToTabId, type TabId } from './sidebar-utils';
+  import DrawIcon from '$lib/icons/DrawIcon.svelte';
+  import ArchiveIcon from '$lib/icons/ArchiveIcon.svelte';
+  import PlaylistIcon from '$lib/icons/PlaylistIcon.svelte';
+  import SettingsIcon from '$lib/icons/SettingsIcon.svelte';
+  import type { Component } from 'svelte';
 
-  const topTabs: Array<{ id: TabId; href: string; label: string; icon: string }> = [
-    { id: 'draw', href: '/draw', label: 'Zeichnen', icon: '✎' },
-    { id: 'archive', href: '/archive', label: 'Archiv', icon: '▤' },
-    { id: 'playlists', href: '/playlists', label: 'Playlists', icon: '▸' },
+  const topTabs: Array<{ id: TabId; href: string; label: string; icon: Component }> = [
+    { id: 'draw', href: '/draw', label: 'Zeichnen', icon: DrawIcon },
+    { id: 'archive', href: '/archive', label: 'Archiv', icon: ArchiveIcon },
+    { id: 'playlists', href: '/playlists', label: 'Playlists', icon: PlaylistIcon },
   ];
 
   let activeTab = $derived(pathToTabId($page.url.pathname));
@@ -14,6 +19,7 @@
 <aside class="sidebar">
   <div class="tabs">
     {#each topTabs as tab (tab.id)}
+      {@const Icon = tab.icon}
       <a
         href={tab.href}
         class="tab"
@@ -21,7 +27,7 @@
         aria-label={tab.label}
         aria-current={activeTab === tab.id ? 'page' : undefined}
       >
-        <span class="tab-icon">{tab.icon}</span>
+        <Icon />
       </a>
     {/each}
   </div>
@@ -33,7 +39,7 @@
       class:active={$page.url.pathname.startsWith('/settings')}
       aria-label="Einstellungen"
     >
-      <span class="tab-icon">⚙</span>
+      <SettingsIcon />
     </a>
   </div>
 </aside>
@@ -73,9 +79,6 @@
   .tab.active {
     background: var(--bg-elevated);
     color: var(--color-text-primary);
-  }
-  .tab-icon {
-    font-size: 20px;
   }
   .bottom {
     display: flex;

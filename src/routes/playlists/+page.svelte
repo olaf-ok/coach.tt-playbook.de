@@ -6,6 +6,7 @@
   import { createEmptyPlaylist, type Playlist } from '$lib/types/playlist';
   import { savePlaylist, deletePlaylist, loadPlaylist } from '$lib/db/playlists';
   import { addExerciseId, removeExerciseId, moveExerciseId } from '$lib/db/playlistOps';
+  import PlusIcon from '$lib/icons/PlusIcon.svelte';
 
   let { data } = $props();
 
@@ -110,8 +111,10 @@
         type="button"
         class="add-btn"
         aria-label="Neue Playlist"
-        onclick={createPlaylist}>+</button
+        onclick={createPlaylist}
       >
+        <PlusIcon size={18} />
+      </button>
     </header>
     {#if data.playlists.length === 0}
       <p class="empty">Noch keine Playlist.</p>

@@ -1,5 +1,7 @@
 <script lang="ts">
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
+  import BendIcon from '$lib/icons/BendIcon.svelte';
+  import UndoIcon from '$lib/icons/UndoIcon.svelte';
 
   interface Props {
     onUndo?: () => void;
@@ -37,7 +39,7 @@
       aria-label="Kurve biegen"
       title="Pfeil antippen, dann Kontrollpunkt ziehen"
     >
-      ∿
+      <BendIcon />
     </button>
     <button
       type="button"
@@ -47,7 +49,7 @@
       aria-label="Rückgängig"
       title="Rückgängig"
     >
-      ↶
+      <UndoIcon />
     </button>
   </div>
 

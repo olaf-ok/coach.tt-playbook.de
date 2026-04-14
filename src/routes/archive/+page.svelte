@@ -1,6 +1,8 @@
 <script lang="ts">
   import { goto, invalidateAll } from '$app/navigation';
   import ExerciseCard from '$lib/components/ExerciseCard.svelte';
+  import SearchIcon from '$lib/icons/SearchIcon.svelte';
+  import PlusIcon from '$lib/icons/PlusIcon.svelte';
   import { deleteExercise, saveExercise, loadExercise } from '$lib/db/exercises';
   import type { Exercise } from '$lib/types/exercise';
 
@@ -68,17 +70,26 @@
 
 <section class="archive">
   <header class="head">
-    <h1>Archiv</h1>
-    <p class="count">{exercises.length} Übung{exercises.length === 1 ? '' : 'en'}</p>
+    <div class="title-row">
+      <h1>Archiv</h1>
+      <p class="count">{exercises.length} Übung{exercises.length === 1 ? '' : 'en'}</p>
+    </div>
+    <a href="/draw" class="new-btn">
+      <PlusIcon size={18} />
+      <span>Neue Übung</span>
+    </a>
   </header>
 
-  <input
-    class="search"
-    type="search"
-    placeholder="Suchen..."
-    bind:value={query}
-    aria-label="Übungen suchen"
-  />
+  <div class="search-wrap">
+    <span class="search-icon"><SearchIcon /></span>
+    <input
+      class="search"
+      type="search"
+      placeholder="Suchen..."
+      bind:value={query}
+      aria-label="Übungen suchen"
+    />
+  </div>
 
   {#if allTags.length > 0}
     <div class="chips">
@@ -135,27 +146,60 @@
   }
   .head {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 12px;
     margin-bottom: 20px;
+  }
+  .title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex: 1;
   }
   h1 {
     font-size: 24px;
     font-weight: 600;
     color: var(--color-text-primary);
+    margin: 0;
   }
   .count {
     color: var(--color-text-secondary);
     font-size: 14px;
+    margin: 0;
+  }
+  .new-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    background: var(--color-accent);
+    color: #fff;
+    border-radius: var(--radius-button);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .search-wrap {
+    position: relative;
+    width: 320px;
+    margin-bottom: 16px;
+  }
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-secondary);
+    pointer-events: none;
+    display: flex;
   }
   .search {
-    width: 320px;
-    padding: 10px 14px;
+    width: 100%;
+    padding: 10px 14px 10px 38px;
     border-radius: var(--radius-button);
     background: var(--bg-surface);
     color: var(--color-text-primary);
     border: 1px solid var(--color-border);
-    margin-bottom: 16px;
   }
   .chips {
     display: flex;

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import MoreIcon from '$lib/icons/MoreIcon.svelte';
+
   interface MenuItem {
     label: string;
     onSelect: () => void;
@@ -30,7 +32,9 @@
 </script>
 
 <div class="overflow" bind:this={root}>
-  <button type="button" class="trigger" aria-label="Aktionen" onclick={toggle}>⋯</button>
+  <button type="button" class="trigger" aria-label="Aktionen" onclick={toggle}>
+    <MoreIcon />
+  </button>
   {#if open}
     <ul class="menu" role="menu">
       {#each items as item (item.label)}
