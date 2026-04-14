@@ -1,0 +1,23 @@
+import { db } from './database';
+import type { Exercise } from '../types/exercise';
+
+export async function saveExercise(exercise: Exercise): Promise<void> {
+  exercise.updatedAt = Date.now();
+  await db.exercises.put(exercise);
+}
+
+export async function loadExercise(id: string): Promise<Exercise | undefined> {
+  return await db.exercises.get(id);
+}
+
+export async function deleteExercise(id: string): Promise<void> {
+  await db.exercises.delete(id);
+}
+
+export async function listExerciseIds(): Promise<string[]> {
+  return await db.exercises.toCollection().primaryKeys();
+}
+
+export async function listAllExercises(): Promise<Exercise[]> {
+  return await db.exercises.orderBy('updatedAt').reverse().toArray();
+}
