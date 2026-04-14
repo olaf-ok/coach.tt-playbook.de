@@ -5,10 +5,12 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import { seedIfEmpty } from '$lib/db/seed';
+	import { theme } from '$lib/theme/store.svelte';
 
 	let { children } = $props();
 
 	onMount(async () => {
+		theme.init();
 		try {
 			const seeded = await seedIfEmpty();
 			if (seeded) await invalidateAll();
