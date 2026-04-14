@@ -31,8 +31,8 @@
     }),
   );
 
-  function open(_id: string) {
-    goto('/draw');
+  function open(id: string) {
+    goto(`/draw/${id}`);
   }
 
   async function rename(id: string) {

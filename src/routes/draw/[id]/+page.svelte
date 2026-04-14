@@ -3,8 +3,12 @@
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
   import { onMount } from 'svelte';
 
+  let { data } = $props();
+
   onMount(() => {
-    currentExercise.reset();
+    if (data.exercise) {
+      currentExercise.load(data.exercise);
+    }
   });
 </script>
 
