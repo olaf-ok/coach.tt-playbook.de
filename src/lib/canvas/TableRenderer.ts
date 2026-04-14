@@ -4,15 +4,19 @@ export interface TableRendererOptions {
   width: number;
   height: number;
   showZoneMarkers?: boolean;
+  strokeScale?: number;
 }
 
 export class TableRenderer {
   private group: Konva.Group;
 
   constructor(opts: TableRendererOptions) {
-    const { width, height, showZoneMarkers = false } = opts;
+    const { width, height, showZoneMarkers = false, strokeScale = 1 } = opts;
 
     this.group = new Konva.Group();
+
+    const edgeWidth = 3 * strokeScale;
+    const centerWidth = 1.5 * strokeScale;
 
     const background = new Konva.Rect({
       x: 0,
@@ -20,23 +24,23 @@ export class TableRenderer {
       width,
       height,
       fill: '#0a2a4a',
-      stroke: 'rgba(255, 255, 255, 0.85)',
-      strokeWidth: 4,
-      cornerRadius: 4,
+      stroke: 'rgba(255, 255, 255, 0.55)',
+      strokeWidth: edgeWidth,
+      cornerRadius: 4 * strokeScale,
     });
     this.group.add(background);
 
     const net = new Konva.Line({
       points: [0, height / 2, width, height / 2],
-      stroke: 'rgba(255, 255, 255, 0.85)',
-      strokeWidth: 4,
+      stroke: 'rgba(255, 255, 255, 0.55)',
+      strokeWidth: edgeWidth,
     });
     this.group.add(net);
 
     const centerLine = new Konva.Line({
       points: [width / 2, 0, width / 2, height],
-      stroke: 'rgba(255, 255, 255, 0.12)',
-      strokeWidth: 1,
+      stroke: 'rgba(255, 255, 255, 0.25)',
+      strokeWidth: centerWidth,
     });
     this.group.add(centerLine);
 

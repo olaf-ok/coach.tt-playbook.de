@@ -3,6 +3,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { TableRenderer } from '$lib/canvas/TableRenderer';
   import { StrokeRenderer } from '$lib/canvas/StrokeRenderer';
+  import { TABLE_ASPECT } from '$lib/canvas/tableDimensions';
   import type { Exercise } from '$lib/types/exercise';
 
   interface Props {
@@ -15,8 +16,6 @@
   let stage: Konva.Stage | null = null;
   let tableLayer: Konva.Layer | null = null;
   let strokesLayer: Konva.Layer | null = null;
-
-  const TABLE_ASPECT = 1.525;
 
   function render() {
     if (!stage || !tableLayer || !strokesLayer) return;

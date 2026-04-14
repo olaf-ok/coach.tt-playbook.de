@@ -3,6 +3,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { TableRenderer } from '$lib/canvas/TableRenderer';
   import { StrokeRenderer } from '$lib/canvas/StrokeRenderer';
+  import { TABLE_ASPECT } from '$lib/canvas/tableDimensions';
   import type { Exercise } from '$lib/types/exercise';
 
   interface Props {
@@ -15,8 +16,6 @@
 
   let container: HTMLDivElement;
   let stage: Konva.Stage | null = null;
-
-  const TABLE_ASPECT = 1.525;
 
   onMount(() => {
     const tableWidth = Math.min(width * 0.85, (height / TABLE_ASPECT) * 0.9);
@@ -34,6 +33,7 @@
       width: tableWidth,
       height: tableHeight,
       showZoneMarkers: false,
+      strokeScale: 0.4,
     });
     const tableNode = tableRenderer.getKonvaNode();
     tableNode.position({ x: tableX, y: tableY });

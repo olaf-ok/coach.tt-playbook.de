@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   import { TableRenderer } from '$lib/canvas/TableRenderer';
   import { StrokeRenderer } from '$lib/canvas/StrokeRenderer';
+  import { TABLE_ASPECT } from '$lib/canvas/tableDimensions';
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
   import type { Point } from '$lib/types/exercise';
 
@@ -31,8 +32,6 @@
   let tableLayer: Konva.Layer;
   let strokesLayer: Konva.Layer;
   let tableRenderer: TableRenderer;
-
-  const TABLE_ASPECT = 1.525;
 
   onMount(() => {
     const rect = container.getBoundingClientRect();
