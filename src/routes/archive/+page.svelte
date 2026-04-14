@@ -8,16 +8,30 @@
   let exercises = $derived(data.exercises);
 
   let query = $state('');
-  let filtered = $derived(
-    query.trim() === ''
-      ? exercises
-      : exercises.filter((e) =>
-          e.name.toLowerCase().includes(query.toLowerCase().trim()),
+  let activeTag = $state<string | null>(null);
+
+  const allTags = $derived(
+    Array.from(
+      new Set(
+        exercises.flatMap(
+          (e) => e.strokes.map((s) => s.strokeType).filter(Boolean) as string[],
         ),
+      ),
+    ).sort(),
+  );
+
+  let filtered = $derived(
+    exercises.filter((e) => {
+      const matchesQuery =
+        query.trim() === '' ||
+        e.name.toLowerCase().includes(query.toLowerCase().trim());
+      const matchesTag =
+        activeTag === null || e.strokes.some((s) => s.strokeType === activeTag);
+      return matchesQuery && matchesTag;
+    }),
   );
 
   function open(_id: string) {
-    // Phase C: /draw/:id mit Vorlage — für jetzt: Navigation nach /draw
     goto('/draw');
   }
 
@@ -66,6 +80,29 @@
     aria-label="Übungen suchen"
   />
 
+  {#if allTags.length > 0}
+    <div class="chips">
+      <button
+        type="button"
+        class="chip"
+        class:active={activeTag === null}
+        onclick={() => (activeTag = null)}
+      >
+        Alle
+      </button>
+      {#each allTags as tag (tag)}
+        <button
+          type="button"
+          class="chip"
+          class:active={activeTag === tag}
+          onclick={() => (activeTag = tag)}
+        >
+          {tag}
+        </button>
+      {/each}
+    </div>
+  {/if}
+
   {#if exercises.length === 0}
     <div class="empty">
       <p>Noch keine Übungen gespeichert.</p>
@@ -73,7 +110,7 @@
     </div>
   {:else if filtered.length === 0}
     <div class="empty">
-      <p>Keine Übung passt zu "{query}".</p>
+      <p>Keine Übung passt zu den aktuellen Filtern.</p>
     </div>
   {:else}
     <div class="grid">
@@ -119,6 +156,25 @@
     color: var(--color-text-primary);
     border: 1px solid var(--color-border);
     margin-bottom: 16px;
+  }
+  .chips {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    background: var(--bg-surface);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+  }
+  .chip.active {
+    background: var(--color-accent);
+    color: #fff;
+    border-color: var(--color-accent);
   }
   .grid {
     display: grid;
