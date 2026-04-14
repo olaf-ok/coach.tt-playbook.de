@@ -1,0 +1,66 @@
+import Konva from 'konva';
+
+export interface TableRendererOptions {
+  width: number;
+  height: number;
+  showZoneMarkers?: boolean;
+}
+
+export class TableRenderer {
+  private group: Konva.Group;
+
+  constructor(opts: TableRendererOptions) {
+    const { width, height, showZoneMarkers = false } = opts;
+
+    this.group = new Konva.Group();
+
+    const background = new Konva.Rect({
+      x: 0,
+      y: 0,
+      width,
+      height,
+      fill: '#0a2a4a',
+      stroke: 'rgba(255, 255, 255, 0.85)',
+      strokeWidth: 4,
+      cornerRadius: 4,
+    });
+    this.group.add(background);
+
+    const net = new Konva.Line({
+      points: [0, height / 2, width, height / 2],
+      stroke: 'rgba(255, 255, 255, 0.85)',
+      strokeWidth: 4,
+    });
+    this.group.add(net);
+
+    const centerLine = new Konva.Line({
+      points: [width / 2, 0, width / 2, height],
+      stroke: 'rgba(255, 255, 255, 0.12)',
+      strokeWidth: 1,
+    });
+    this.group.add(centerLine);
+
+    if (showZoneMarkers) {
+      this.addZoneLabel('VH', width * 0.25, height - 20);
+      this.addZoneLabel('RH', width * 0.75, height - 20);
+      this.addZoneLabel('RH', width * 0.25, 20);
+      this.addZoneLabel('VH', width * 0.75, 20);
+    }
+  }
+
+  private addZoneLabel(text: string, x: number, y: number) {
+    const label = new Konva.Text({
+      x: x - 12,
+      y: y - 8,
+      text,
+      fontSize: 11,
+      fontFamily: 'Inter',
+      fill: 'rgba(255,255,255,0.3)',
+    });
+    this.group.add(label);
+  }
+
+  getKonvaNode(): Konva.Group {
+    return this.group;
+  }
+}
