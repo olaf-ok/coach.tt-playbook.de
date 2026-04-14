@@ -8,6 +8,11 @@ export interface StrokeRenderEvents {
   onControlPointDrag?: (strokeId: string, newControlPoint: Point) => void;
 }
 
+export interface StrokeRenderOptions {
+  scale?: number;
+  showLabel?: boolean;
+}
+
 export class StrokeRenderer {
   private group: Konva.Group;
   private arrow!: Konva.Arrow;
@@ -16,11 +21,20 @@ export class StrokeRenderer {
   private stroke: Stroke;
   private box: TableBox;
   private events: StrokeRenderEvents;
+  private scale: number;
+  private showLabel: boolean;
 
-  constructor(stroke: Stroke, box: TableBox, events: StrokeRenderEvents = {}) {
+  constructor(
+    stroke: Stroke,
+    box: TableBox,
+    events: StrokeRenderEvents = {},
+    options: StrokeRenderOptions = {},
+  ) {
     this.stroke = stroke;
     this.box = box;
     this.events = events;
+    this.scale = options.scale ?? 1;
+    this.showLabel = options.showLabel ?? true;
 
     this.group = new Konva.Group();
     this.render();
@@ -31,15 +45,18 @@ export class StrokeRenderer {
     const end = relativeToPixel(this.stroke.endPoint, this.box);
     const color = getStrokeColor(this.stroke.number);
 
+    const strokeWidth = 3 * this.scale;
+    const pointerSize = 10 * this.scale;
+
     if (this.stroke.controlPoint) {
       const cp = relativeToPixel(this.stroke.controlPoint, this.box);
       this.arrow = new Konva.Arrow({
         points: [start.x, start.y, cp.x, cp.y, end.x, end.y],
         stroke: color,
         fill: color,
-        strokeWidth: 3,
-        pointerLength: 10,
-        pointerWidth: 10,
+        strokeWidth,
+        pointerLength: pointerSize,
+        pointerWidth: pointerSize,
         tension: 0.5,
       });
     } else {
@@ -47,9 +64,9 @@ export class StrokeRenderer {
         points: [start.x, start.y, end.x, end.y],
         stroke: color,
         fill: color,
-        strokeWidth: 3,
-        pointerLength: 10,
-        pointerWidth: 10,
+        strokeWidth,
+        pointerLength: pointerSize,
+        pointerWidth: pointerSize,
       });
     }
 
@@ -60,16 +77,18 @@ export class StrokeRenderer {
 
     this.group.add(this.arrow);
 
+    if (!this.showLabel) return;
+
     const mid = this.getMidpoint(start, end);
     const labelText = isRepeatedColor(this.stroke.number)
       ? `${this.stroke.number}·`
       : `${this.stroke.number}`;
 
     this.label = new Konva.Text({
-      x: mid.x + 6,
-      y: mid.y - 8,
+      x: mid.x + 6 * this.scale,
+      y: mid.y - 8 * this.scale,
       text: labelText,
-      fontSize: 12,
+      fontSize: 12 * this.scale,
       fontFamily: 'Inter',
       fill: color,
       fontStyle: '600',

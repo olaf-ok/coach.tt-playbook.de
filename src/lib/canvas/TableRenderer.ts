@@ -23,7 +23,7 @@ export class TableRenderer {
       y: 0,
       width,
       height,
-      fill: '#0a2a4a',
+      fill: '#0d62c6',
       stroke: 'rgba(255, 255, 255, 0.55)',
       strokeWidth: edgeWidth,
       cornerRadius: 4 * strokeScale,

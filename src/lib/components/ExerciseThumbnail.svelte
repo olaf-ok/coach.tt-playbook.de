@@ -41,7 +41,7 @@
 
     const box = { x: tableX, y: tableY, width: tableWidth, height: tableHeight };
     for (const stroke of exercise.strokes) {
-      const renderer = new StrokeRenderer(stroke, box);
+      const renderer = new StrokeRenderer(stroke, box, {}, { scale: 0.725, showLabel: false });
       strokesLayer.add(renderer.getKonvaNode());
     }
 
