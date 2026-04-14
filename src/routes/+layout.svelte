@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
 
 	let { children } = $props();
@@ -8,4 +9,14 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-{@render children()}
+<div class="app-root">
+	{@render children()}
+</div>
+
+<style>
+	.app-root {
+		height: 100vh;
+		display: flex;
+		overflow: hidden;
+	}
+</style>
