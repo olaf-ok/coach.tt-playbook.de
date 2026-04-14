@@ -28,10 +28,10 @@
 
   <div class="bottom">
     <a
-      href="/connect-tv"
+      href="/settings"
       class="tab"
-      class:active={$page.url.pathname.startsWith('/connect-tv')}
-      aria-label="TV verbinden"
+      class:active={$page.url.pathname.startsWith('/settings')}
+      aria-label="Einstellungen"
     >
       <span class="tab-icon">⚙</span>
     </a>
