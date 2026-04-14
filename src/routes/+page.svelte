@@ -4,7 +4,7 @@
   import StepsPanel from '$lib/components/StepsPanel.svelte';
   import { StrokeInputController } from '$lib/canvas/StrokeInput';
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
-  import { saveExercise } from '$lib/db/exercises';
+  import { saveExercise, loadExercise } from '$lib/db/exercises';
   import type { Point } from '$lib/types/exercise';
 
   let selectedStrokeId = $state<string | null>(null);
@@ -62,11 +62,25 @@
     isBendingMode = !isBendingMode;
     if (!isBendingMode) selectedStrokeId = null;
   }
+
+  async function handleReload() {
+    const id = currentExercise.exercise.id;
+    const loaded = await loadExercise(id);
+    if (loaded) {
+      currentExercise.load(loaded);
+      warningMessage = 'Neu geladen.';
+      setTimeout(() => (warningMessage = null), 2000);
+    } else {
+      warningMessage = 'Noch nicht gespeichert.';
+      setTimeout(() => (warningMessage = null), 2000);
+    }
+  }
 </script>
 
 <Toolbar
   onUndo={handleUndo}
   onSave={handleSave}
+  onReload={handleReload}
   onToggleBend={toggleBend}
   isBendingMode={isBendingMode}
   canUndo={currentExercise.exercise.strokes.length > 0}

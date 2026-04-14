@@ -4,6 +4,7 @@
   interface Props {
     onUndo?: () => void;
     onSave?: () => void;
+    onReload?: () => void;
     onToggleBend?: () => void;
     isBendingMode?: boolean;
     canUndo?: boolean;
@@ -12,6 +13,7 @@
   let {
     onUndo,
     onSave,
+    onReload,
     onToggleBend,
     isBendingMode = false,
     canUndo = false,
@@ -51,6 +53,11 @@
 
   <div class="actions">
     <button type="button" class="save" onclick={() => onSave?.()}>Speichern</button>
+    <button
+      type="button"
+      class="save reload"
+      onclick={() => onReload?.()}
+    >Neu laden</button>
   </div>
 </header>
 
@@ -130,5 +137,11 @@
 
   .save:hover {
     opacity: 0.9;
+  }
+
+  .reload {
+    margin-left: 8px;
+    background: var(--bg-elevated);
+    color: var(--color-text-primary);
   }
 </style>
