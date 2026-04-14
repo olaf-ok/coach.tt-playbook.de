@@ -34,10 +34,11 @@
         class:selected={selectedStrokeId === stroke.id}
         role="button"
         tabindex="0"
+        style:--step-color={getStrokeColor(stroke.number)}
         onclick={() => onSelectStroke?.(stroke.id)}
         onkeydown={(e) => e.key === 'Enter' && onSelectStroke?.(stroke.id)}
       >
-        <span class="step-dot" style:background={getStrokeColor(stroke.number)}>
+        <span class="step-dot">
           {stroke.number}
         </span>
         <div class="step-body">
@@ -75,23 +76,50 @@
   </div>
 
   <footer class="meta">
-    <label>
-      <span>Wdh.</span>
-      <input
-        type="number"
-        min="1"
-        placeholder="10"
-        bind:value={currentExercise.exercise.repetitions}
-      />
-    </label>
-    <label>
-      <span>Dauer</span>
-      <input
-        type="text"
-        placeholder="ca. 5 min"
-        bind:value={currentExercise.exercise.duration}
-      />
-    </label>
+    <div class="field">
+      <span class="field-label">Wiederholungen</span>
+      <div class="presets">
+        {#each [5, 10, 15, 20] as n (n)}
+          <button
+            type="button"
+            class="preset"
+            class:active={currentExercise.exercise.repetitions === n}
+            onclick={() => (currentExercise.exercise.repetitions = n)}
+          >
+            {n}
+          </button>
+        {/each}
+        <input
+          type="number"
+          min="1"
+          class="preset-input"
+          placeholder="Wählen"
+          bind:value={currentExercise.exercise.repetitions}
+        />
+      </div>
+    </div>
+
+    <div class="field">
+      <span class="field-label">Dauer</span>
+      <div class="presets">
+        {#each ['5 min', '10 min', '15 min'] as d (d)}
+          <button
+            type="button"
+            class="preset"
+            class:active={currentExercise.exercise.duration === d}
+            onclick={() => (currentExercise.exercise.duration = d)}
+          >
+            {d}
+          </button>
+        {/each}
+        <input
+          type="text"
+          class="preset-input"
+          placeholder="Wählen"
+          bind:value={currentExercise.exercise.duration}
+        />
+      </div>
+    </div>
   </footer>
 </aside>
 
@@ -137,7 +165,7 @@
   }
 
   .step.selected {
-    outline: 1px solid var(--color-primary);
+    outline: 1.5px solid var(--step-color);
   }
 
   .step-dot {
@@ -147,6 +175,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: var(--step-color);
     color: #000;
     font-size: 12px;
     font-weight: 700;
@@ -208,27 +237,56 @@
   }
 
   .meta {
-    padding: 12px 16px;
+    padding: 16px 20px 20px;
     border-top: 1px solid var(--color-border);
     display: flex;
-    gap: 12px;
+    flex-direction: column;
+    gap: 16px;
   }
 
-  .meta label {
-    flex: 1;
+  .field {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
   }
 
-  .meta label span {
+  .field-label {
     color: var(--color-text-secondary);
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
-  .meta input {
+  .presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .preset {
+    min-width: 40px;
+    height: 32px;
+    padding: 0 10px;
+    background: var(--bg-elevated);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-button);
+    font-size: 13px;
+    font-weight: 500;
+    transition: background var(--transition-quick), color var(--transition-quick);
+  }
+
+  .preset:hover {
+    background: var(--color-chip-bg);
+  }
+
+  .preset.active {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  .preset-input {
+    flex: 1;
+    min-width: 60px;
     height: 32px;
     padding: 0 10px;
     background: var(--bg-elevated);
@@ -237,5 +295,13 @@
     border-radius: var(--radius-button);
     outline: none;
     font-size: 13px;
+  }
+
+  .preset-input:focus {
+    outline: 1.5px solid var(--color-accent);
+  }
+
+  .preset-input::placeholder {
+    color: var(--color-text-tertiary);
   }
 </style>
