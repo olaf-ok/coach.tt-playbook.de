@@ -37,5 +37,6 @@ npm run preview
 - **A ✓ Frontend-Kern**: Zeichnen, Speichern, Laden einer Übung
 - **B ✓ Archiv + Playlists**: Grid mit Thumbnails, Suche, Filter; Playlists mit Split-View und Drag-Reorder
 - **C ✓ Bearbeiten**: Übungen aus Archiv via `/draw/:id` laden und überschreiben
-- D — TV-Pairing (QR + Pairing)
+- **D ✓ TV-Pairing**: lokaler WS-Server + QR + 4-stelliger Code, Live-Sync
+- D.2 — Backend-Deploy (Mittwald, adapter-node)
 - E — Account + Stripe, i18n, Einstellungen, Onboarding, Polish
