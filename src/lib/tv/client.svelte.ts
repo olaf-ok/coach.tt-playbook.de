@@ -7,7 +7,13 @@ function defaultWsUrl(): string {
   if (typeof window === 'undefined') return 'ws://localhost:5174';
   const envUrl = (import.meta as { env?: { VITE_TV_WS_URL?: string } }).env?.VITE_TV_WS_URL;
   if (envUrl) return envUrl;
-  return `ws://${window.location.hostname}:5174`;
+  // Dev: standalone WS server auf 5174.
+  // Prod: gleicher Host, Pfad /ws (wss bei HTTPS).
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return `ws://${window.location.hostname}:5174`;
+  }
+  const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  return `${proto}//${window.location.host}/ws`;
 }
 
 export function createTvClient() {

@@ -1,4 +1,4 @@
-import type { Exercise } from '$lib/types/exercise';
+import type { Exercise } from '../types/exercise';
 import type { PeerHandle } from './types';
 
 interface Room {
