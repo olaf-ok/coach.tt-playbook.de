@@ -2,15 +2,19 @@
   import TableCanvas from '$lib/components/TableCanvas.svelte';
   import Toolbar from '$lib/components/Toolbar.svelte';
   import StepsPanel from '$lib/components/StepsPanel.svelte';
+  import PaywallDialog from '$lib/components/PaywallDialog.svelte';
   import { StrokeInputController } from '$lib/canvas/StrokeInput';
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
   import { saveExercise, loadExercise } from '$lib/db/exercises';
+  import { db } from '$lib/db/database';
   import { tvSession } from '$lib/tv/session.svelte';
+  import { proStatus, FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
   import type { Point } from '$lib/types/exercise';
 
   let selectedStrokeId = $state<string | null>(null);
   let isBendingMode = $state(false);
   let warningMessage = $state<string | null>(null);
+  let paywallOpen = $state(false);
 
   const input = new StrokeInputController((n) => {
     warningMessage = `Viele Schläge (${n}) — Farben wiederholen sich ab hier. Übung ggf. in mehrere aufteilen.`;
@@ -63,6 +67,16 @@
   }
 
   async function handleSave() {
+    if (!proStatus.isPro) {
+      const existing = await loadExercise(currentExercise.exercise.id);
+      if (!existing) {
+        const count = await db.exercises.count();
+        if (count >= FREE_EXERCISE_LIMIT) {
+          paywallOpen = true;
+          return;
+        }
+      }
+    }
     if (currentExercise.exercise.name.trim() === '') {
       currentExercise.exercise.name = 'Neue Übung';
     }
@@ -121,6 +135,10 @@
     onDeleteStroke={handleDeleteStroke}
   />
 </div>
+
+{#if paywallOpen}
+  <PaywallDialog onClose={() => (paywallOpen = false)} />
+{/if}
 
 <style>
   .layout {

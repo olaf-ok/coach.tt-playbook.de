@@ -13,7 +13,7 @@
     { id: 'language', href: '/settings/language', label: 'Sprache', available: false },
     { id: 'tv', href: '/settings/tv', label: 'TV-Verbindung', available: true },
     { id: 'display', href: '/settings/display', label: 'Anzeige', available: false },
-    { id: 'pro', href: '/settings/pro', label: 'Pro-Abo', available: false },
+    { id: 'pro', href: '/settings/pro', label: 'Pro-Abo', available: true },
     { id: 'about', href: '/settings/about', label: 'Über', available: true },
   ];
 
