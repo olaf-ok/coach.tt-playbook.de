@@ -7,6 +7,15 @@
   let { data } = $props();
   let exercises = $derived(data.exercises);
 
+  let query = $state('');
+  let filtered = $derived(
+    query.trim() === ''
+      ? exercises
+      : exercises.filter((e) =>
+          e.name.toLowerCase().includes(query.toLowerCase().trim()),
+        ),
+  );
+
   function open(_id: string) {
     // Phase C: /draw/:id mit Vorlage — für jetzt: Navigation nach /draw
     goto('/draw');
@@ -49,14 +58,26 @@
     <p class="count">{exercises.length} Übung{exercises.length === 1 ? '' : 'en'}</p>
   </header>
 
+  <input
+    class="search"
+    type="search"
+    placeholder="Suchen..."
+    bind:value={query}
+    aria-label="Übungen suchen"
+  />
+
   {#if exercises.length === 0}
     <div class="empty">
       <p>Noch keine Übungen gespeichert.</p>
       <a class="cta" href="/draw">Neue Übung zeichnen</a>
     </div>
+  {:else if filtered.length === 0}
+    <div class="empty">
+      <p>Keine Übung passt zu "{query}".</p>
+    </div>
   {:else}
     <div class="grid">
-      {#each exercises as ex (ex.id)}
+      {#each filtered as ex (ex.id)}
         <ExerciseCard
           exercise={ex}
           onOpen={open}
@@ -89,6 +110,15 @@
   .count {
     color: var(--color-text-secondary);
     font-size: 14px;
+  }
+  .search {
+    width: 320px;
+    padding: 10px 14px;
+    border-radius: var(--radius-button);
+    background: var(--bg-surface);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    margin-bottom: 16px;
   }
   .grid {
     display: grid;
