@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import Sidebar from '$lib/components/Sidebar.svelte';
 
 	let { children } = $props();
 </script>
@@ -10,13 +11,23 @@
 </svelte:head>
 
 <div class="app-root">
-	{@render children()}
+	<Sidebar activeTab="draw" />
+	<main class="content">
+		{@render children()}
+	</main>
 </div>
 
 <style>
 	.app-root {
 		height: 100vh;
 		display: flex;
+		overflow: hidden;
+	}
+
+	.content {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
 		overflow: hidden;
 	}
 </style>
