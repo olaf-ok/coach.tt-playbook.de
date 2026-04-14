@@ -11,7 +11,7 @@
 </svelte:head>
 
 <div class="app-root">
-	<Sidebar activeTab="draw" />
+	<Sidebar />
 	<main class="content">
 		{@render children()}
 	</main>
