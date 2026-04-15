@@ -4,7 +4,7 @@
 
 import { createServer, type IncomingMessage } from 'node:http';
 import type { Duplex } from 'node:stream';
-import { closeSync, openSync, watch } from 'node:fs';
+import { closeSync, openSync, statSync } from 'node:fs';
 import { WebSocketServer, WebSocket } from 'ws';
 import { RoomRegistry } from '../src/lib/tv/rooms';
 import type { ClientMessage, PeerHandle, ServerMessage } from '../src/lib/tv/types';
@@ -88,19 +88,23 @@ server.listen(PORT, () => {
   console.log(`TT Playbook Trainer läuft auf Port ${PORT} (HTTP + WS /ws)`);
 });
 
-// Self-restart trigger: if the file is touched, shut down so supervisor restarts fresh.
-// We open the file in append mode, which can fire spurious events on some filesystems —
-// debounce the first few seconds of startup to avoid an instant-exit loop.
+// Self-restart trigger: poll mtime of the trigger file every 2s. When it changes from the
+// mtime we observed at boot → exit(1) so the Mittwald supervisor respawns with fresh imports.
 const RESTART_TRIGGER = '.restart-trigger';
-const BOOT_GRACE_MS = 3000;
-const bootedAt = Date.now();
 try {
   closeSync(openSync(RESTART_TRIGGER, 'a'));
-  watch(RESTART_TRIGGER, () => {
-    if (Date.now() - bootedAt < BOOT_GRACE_MS) return;
-    console.log('[restart] trigger file changed, exiting with code 1 so supervisor restarts');
-    process.exit(1);
-  });
+  const initialMtime = statSync(RESTART_TRIGGER).mtimeMs;
+  setInterval(() => {
+    try {
+      const m = statSync(RESTART_TRIGGER).mtimeMs;
+      if (m > initialMtime) {
+        console.log('[restart] trigger mtime changed, exiting so supervisor restarts');
+        process.exit(1);
+      }
+    } catch {
+      // file missing briefly — ignore
+    }
+  }, 2000).unref();
 } catch (err) {
-  console.error('[restart] could not install watcher', err);
+  console.error('[restart] could not install poller', err);
 }
