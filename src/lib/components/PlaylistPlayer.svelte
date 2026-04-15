@@ -55,7 +55,10 @@
       <span class="pill">{index + 1} / {exercises.length}</span>
       <span class="title">{playlist.name || 'Playlist'}</span>
     </div>
-    <button class="exit" onclick={onExit} aria-label="Beenden">Beenden</button>
+    <button class="exit" onclick={onExit} aria-label="Beenden">
+      <span aria-hidden="true">✕</span>
+      <span>Beenden</span>
+    </button>
   </header>
 
   <div class="stage">
@@ -136,14 +139,25 @@
     color: var(--color-text-primary);
   }
   .exit {
-    padding: 10px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
     border-radius: var(--radius-button);
-    background: var(--bg-surface);
-    color: var(--color-text-primary);
-    font-weight: 600;
+    background: var(--color-danger);
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    box-shadow: var(--shadow-card);
+    transition: opacity var(--transition-quick), transform var(--transition-quick);
   }
   .exit:hover {
-    background: var(--bg-elevated);
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+  .exit span:first-child {
+    font-size: 16px;
+    font-weight: 700;
   }
 
   .stage {
