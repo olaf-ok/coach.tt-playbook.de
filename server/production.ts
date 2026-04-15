@@ -89,11 +89,15 @@ server.listen(PORT, () => {
 });
 
 // Self-restart trigger: if the file is touched, shut down so supervisor restarts fresh.
+// We open the file in append mode, which can fire spurious events on some filesystems —
+// debounce the first few seconds of startup to avoid an instant-exit loop.
 const RESTART_TRIGGER = '.restart-trigger';
+const BOOT_GRACE_MS = 3000;
+const bootedAt = Date.now();
 try {
-  // Ensure the file exists without updating its mtime (otherwise watch fires immediately).
   closeSync(openSync(RESTART_TRIGGER, 'a'));
   watch(RESTART_TRIGGER, () => {
+    if (Date.now() - bootedAt < BOOT_GRACE_MS) return;
     console.log('[restart] trigger file changed, exiting with code 1 so supervisor restarts');
     process.exit(1);
   });
