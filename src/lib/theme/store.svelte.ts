@@ -9,9 +9,9 @@ function systemTheme(): ResolvedTheme {
 }
 
 function readStoredMode(): ThemeMode {
-  if (typeof localStorage === 'undefined') return 'auto';
+  if (typeof localStorage === 'undefined') return 'dark';
   const v = localStorage.getItem(STORAGE_KEY);
-  return v === 'light' || v === 'dark' || v === 'auto' ? v : 'auto';
+  return v === 'light' || v === 'dark' || v === 'auto' ? v : 'dark';
 }
 
 export function resolve(mode: ThemeMode): ResolvedTheme {
