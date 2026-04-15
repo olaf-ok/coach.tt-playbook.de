@@ -12,13 +12,14 @@ export class StrokeInputController {
     this.onOverflowWarning = onOverflowWarning;
   }
 
-  handleTap(relPoint: Point): void {
+  handleTap(relPoint: Point): Stroke | null {
     if (this.pendingTapStart === null) {
       this.pendingTapStart = relPoint;
-    } else {
-      this.finishStroke(this.pendingTapStart, relPoint);
-      this.pendingTapStart = null;
+      return null;
     }
+    const stroke = this.finishStroke(this.pendingTapStart, relPoint);
+    this.pendingTapStart = null;
+    return stroke;
   }
 
   handleDragStart(relPoint: Point): void {
@@ -30,16 +31,16 @@ export class StrokeInputController {
     // Preview optional — für Phase A: ohne Preview reicht
   }
 
-  handleDragEnd(relPoint: Point): void {
-    if (this.dragStart === null) return;
+  handleDragEnd(relPoint: Point): Stroke | null {
+    if (this.dragStart === null) return null;
     const distance = Math.hypot(
       relPoint.x - this.dragStart.x,
       relPoint.y - this.dragStart.y
     );
-    if (distance >= 0.03) {
-      this.finishStroke(this.dragStart, relPoint);
-    }
+    const start = this.dragStart;
     this.dragStart = null;
+    if (distance < 0.03) return null;
+    return this.finishStroke(start, relPoint);
   }
 
   resetPendingTap(): void {

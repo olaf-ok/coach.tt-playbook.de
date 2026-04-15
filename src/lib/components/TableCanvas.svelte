@@ -15,7 +15,6 @@
     onEmptyAreaDragStart?: (relPoint: Point) => void;
     onDragMove?: (relPoint: Point) => void;
     onDragEnd?: (relPoint: Point) => void;
-    bendingStrokeId?: string | null;
   }
 
   let {
@@ -25,7 +24,6 @@
     onEmptyAreaDragStart,
     onDragMove,
     onDragEnd,
-    bendingStrokeId = null,
   }: Props = $props();
 
   let container: HTMLDivElement;
@@ -154,9 +152,6 @@
         onControlPointDrag: (id, cp) => currentExercise.setControlPoint(id, cp),
       });
       strokesLayer.add(renderer.getKonvaNode());
-      if (bendingStrokeId === stroke.id) {
-        renderer.showControlHandle();
-      }
     }
     strokesLayer.batchDraw();
   });

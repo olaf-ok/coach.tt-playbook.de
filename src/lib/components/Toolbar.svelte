@@ -1,6 +1,5 @@
 <script lang="ts">
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
-  import BendIcon from '$lib/icons/BendIcon.svelte';
   import UndoIcon from '$lib/icons/UndoIcon.svelte';
   import PlusIcon from '$lib/icons/PlusIcon.svelte';
 
@@ -9,8 +8,6 @@
     onSave?: () => void;
     onNew?: () => void;
     onOpenTv?: () => void;
-    onToggleBend?: () => void;
-    isBendingMode?: boolean;
     canUndo?: boolean;
     tvStatus?: string;
   }
@@ -20,8 +17,6 @@
     onSave,
     onNew,
     onOpenTv,
-    onToggleBend,
-    isBendingMode = false,
     canUndo = false,
     tvStatus = 'idle',
   }: Props = $props();
@@ -37,29 +32,6 @@
     placeholder="Übungsname"
   />
 
-  <div class="tools">
-    <button
-      type="button"
-      class="tool"
-      class:active={isBendingMode}
-      onclick={() => onToggleBend?.()}
-      aria-label="Kurve biegen"
-      title="Pfeil antippen, dann Kontrollpunkt ziehen"
-    >
-      <BendIcon />
-    </button>
-    <button
-      type="button"
-      class="tool"
-      disabled={!canUndo}
-      onclick={() => onUndo?.()}
-      aria-label="Rückgängig"
-      title="Rückgängig"
-    >
-      <UndoIcon />
-    </button>
-  </div>
-
   <div class="actions">
     <button
       type="button"
@@ -71,6 +43,16 @@
     >
       <span class="tv-dot" class:on={tvConnected}></span>
       <span>TV</span>
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      disabled={!canUndo}
+      onclick={() => onUndo?.()}
+      aria-label="Letzten Pfeil rückgängig"
+    >
+      <UndoIcon size={16} />
+      <span>Zurück</span>
     </button>
     <button type="button" class="btn btn-secondary" onclick={() => onNew?.()}>
       <PlusIcon size={16} />
@@ -108,37 +90,6 @@
 
   .name-field:focus {
     border-color: var(--color-border);
-  }
-
-  .tools {
-    display: flex;
-    gap: 6px;
-  }
-
-  .tool {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-button);
-    color: var(--color-text-secondary);
-    transition: background var(--transition-quick), color var(--transition-quick);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .tool:hover:not(:disabled) {
-    background: var(--bg-elevated);
-    color: var(--color-text-primary);
-  }
-
-  .tool.active {
-    background: var(--bg-elevated);
-    color: var(--color-accent);
-  }
-
-  .tool:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
   }
 
   .actions {
@@ -200,7 +151,11 @@
     background: var(--bg-elevated);
     color: var(--color-text-primary);
   }
-  .btn-secondary:hover {
+  .btn-secondary:hover:not(:disabled) {
     background: var(--color-chip-bg);
+  }
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 </style>

@@ -20,6 +20,18 @@
     const target = event.target as HTMLTextAreaElement;
     currentExercise.setDescription(id, target.value);
   }
+
+  // Auto-Focus nur auf Geräten mit präzisem Zeiger (Desktop).
+  // Auf Touch-Geräten würde focus() die Tastatur öffnen — unerwünscht im Training.
+  $effect(() => {
+    if (!selectedStrokeId) return;
+    if (typeof window === 'undefined') return;
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+    const el = document.querySelector<HTMLTextAreaElement>(
+      `textarea[data-desc-id="${selectedStrokeId}"]`,
+    );
+    el?.focus();
+  });
 </script>
 
 <aside class="panel">
@@ -54,6 +66,7 @@
             class="step-desc"
             placeholder="Freitext (optional)"
             rows="1"
+            data-desc-id={stroke.id}
             value={stroke.description ?? ''}
             oninput={(e) => setDescription(e, stroke.id)}
           ></textarea>

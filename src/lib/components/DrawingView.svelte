@@ -14,7 +14,6 @@
 
   type ToastKind = 'info' | 'success' | 'warning';
   let selectedStrokeId = $state<string | null>(null);
-  let isBendingMode = $state(false);
   let toast = $state<{ text: string; kind: ToastKind } | null>(null);
   let paywallOpen = $state(false);
 
@@ -43,7 +42,8 @@
   });
 
   function handleTap(rel: Point) {
-    input.handleTap(rel);
+    const added = input.handleTap(rel);
+    if (added) selectedStrokeId = added.id;
   }
 
   function handleDragStart(rel: Point) {
@@ -55,7 +55,8 @@
   }
 
   function handleDragEnd(rel: Point) {
-    input.handleDragEnd(rel);
+    const added = input.handleDragEnd(rel);
+    if (added) selectedStrokeId = added.id;
   }
 
   function handleStrokeTap(id: string) {
@@ -100,11 +101,6 @@
     }
   }
 
-  function toggleBend() {
-    isBendingMode = !isBendingMode;
-    if (!isBendingMode) selectedStrokeId = null;
-  }
-
   function handleNew() {
     currentExercise.reset();
     selectedStrokeId = null;
@@ -122,8 +118,6 @@
   onSave={handleSave}
   onNew={handleNew}
   onOpenTv={handleOpenTv}
-  onToggleBend={toggleBend}
-  isBendingMode={isBendingMode}
   canUndo={currentExercise.exercise.strokes.length > 0}
   tvStatus={tvSession.status}
 />
@@ -140,7 +134,6 @@
       onDragMove={handleDragMove}
       onDragEnd={handleDragEnd}
       onStrokeTap={handleStrokeTap}
-      bendingStrokeId={isBendingMode ? selectedStrokeId : null}
     />
   </div>
 
