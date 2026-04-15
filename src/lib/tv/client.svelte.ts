@@ -24,11 +24,26 @@ export function createTvClient() {
   let lastTheme = $state<'light' | 'dark' | null>(null);
   let ws: WebSocket | null = null;
 
+  let keepAliveInterval: ReturnType<typeof setInterval> | null = null;
+
   function connect(onOpen: () => void) {
     if (ws) return;
     status = 'connecting';
     ws = new WebSocket(defaultWsUrl());
-    ws.onopen = () => onOpen();
+    ws.onopen = () => {
+      // Ping every 25s to keep ws alive through Ingress/proxy idle-timeouts.
+      if (keepAliveInterval) clearInterval(keepAliveInterval);
+      keepAliveInterval = setInterval(() => {
+        if (ws?.readyState === WebSocket.OPEN) {
+          try {
+            ws.send('');
+          } catch {
+            /* ignore */
+          }
+        }
+      }, 25000);
+      onOpen();
+    };
     ws.onmessage = (ev) => {
       let msg: ServerMessage;
       try {
@@ -61,6 +76,10 @@ export function createTvClient() {
       }
     };
     ws.onclose = () => {
+      if (keepAliveInterval) {
+        clearInterval(keepAliveInterval);
+        keepAliveInterval = null;
+      }
       status = 'closed';
       ws = null;
     };

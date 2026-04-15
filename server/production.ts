@@ -30,9 +30,11 @@ wss.on('connection', (ws: WebSocket) => {
   };
 
   ws.on('message', (raw) => {
+    const str = raw.toString();
+    if (str === '') return; // keepalive ping
     let msg: ClientMessage;
     try {
-      msg = JSON.parse(raw.toString());
+      msg = JSON.parse(str);
     } catch {
       peer.send({ type: 'error', reason: 'invalid-json' });
       return;
