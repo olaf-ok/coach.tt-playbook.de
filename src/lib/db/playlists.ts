@@ -3,7 +3,7 @@ import type { Playlist } from '../types/playlist';
 
 export async function savePlaylist(playlist: Playlist): Promise<void> {
   playlist.updatedAt = Date.now();
-  await db.playlists.put(playlist);
+  await db.playlists.put(structuredClone(playlist));
 }
 
 export async function loadPlaylist(id: string): Promise<Playlist | undefined> {

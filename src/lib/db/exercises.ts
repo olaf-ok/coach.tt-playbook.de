@@ -3,7 +3,9 @@ import type { Exercise } from '../types/exercise';
 
 export async function saveExercise(exercise: Exercise): Promise<void> {
   exercise.updatedAt = Date.now();
-  await db.exercises.put(exercise);
+  // structuredClone unwraps Svelte 5 $state proxies to plain objects,
+  // which IndexedDB can persist (otherwise DataCloneError).
+  await db.exercises.put(structuredClone(exercise));
 }
 
 export async function loadExercise(id: string): Promise<Exercise | undefined> {
