@@ -9,7 +9,7 @@
 
 <style>
   .tv-shell {
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
