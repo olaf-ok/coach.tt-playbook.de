@@ -16,6 +16,8 @@
 
   let container: HTMLDivElement;
   let stage: Konva.Stage | null = null;
+  let strokesLayer: Konva.Layer | null = null;
+  let tableBox = { x: 0, y: 0, width: 0, height: 0 };
 
   onMount(() => {
     const tableWidth = Math.min(width * 0.85, (height / TABLE_ASPECT) * 0.9);
@@ -25,7 +27,7 @@
 
     stage = new Konva.Stage({ container, width, height, listening: false });
     const tableLayer = new Konva.Layer({ listening: false });
-    const strokesLayer = new Konva.Layer({ listening: false });
+    strokesLayer = new Konva.Layer({ listening: false });
     stage.add(tableLayer);
     stage.add(strokesLayer);
 
@@ -39,14 +41,25 @@
     tableNode.position({ x: tableX, y: tableY });
     tableLayer.add(tableNode);
 
-    const box = { x: tableX, y: tableY, width: tableWidth, height: tableHeight };
+    tableBox = { x: tableX, y: tableY, width: tableWidth, height: tableHeight };
+    tableLayer.draw();
+  });
+
+  $effect(() => {
+    if (!strokesLayer) return;
+    // Trigger on exercise.strokes changes
+    void exercise.strokes.length;
+    strokesLayer.destroyChildren();
     for (const stroke of exercise.strokes) {
-      const renderer = new StrokeRenderer(stroke, box, {}, { scale: 0.725, showLabel: false });
+      const renderer = new StrokeRenderer(
+        stroke,
+        tableBox,
+        {},
+        { scale: 0.725, showLabel: false },
+      );
       strokesLayer.add(renderer.getKonvaNode());
     }
-
-    tableLayer.draw();
-    strokesLayer.draw();
+    strokesLayer.batchDraw();
   });
 
   onDestroy(() => {
