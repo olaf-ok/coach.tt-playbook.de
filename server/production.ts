@@ -4,7 +4,8 @@
 
 import { createServer, type IncomingMessage } from 'node:http';
 import type { Duplex } from 'node:stream';
-import { closeSync, openSync, statSync } from 'node:fs';
+import { existsSync, statSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { WebSocketServer, WebSocket } from 'ws';
 import { RoomRegistry } from '../src/lib/tv/rooms';
 import type { ClientMessage, PeerHandle, ServerMessage } from '../src/lib/tv/types';
@@ -93,23 +94,33 @@ server.listen(PORT, () => {
   console.log(`TT Playbook Trainer läuft auf Port ${PORT} (HTTP + WS /ws)`);
 });
 
-// Self-restart trigger: poll mtime of the trigger file every 2s. When it changes from the
-// mtime we observed at boot → exit(1) so the Mittwald supervisor respawns with fresh imports.
-const RESTART_TRIGGER = '.restart-trigger';
+// Self-restart trigger: poll mtime of the trigger file every 5s. When it changes from the
+// mtime we observed at boot → exit(1) so the supervisor respawns with fresh imports.
+// Use an absolute path so we don't depend on cwd, and don't modify the file on boot.
+const RESTART_TRIGGER = resolve(process.cwd(), '.restart-trigger');
+let initialMtime = 0;
 try {
-  closeSync(openSync(RESTART_TRIGGER, 'a'));
-  const initialMtime = statSync(RESTART_TRIGGER).mtimeMs;
-  setInterval(() => {
-    try {
-      const m = statSync(RESTART_TRIGGER).mtimeMs;
-      if (m > initialMtime) {
-        console.log('[restart] trigger mtime changed, exiting so supervisor restarts');
-        process.exit(1);
-      }
-    } catch {
-      // file missing briefly — ignore
-    }
-  }, 2000).unref();
-} catch (err) {
-  console.error('[restart] could not install poller', err);
+  if (existsSync(RESTART_TRIGGER)) {
+    initialMtime = statSync(RESTART_TRIGGER).mtimeMs;
+  }
+} catch {
+  /* ignore */
 }
+console.log(`[restart] watching ${RESTART_TRIGGER} (initial mtime=${initialMtime})`);
+setInterval(() => {
+  try {
+    if (!existsSync(RESTART_TRIGGER)) return;
+    const m = statSync(RESTART_TRIGGER).mtimeMs;
+    if (m > initialMtime && initialMtime > 0) {
+      console.log(`[restart] trigger mtime ${m} > ${initialMtime}, exiting`);
+      process.exit(1);
+    }
+    // First observation when file appears post-boot — record baseline so we don't
+    // trigger an immediate restart.
+    if (initialMtime === 0 && m > 0) {
+      initialMtime = m;
+    }
+  } catch {
+    /* ignore */
+  }
+}, 5000).unref();
