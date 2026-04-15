@@ -13,6 +13,9 @@
     onAddExercise: () => void;
     onRemoveExercise: (exerciseId: string) => void;
     onReorder?: (fromIndex: number, toIndex: number) => void;
+    onPlay?: () => void;
+    canPlay?: boolean;
+    playHint?: string;
   }
 
   let {
@@ -24,6 +27,9 @@
     onAddExercise,
     onRemoveExercise,
     onReorder,
+    onPlay,
+    canPlay = false,
+    playHint = '',
   }: Props = $props();
 
   let dragIndex = $state<number | null>(null);
@@ -33,7 +39,13 @@
   <header class="head">
     <div class="title-row">
       <h2>{playlist.name || 'Unbenannt'}</h2>
-      <button type="button" class="primary" disabled>Auf TV spielen</button>
+      <button
+        type="button"
+        class="primary"
+        disabled={!canPlay}
+        title={playHint}
+        onclick={() => onPlay?.()}
+      >Auf TV spielen</button>
     </div>
     <div class="meta-row">
       <span class="meta">{exercises.length} Übung{exercises.length === 1 ? '' : 'en'}</span>

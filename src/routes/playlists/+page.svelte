@@ -3,15 +3,23 @@
   import PlaylistListItem from '$lib/components/PlaylistListItem.svelte';
   import PlaylistDetail from '$lib/components/PlaylistDetail.svelte';
   import AddExerciseDialog from '$lib/components/AddExerciseDialog.svelte';
+  import PlaylistPlayer from '$lib/components/PlaylistPlayer.svelte';
   import { createEmptyPlaylist, type Playlist } from '$lib/types/playlist';
   import { savePlaylist, deletePlaylist, loadPlaylist } from '$lib/db/playlists';
   import { addExerciseId, removeExerciseId, moveExerciseId } from '$lib/db/playlistOps';
+  import { tvSession } from '$lib/tv/session.svelte';
   import PlusIcon from '$lib/icons/PlusIcon.svelte';
 
   let { data } = $props();
 
   let selectedId = $state<string | null>(null);
   let showAddDialog = $state(false);
+  let playing = $state(false);
+
+  const tvPaired = $derived(tvSession.hasClient() && tvSession.status === 'paired');
+  const playHint = $derived(
+    tvPaired ? 'Übungen nacheinander an den TV senden' : 'Erst TV verbinden (Einstellungen → TV-Verbindung)',
+  );
 
   $effect(() => {
     if (selectedId === null && data.playlists.length > 0) {
@@ -101,6 +109,11 @@
     await savePlaylist(p);
     await invalidateAll();
   }
+
+  function startPlay() {
+    if (!selected || selectedExercises.length === 0 || !tvPaired) return;
+    playing = true;
+  }
 </script>
 
 <section class="playlists-page">
@@ -143,6 +156,9 @@
         onAddExercise={() => (showAddDialog = true)}
         onRemoveExercise={removeExercise}
         onReorder={reorder}
+        onPlay={startPlay}
+        canPlay={tvPaired && selectedExercises.length > 0}
+        playHint={playHint}
       />
     {:else}
       <div class="empty">
@@ -157,6 +173,14 @@
       excludeIds={selected.exerciseIds}
       onPick={addExercise}
       onClose={() => (showAddDialog = false)}
+    />
+  {/if}
+
+  {#if playing && selected && selectedExercises.length > 0}
+    <PlaylistPlayer
+      playlist={selected}
+      exercises={selectedExercises}
+      onExit={() => (playing = false)}
     />
   {/if}
 </section>
