@@ -79,12 +79,16 @@
       <input
         type="text"
         inputmode="numeric"
-        pattern="\d{4}"
         maxlength="4"
         bind:value={codeInput}
         placeholder="1234"
         aria-label="TV-Code"
         autocomplete="off"
+        oninput={(e) => {
+          const t = e.currentTarget;
+          t.value = t.value.replace(/\D/g, '').slice(0, 4);
+          codeInput = t.value;
+        }}
       />
       <button type="submit" class="primary" disabled={!/^\d{4}$/.test(codeInput)}>Verbinden</button>
     </form>
