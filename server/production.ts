@@ -55,7 +55,22 @@ wss.on('connection', (ws: WebSocket) => {
 });
 
 const server = createServer((req, res) => {
-  (handler as (req: IncomingMessage, res: typeof res) => void)(req, res);
+  try {
+    (handler as (req: IncomingMessage, res: typeof res) => void)(req, res);
+  } catch (err) {
+    console.error('[handler-sync]', req.url, err);
+    if (!res.headersSent) {
+      res.statusCode = 500;
+      res.end('Server error');
+    }
+  }
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('[uncaughtException]', err);
+});
+process.on('unhandledRejection', (err) => {
+  console.error('[unhandledRejection]', err);
 });
 
 server.on('upgrade', (req: IncomingMessage, socket: Duplex, head: Buffer) => {
