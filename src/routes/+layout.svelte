@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 	import { invalidateAll } from '$app/navigation';
 	import favicon from '$lib/assets/favicon.svg';
 	import Sidebar from '$lib/components/Sidebar.svelte';
@@ -8,6 +9,8 @@
 	import { theme } from '$lib/theme/store.svelte';
 
 	let { children } = $props();
+
+	const hideChrome = $derived($page.url.pathname.startsWith('/tv'));
 
 	onMount(async () => {
 		theme.init();
@@ -25,7 +28,7 @@
 </svelte:head>
 
 <div class="app-root">
-	<Sidebar />
+	{#if !hideChrome}<Sidebar />{/if}
 	<main class="content">
 		{@render children()}
 	</main>
