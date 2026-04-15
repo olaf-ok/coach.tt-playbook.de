@@ -27,18 +27,16 @@
 	// Tablet-Seite: Theme an gepairten TV pushen
 	$effect(() => {
 		if (isTvView) return;
-		if (!tvSession.hasClient()) return;
-		const client = tvSession.ensureClient();
-		if (client.status !== 'paired') return;
+		const client = tvSession.client;
+		if (!client || client.status !== 'paired') return;
 		client.sendTheme(theme.resolved);
 	});
 
 	// TV-Seite: empfangenes Theme anwenden
 	$effect(() => {
 		if (!isTvView) return;
-		if (!tvSession.hasClient()) return;
-		const client = tvSession.ensureClient();
-		if (!client.lastTheme) return;
+		const client = tvSession.client;
+		if (!client?.lastTheme) return;
 		theme.set(client.lastTheme);
 	});
 </script>

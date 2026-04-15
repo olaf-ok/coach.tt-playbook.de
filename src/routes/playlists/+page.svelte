@@ -16,7 +16,7 @@
   let showAddDialog = $state(false);
   let playing = $state(false);
 
-  const tvPaired = $derived(tvSession.hasClient() && tvSession.status === 'paired');
+  const tvPaired = $derived(tvSession.status === 'paired');
   const playHint = $derived(
     tvPaired ? 'Übungen nacheinander an den TV senden' : 'Erst TV verbinden (Einstellungen → TV-Verbindung)',
   );

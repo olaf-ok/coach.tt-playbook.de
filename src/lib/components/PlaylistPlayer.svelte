@@ -20,9 +20,8 @@
 
   $effect(() => {
     if (!current) return;
-    if (!tvSession.hasClient()) return;
-    const client = tvSession.ensureClient();
-    if (client.status !== 'paired') return;
+    const client = tvSession.client;
+    if (!client || client.status !== 'paired') return;
     client.sendSync(current);
   });
 

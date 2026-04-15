@@ -32,9 +32,8 @@
   });
 
   $effect(() => {
-    if (!tvSession.hasClient()) return;
-    const client = tvSession.ensureClient();
-    if (client.status !== 'paired') return;
+    const client = tvSession.client;
+    if (!client || client.status !== 'paired') return;
     const ex = currentExercise.exercise;
     void ex.strokes.length;
     void ex.name;
@@ -126,7 +125,7 @@
   onToggleBend={toggleBend}
   isBendingMode={isBendingMode}
   canUndo={currentExercise.exercise.strokes.length > 0}
-  tvStatus={tvSession.hasClient() ? tvSession.status : 'idle'}
+  tvStatus={tvSession.status}
 />
 
 <div class="layout">
