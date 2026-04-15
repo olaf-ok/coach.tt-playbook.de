@@ -40,3 +40,4 @@ npm run preview
 - **D ✓ TV-Pairing**: lokaler WS-Server + QR + 4-stelliger Code, Live-Sync
 - D.2 — Backend-Deploy (Mittwald, adapter-node)
 - E — Account + Stripe, i18n, Einstellungen, Onboarding, Polish
+
