@@ -94,8 +94,8 @@ try {
   closeSync(openSync(RESTART_TRIGGER, 'a'));
   utimesSync(RESTART_TRIGGER, new Date(), new Date());
   watch(RESTART_TRIGGER, () => {
-    console.log('[restart] trigger file changed, exiting');
-    process.exit(0);
+    console.log('[restart] trigger file changed, exiting with code 1 so supervisor restarts');
+    process.exit(1);
   });
 } catch (err) {
   console.error('[restart] could not install watcher', err);
