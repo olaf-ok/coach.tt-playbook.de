@@ -4,7 +4,7 @@
 
 import { createServer, type IncomingMessage } from 'node:http';
 import type { Duplex } from 'node:stream';
-import { closeSync, openSync, watch, utimesSync } from 'node:fs';
+import { closeSync, openSync, watch } from 'node:fs';
 import { WebSocketServer, WebSocket } from 'ws';
 import { RoomRegistry } from '../src/lib/tv/rooms';
 import type { ClientMessage, PeerHandle, ServerMessage } from '../src/lib/tv/types';
@@ -91,8 +91,8 @@ server.listen(PORT, () => {
 // Self-restart trigger: if the file is touched, shut down so supervisor restarts fresh.
 const RESTART_TRIGGER = '.restart-trigger';
 try {
+  // Ensure the file exists without updating its mtime (otherwise watch fires immediately).
   closeSync(openSync(RESTART_TRIGGER, 'a'));
-  utimesSync(RESTART_TRIGGER, new Date(), new Date());
   watch(RESTART_TRIGGER, () => {
     console.log('[restart] trigger file changed, exiting with code 1 so supervisor restarts');
     process.exit(1);
