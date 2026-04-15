@@ -24,20 +24,25 @@
 		}
 	});
 
-	// Tablet-Seite: Theme an gepairten TV pushen
+	// Tablet-Seite: Theme an gepairten TV pushen.
+	// Wichtig: theme.resolved ZUERST lesen, damit Svelte es als Dependency trackt
+	// — ein frühes return vor dem Lesen würde die Reaktivität verlieren.
 	$effect(() => {
-		if (isTvView) return;
+		const resolvedTheme = theme.resolved;
 		const client = tvSession.client;
-		if (!client || client.status !== 'paired') return;
-		client.sendTheme(theme.resolved);
+		const clientStatus = client?.status;
+		if (isTvView) return;
+		if (!client || clientStatus !== 'paired') return;
+		client.sendTheme(resolvedTheme);
 	});
 
 	// TV-Seite: empfangenes Theme anwenden
 	$effect(() => {
-		if (!isTvView) return;
 		const client = tvSession.client;
-		if (!client?.lastTheme) return;
-		theme.set(client.lastTheme);
+		const received = client?.lastTheme;
+		if (!isTvView) return;
+		if (!received) return;
+		theme.set(received);
 	});
 </script>
 
