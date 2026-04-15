@@ -57,6 +57,14 @@ export class RoomRegistry {
     target.send({ type: 'sync', exercise });
   }
 
+  forwardTheme(from: PeerHandle, themeValue: 'light' | 'dark'): void {
+    const room = this.peerToRoom.get(from);
+    if (!room) return;
+    const target = from === room.tv ? room.tablet : room.tv;
+    if (!target) return;
+    target.send({ type: 'theme', theme: themeValue });
+  }
+
   handleDisconnect(peer: PeerHandle): void {
     const room = this.peerToRoom.get(peer);
     if (!room) return;

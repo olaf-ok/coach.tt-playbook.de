@@ -35,6 +35,9 @@ wss.on('connection', (ws: WebSocket) => {
       case 'sync':
         registry.forwardSync(peer, msg.exercise);
         break;
+      case 'theme':
+        registry.forwardTheme(peer, msg.theme);
+        break;
       default:
         peer.send({ type: 'error', reason: 'unknown-message' });
     }

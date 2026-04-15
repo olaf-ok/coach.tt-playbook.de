@@ -21,6 +21,7 @@ export function createTvClient() {
   let code = $state<string | null>(null);
   let errorReason = $state<string | null>(null);
   let lastExercise = $state<Exercise | null>(null);
+  let lastTheme = $state<'light' | 'dark' | null>(null);
   let ws: WebSocket | null = null;
 
   function connect(onOpen: () => void) {
@@ -49,6 +50,9 @@ export function createTvClient() {
           break;
         case 'sync':
           lastExercise = msg.exercise;
+          break;
+        case 'theme':
+          lastTheme = msg.theme;
           break;
         case 'error':
           errorReason = msg.reason;
@@ -83,6 +87,10 @@ export function createTvClient() {
     send({ type: 'sync', exercise });
   }
 
+  function sendTheme(theme: 'light' | 'dark') {
+    send({ type: 'theme', theme });
+  }
+
   function disconnect() {
     ws?.close();
     ws = null;
@@ -104,9 +112,13 @@ export function createTvClient() {
     get lastExercise() {
       return lastExercise;
     },
+    get lastTheme() {
+      return lastTheme;
+    },
     registerAsTv,
     pairAsTablet,
     sendSync,
+    sendTheme,
     disconnect,
   };
 }

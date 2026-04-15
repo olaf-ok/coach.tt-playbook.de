@@ -7,10 +7,12 @@
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import { seedIfEmpty } from '$lib/db/seed';
 	import { theme } from '$lib/theme/store.svelte';
+	import { tvSession } from '$lib/tv/session.svelte';
 
 	let { children } = $props();
 
 	const hideChrome = $derived($page.url.pathname.startsWith('/tv'));
+	const isTvView = $derived($page.url.pathname.startsWith('/tv'));
 
 	onMount(async () => {
 		theme.init();
@@ -20,6 +22,24 @@
 		} catch (err) {
 			console.warn('seed failed', err);
 		}
+	});
+
+	// Tablet-Seite: Theme an gepairten TV pushen
+	$effect(() => {
+		if (isTvView) return;
+		if (!tvSession.hasClient()) return;
+		const client = tvSession.ensureClient();
+		if (client.status !== 'paired') return;
+		client.sendTheme(theme.resolved);
+	});
+
+	// TV-Seite: empfangenes Theme anwenden
+	$effect(() => {
+		if (!isTvView) return;
+		if (!tvSession.hasClient()) return;
+		const client = tvSession.ensureClient();
+		if (!client.lastTheme) return;
+		theme.set(client.lastTheme);
 	});
 </script>
 
