@@ -2,9 +2,9 @@
   import { onMount, onDestroy } from 'svelte';
   import QRCode from 'qrcode';
   import TvDisplay from '$lib/components/TvDisplay.svelte';
-  import { createTvClient } from '$lib/tv/client.svelte';
+  import { tvSession } from '$lib/tv/session.svelte';
 
-  const client = createTvClient();
+  const client = tvSession.ensureClient();
   let qrSvg = $state<string>('');
 
   $effect(() => {
@@ -23,7 +23,7 @@
   });
 
   onDestroy(() => {
-    client.disconnect();
+    tvSession.reset();
   });
 </script>
 

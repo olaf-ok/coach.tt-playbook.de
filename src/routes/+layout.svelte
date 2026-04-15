@@ -31,15 +31,6 @@
 		const resolvedTheme = theme.resolved;
 		const client = tvSession.client;
 		const clientStatus = client?.status;
-		if (typeof window !== 'undefined') {
-			(window as unknown as { __themeEffect?: unknown }).__themeEffect = {
-				resolved: resolvedTheme,
-				hasClient: !!client,
-				status: clientStatus,
-				isTvView,
-				at: Date.now(),
-			};
-		}
 		if (isTvView) return;
 		if (!client || clientStatus !== 'paired') return;
 		client.sendTheme(resolvedTheme);
