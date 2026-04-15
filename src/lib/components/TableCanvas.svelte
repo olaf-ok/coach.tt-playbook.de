@@ -33,22 +33,35 @@
   let strokesLayer: Konva.Layer | null = null;
   let box = $state<TableBox | null>(null);
 
-  onMount(() => {
-    let initialized = false;
+  let lastW = 0;
+  let lastH = 0;
 
-    function tryInit() {
-      if (initialized) return;
+  onMount(() => {
+    function tryRender() {
       const rect = container.getBoundingClientRect();
       if (rect.width <= 0 || rect.height <= 0) return;
-      initialized = true;
+      // Nur bei relevanter Größenänderung neu aufbauen
+      if (Math.abs(rect.width - lastW) < 2 && Math.abs(rect.height - lastH) < 2) return;
+      lastW = rect.width;
+      lastH = rect.height;
+      if (stage) {
+        stage.destroy();
+        stage = null;
+      }
       setup(rect.width, rect.height);
     }
 
-    const ro = new ResizeObserver(() => tryInit());
+    const ro = new ResizeObserver(() => tryRender());
     ro.observe(container);
-    requestAnimationFrame(() => tryInit());
+    requestAnimationFrame(() => tryRender());
+    window.addEventListener('orientationchange', tryRender);
 
-    return () => ro.disconnect();
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('orientationchange', tryRender);
+      stage?.destroy();
+      stage = null;
+    };
   });
 
   function setup(width: number, height: number) {

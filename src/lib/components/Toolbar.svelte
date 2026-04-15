@@ -2,24 +2,31 @@
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
   import BendIcon from '$lib/icons/BendIcon.svelte';
   import UndoIcon from '$lib/icons/UndoIcon.svelte';
+  import PlusIcon from '$lib/icons/PlusIcon.svelte';
 
   interface Props {
     onUndo?: () => void;
     onSave?: () => void;
-    onReload?: () => void;
+    onNew?: () => void;
+    onOpenTv?: () => void;
     onToggleBend?: () => void;
     isBendingMode?: boolean;
     canUndo?: boolean;
+    tvStatus?: string;
   }
 
   let {
     onUndo,
     onSave,
-    onReload,
+    onNew,
+    onOpenTv,
     onToggleBend,
     isBendingMode = false,
     canUndo = false,
+    tvStatus = 'idle',
   }: Props = $props();
+
+  const tvConnected = $derived(tvStatus === 'paired');
 </script>
 
 <header class="toolbar">
@@ -54,12 +61,22 @@
   </div>
 
   <div class="actions">
-    <button type="button" class="save" onclick={() => onSave?.()}>Speichern</button>
     <button
       type="button"
-      class="save reload"
-      onclick={() => onReload?.()}
-    >Neu laden</button>
+      class="tv-btn"
+      class:connected={tvConnected}
+      onclick={() => onOpenTv?.()}
+      aria-label="TV-Verbindung"
+      title={tvConnected ? 'TV verbunden' : 'Mit TV verbinden'}
+    >
+      <span class="tv-dot" class:on={tvConnected}></span>
+      <span>TV</span>
+    </button>
+    <button type="button" class="btn btn-secondary" onclick={() => onNew?.()}>
+      <PlusIcon size={16} />
+      <span>Neu</span>
+    </button>
+    <button type="button" class="btn btn-primary" onclick={() => onSave?.()}>Speichern</button>
   </div>
 </header>
 
@@ -71,7 +88,7 @@
     border-bottom: 1px solid var(--color-border);
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 16px;
   }
 
   .name-field {
@@ -103,8 +120,10 @@
     height: 40px;
     border-radius: var(--radius-button);
     color: var(--color-text-secondary);
-    font-size: 18px;
     transition: background var(--transition-quick), color var(--transition-quick);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .tool:hover:not(:disabled) {
@@ -114,7 +133,7 @@
 
   .tool.active {
     background: var(--bg-elevated);
-    color: var(--color-primary);
+    color: var(--color-accent);
   }
 
   .tool:disabled {
@@ -124,26 +143,64 @@
 
   .actions {
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
-  .save {
+  .tv-btn {
     height: 40px;
-    padding: 0 18px;
-    background: var(--color-primary);
-    color: #000;
+    padding: 0 12px;
+    border-radius: var(--radius-button);
+    background: transparent;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--color-border);
+  }
+  .tv-btn.connected {
+    color: var(--color-text-primary);
+    border-color: var(--color-success);
+  }
+  .tv-btn:hover {
+    background: var(--bg-elevated);
+  }
+  .tv-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-text-tertiary);
+  }
+  .tv-dot.on {
+    background: var(--color-success);
+  }
+
+  .btn {
+    height: 40px;
+    padding: 0 16px;
     border-radius: var(--radius-button);
     font-size: 14px;
     font-weight: 600;
-    transition: opacity var(--transition-quick);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity var(--transition-quick), background var(--transition-quick);
   }
-
-  .save:hover {
+  .btn-primary {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .btn-primary:hover {
     opacity: 0.9;
   }
-
-  .reload {
-    margin-left: 8px;
+  .btn-secondary {
     background: var(--bg-elevated);
     color: var(--color-text-primary);
+  }
+  .btn-secondary:hover {
+    background: var(--color-chip-bg);
   }
 </style>

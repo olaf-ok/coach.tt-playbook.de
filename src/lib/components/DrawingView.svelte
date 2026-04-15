@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
   import TableCanvas from '$lib/components/TableCanvas.svelte';
   import Toolbar from '$lib/components/Toolbar.svelte';
   import StepsPanel from '$lib/components/StepsPanel.svelte';
@@ -11,14 +12,23 @@
   import { proStatus, FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
   import type { Point } from '$lib/types/exercise';
 
+  type ToastKind = 'info' | 'success' | 'warning';
   let selectedStrokeId = $state<string | null>(null);
   let isBendingMode = $state(false);
-  let warningMessage = $state<string | null>(null);
+  let toast = $state<{ text: string; kind: ToastKind } | null>(null);
   let paywallOpen = $state(false);
 
+  function showToast(text: string, kind: ToastKind = 'info', ms = 2000) {
+    toast = { text, kind };
+    setTimeout(() => (toast = null), ms);
+  }
+
   const input = new StrokeInputController((n) => {
-    warningMessage = `Viele Schläge (${n}) — Farben wiederholen sich ab hier. Übung ggf. in mehrere aufteilen.`;
-    setTimeout(() => (warningMessage = null), 5000);
+    showToast(
+      `Viele Schläge (${n}) — Farben wiederholen sich ab hier. Übung ggf. in mehrere aufteilen.`,
+      'warning',
+      5000,
+    );
   });
 
   $effect(() => {
@@ -67,22 +77,28 @@
   }
 
   async function handleSave() {
-    if (!proStatus.isPro) {
-      const existing = await loadExercise(currentExercise.exercise.id);
-      if (!existing) {
-        const count = await db.exercises.count();
-        if (count >= FREE_EXERCISE_LIMIT) {
-          paywallOpen = true;
-          return;
+    try {
+      if (!proStatus.isPro) {
+        const existing = await loadExercise(currentExercise.exercise.id);
+        if (!existing) {
+          const count = await db.exercises.count();
+          if (count >= FREE_EXERCISE_LIMIT) {
+            paywallOpen = true;
+            return;
+          }
         }
       }
+      if (currentExercise.exercise.name.trim() === '') {
+        currentExercise.exercise.name = 'Neue Übung';
+      }
+      // $state.snapshot: deep plain copy — strips Svelte 5 Proxy so IndexedDB akzeptiert es
+      const plain = $state.snapshot(currentExercise.exercise);
+      await saveExercise(plain);
+      showToast('Gespeichert', 'success');
+    } catch (err) {
+      console.error('save failed', err);
+      showToast('Speichern fehlgeschlagen', 'warning', 3000);
     }
-    if (currentExercise.exercise.name.trim() === '') {
-      currentExercise.exercise.name = 'Neue Übung';
-    }
-    await saveExercise(currentExercise.exercise);
-    warningMessage = 'Gespeichert.';
-    setTimeout(() => (warningMessage = null), 2000);
   }
 
   function toggleBend() {
@@ -90,33 +106,33 @@
     if (!isBendingMode) selectedStrokeId = null;
   }
 
-  async function handleReload() {
-    const id = currentExercise.exercise.id;
-    const loaded = await loadExercise(id);
-    if (loaded) {
-      currentExercise.load(loaded);
-      warningMessage = 'Neu geladen.';
-      setTimeout(() => (warningMessage = null), 2000);
-    } else {
-      warningMessage = 'Noch nicht gespeichert.';
-      setTimeout(() => (warningMessage = null), 2000);
-    }
+  function handleNew() {
+    currentExercise.reset();
+    selectedStrokeId = null;
+    goto('/draw');
+    showToast('Neue Übung', 'info');
+  }
+
+  function handleOpenTv() {
+    goto('/settings/tv');
   }
 </script>
 
 <Toolbar
   onUndo={handleUndo}
   onSave={handleSave}
-  onReload={handleReload}
+  onNew={handleNew}
+  onOpenTv={handleOpenTv}
   onToggleBend={toggleBend}
   isBendingMode={isBendingMode}
   canUndo={currentExercise.exercise.strokes.length > 0}
+  tvStatus={tvSession.hasClient() ? tvSession.status : 'idle'}
 />
 
 <div class="layout">
   <div class="canvas-area">
-    {#if warningMessage}
-      <div class="warning">{warningMessage}</div>
+    {#if toast}
+      <div class="toast toast--{toast.kind}">{toast.text}</div>
     {/if}
     <TableCanvas
       showZoneMarkers={false}
@@ -153,19 +169,28 @@
     overflow: hidden;
   }
 
-  .warning {
+  .toast {
     position: absolute;
-    top: 12px;
+    top: 16px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 8px 14px;
-    background: rgba(255, 159, 10, 0.9);
-    color: #000;
+    padding: 10px 18px;
     border-radius: var(--radius-button);
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 600;
     z-index: 10;
     max-width: 80%;
     text-align: center;
+    box-shadow: var(--shadow-card);
+    color: #fff;
+  }
+  .toast--success {
+    background: var(--color-success);
+  }
+  .toast--info {
+    background: var(--color-accent);
+  }
+  .toast--warning {
+    background: var(--color-danger);
   }
 </style>
