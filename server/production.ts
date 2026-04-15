@@ -4,6 +4,7 @@
 
 import { createServer, type IncomingMessage } from 'node:http';
 import type { Duplex } from 'node:stream';
+import { closeSync, openSync, watch, utimesSync } from 'node:fs';
 import { WebSocketServer, WebSocket } from 'ws';
 import { RoomRegistry } from '../src/lib/tv/rooms';
 import type { ClientMessage, PeerHandle, ServerMessage } from '../src/lib/tv/types';
@@ -86,3 +87,16 @@ server.on('upgrade', (req: IncomingMessage, socket: Duplex, head: Buffer) => {
 server.listen(PORT, () => {
   console.log(`TT Playbook Trainer läuft auf Port ${PORT} (HTTP + WS /ws)`);
 });
+
+// Self-restart trigger: if the file is touched, shut down so supervisor restarts fresh.
+const RESTART_TRIGGER = '.restart-trigger';
+try {
+  closeSync(openSync(RESTART_TRIGGER, 'a'));
+  utimesSync(RESTART_TRIGGER, new Date(), new Date());
+  watch(RESTART_TRIGGER, () => {
+    console.log('[restart] trigger file changed, exiting');
+    process.exit(0);
+  });
+} catch (err) {
+  console.error('[restart] could not install watcher', err);
+}
