@@ -7,6 +7,7 @@
   import type { Exercise } from '$lib/types/exercise';
   import { DEFAULT_STROKE_TYPE_CODES, type StrokeTypeCode } from '$lib/constants/strokeTypes';
   import { strokeTypeLabel } from '$lib/i18n/stroke-type-labels';
+  import { m } from '$lib/paraglide/messages';
 
   let { data } = $props();
   let exercises = $derived(data.exercises);
@@ -45,7 +46,7 @@
   async function rename(id: string) {
     const current = await loadExercise(id);
     if (!current) return;
-    const next = prompt('Neuer Name:', current.name);
+    const next = prompt(m.archive_rename_prompt(), current.name);
     if (next === null) return;
     current.name = next.trim();
     await saveExercise(current);
@@ -58,7 +59,7 @@
     const copy: Exercise = {
       ...src,
       id: crypto.randomUUID(),
-      name: `${src.name || 'Unbenannt'} (Kopie)`,
+      name: `${src.name || m.exercise_unnamed()} (${m.archive_copy_suffix()})`,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
@@ -67,7 +68,7 @@
   }
 
   async function remove(id: string) {
-    if (!confirm('Diese Übung wirklich löschen?')) return;
+    if (!confirm(m.archive_delete_confirm())) return;
     await deleteExercise(id);
     await invalidateAll();
   }
@@ -76,12 +77,14 @@
 <section class="archive">
   <header class="head">
     <div class="title-row">
-      <h1>Archiv</h1>
-      <p class="count">{exercises.length} Übung{exercises.length === 1 ? '' : 'en'}</p>
+      <h1>{m.archive_title()}</h1>
+      <p class="count">
+        {exercises.length === 1 ? m.archive_count_one() : m.archive_count_other({ count: exercises.length })}
+      </p>
     </div>
     <a href="/draw" class="new-btn">
       <PlusIcon size={18} />
-      <span>Neue Übung</span>
+      <span>{m.archive_new_exercise()}</span>
     </a>
   </header>
 
@@ -90,9 +93,9 @@
     <input
       class="search"
       type="search"
-      placeholder="Suchen..."
+      placeholder={m.archive_search_placeholder()}
       bind:value={query}
-      aria-label="Übungen suchen"
+      aria-label={m.archive_search_aria()}
     />
   </div>
 
@@ -104,7 +107,7 @@
         class:active={activeTag === null}
         onclick={() => (activeTag = null)}
       >
-        Alle
+        {m.archive_filter_all()}
       </button>
       {#each visibleCodes as code (code)}
         {@const label = strokeTypeLabel(code)}
@@ -123,12 +126,12 @@
 
   {#if exercises.length === 0}
     <div class="empty">
-      <p>Noch keine Übungen gespeichert.</p>
-      <a class="cta" href="/draw">Neue Übung zeichnen</a>
+      <p>{m.archive_empty_no_exercises()}</p>
+      <a class="cta" href="/draw">{m.archive_empty_cta()}</a>
     </div>
   {:else if filtered.length === 0}
     <div class="empty">
-      <p>Keine Übung passt zu den aktuellen Filtern.</p>
+      <p>{m.archive_empty_no_match()}</p>
     </div>
   {:else}
     <div class="grid">

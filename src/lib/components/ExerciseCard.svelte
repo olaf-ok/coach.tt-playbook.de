@@ -2,6 +2,7 @@
   import ExerciseThumbnail from './ExerciseThumbnail.svelte';
   import OverflowMenu from './OverflowMenu.svelte';
   import { strokeTypeShort } from '$lib/i18n/stroke-type-labels';
+  import { m } from '$lib/paraglide/messages';
   import type { Exercise } from '$lib/types/exercise';
 
   interface Props {
@@ -32,18 +33,20 @@
   </button>
   <div class="body">
     <div class="title-row">
-      <h3 class="title">{exercise.name || 'Unbenannt'}</h3>
+      <h3 class="title">{exercise.name || m.exercise_unnamed()}</h3>
       <OverflowMenu
         items={[
-          { label: 'Umbenennen', onSelect: () => onRename(exercise.id) },
-          { label: 'Duplizieren', onSelect: () => onDuplicate(exercise.id) },
-          { label: 'Löschen', onSelect: () => onDelete(exercise.id), destructive: true },
+          { label: m.archive_action_rename(), onSelect: () => onRename(exercise.id) },
+          { label: m.archive_action_duplicate(), onSelect: () => onDuplicate(exercise.id) },
+          { label: m.archive_action_delete(), onSelect: () => onDelete(exercise.id), destructive: true },
         ]}
       />
     </div>
     <div class="meta">
-      <span>{strokeCount} Schläge</span>
-      {#if exercise.repetitions}<span>{exercise.repetitions}x</span>{/if}
+      <span>
+        {strokeCount === 1 ? m.exercise_meta_strokes_one() : m.exercise_meta_strokes_other({ count: strokeCount })}
+      </span>
+      {#if exercise.repetitions}<span>{m.exercise_meta_repeats_short({ n: exercise.repetitions })}</span>{/if}
       {#if exercise.duration}<span>{exercise.duration}</span>{/if}
     </div>
     {#if uniqueTags.length > 0}
