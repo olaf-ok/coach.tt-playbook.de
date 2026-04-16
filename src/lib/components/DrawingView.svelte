@@ -114,11 +114,9 @@
 </script>
 
 <Toolbar
-  onUndo={handleUndo}
   onSave={handleSave}
   onNew={handleNew}
   onOpenTv={handleOpenTv}
-  canUndo={currentExercise.exercise.strokes.length > 0}
   tvStatus={tvSession.status}
 />
 
@@ -141,6 +139,8 @@
     selectedStrokeId={selectedStrokeId}
     onSelectStroke={(id) => (selectedStrokeId = id)}
     onDeleteStroke={handleDeleteStroke}
+    onUndo={handleUndo}
+    canUndo={currentExercise.exercise.strokes.length > 0}
   />
 </div>
 

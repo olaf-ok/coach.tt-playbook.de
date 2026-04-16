@@ -1,23 +1,18 @@
 <script lang="ts">
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
-  import UndoIcon from '$lib/icons/UndoIcon.svelte';
   import PlusIcon from '$lib/icons/PlusIcon.svelte';
 
   interface Props {
-    onUndo?: () => void;
     onSave?: () => void;
     onNew?: () => void;
     onOpenTv?: () => void;
-    canUndo?: boolean;
     tvStatus?: string;
   }
 
   let {
-    onUndo,
     onSave,
     onNew,
     onOpenTv,
-    canUndo = false,
     tvStatus = 'idle',
   }: Props = $props();
 
@@ -43,16 +38,6 @@
     >
       <span class="tv-dot" class:on={tvConnected}></span>
       <span>TV</span>
-    </button>
-    <button
-      type="button"
-      class="btn btn-secondary"
-      disabled={!canUndo}
-      onclick={() => onUndo?.()}
-      aria-label="Letzten Pfeil rückgängig"
-    >
-      <UndoIcon size={16} />
-      <span>Zurück</span>
     </button>
     <button type="button" class="btn btn-secondary" onclick={() => onNew?.()}>
       <PlusIcon size={16} />

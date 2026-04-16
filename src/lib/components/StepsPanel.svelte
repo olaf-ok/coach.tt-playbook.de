@@ -2,14 +2,23 @@
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
   import { getStrokeColor } from '$lib/constants/colors';
   import StrokeTypeButtons from './StrokeTypeButtons.svelte';
+  import UndoIcon from '$lib/icons/UndoIcon.svelte';
 
   interface Props {
     selectedStrokeId: string | null;
     onSelectStroke?: (id: string | null) => void;
     onDeleteStroke?: (id: string) => void;
+    onUndo?: () => void;
+    canUndo?: boolean;
   }
 
-  let { selectedStrokeId, onSelectStroke, onDeleteStroke }: Props = $props();
+  let {
+    selectedStrokeId,
+    onSelectStroke,
+    onDeleteStroke,
+    onUndo,
+    canUndo = false,
+  }: Props = $props();
 
   function setType(shortLabel: string) {
     if (!selectedStrokeId) return;
@@ -37,6 +46,16 @@
 <aside class="panel">
   <header class="panel-header">
     <h2>Schritte</h2>
+    <button
+      type="button"
+      class="undo-btn"
+      disabled={!canUndo}
+      onclick={() => onUndo?.()}
+      aria-label="Letzten Pfeil rückgängig"
+      title="Letzten Pfeil rückgängig"
+    >
+      <UndoIcon size={16} />
+    </button>
   </header>
 
   <div class="steps">
@@ -151,6 +170,10 @@
 
   .panel-header {
     padding: 16px 16px 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
   }
 
   h2 {
@@ -159,6 +182,30 @@
     color: var(--color-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+  }
+
+  .undo-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-button);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+    background: transparent;
+    border: 1px solid var(--color-border);
+    transition: background var(--transition-quick), color var(--transition-quick), transform 0.15s ease;
+  }
+  .undo-btn:hover:not(:disabled) {
+    background: var(--bg-glass-hover);
+    color: var(--color-text-primary);
+  }
+  .undo-btn:active:not(:disabled) {
+    transform: scale(0.92);
+  }
+  .undo-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
   }
 
   .steps {
