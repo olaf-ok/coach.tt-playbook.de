@@ -28,7 +28,7 @@ export function resolveMobileHeader(pathname: string): MobileHeaderInfo {
   if (pathname.startsWith('/draw/') && pathname.length > '/draw/'.length) {
     return { titleKey: 'mobile_header_draw', showBack: true, backHref: '/archive' };
   }
-  if (pathname === '/' || pathname === '/draw') {
+  if (pathname === '/' || pathname === '/draw' || pathname === '/draw/') {
     return { titleKey: 'mobile_header_draw', showBack: false, backHref: null };
   }
   if (pathname === '/archive') {

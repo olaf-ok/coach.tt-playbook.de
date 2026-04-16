@@ -52,4 +52,8 @@ describe('resolveMobileHeader', () => {
   it('Unbekannt: ohne Back, leerer Titel', () => {
     expect(resolveMobileHeader('/foo')).toEqual({ titleKey: null, showBack: false, backHref: null });
   });
+
+  it('Draw mit Trailing-Slash ohne ID: wie /draw', () => {
+    expect(resolveMobileHeader('/draw/')).toEqual({ titleKey: 'mobile_header_draw', showBack: false, backHref: null });
+  });
 });
