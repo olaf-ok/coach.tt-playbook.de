@@ -221,5 +221,14 @@
   "tv_display_empty_strokes": "No strokes drawn.",
   "qr_scanner_cancel": "Cancel",
   "qr_scanner_camera_error": "Could not start the camera.",
-  "overflow_menu_aria": "Actions"
+  "overflow_menu_aria": "Actions",
+  "mobile_header_draw": "Exercise",
+  "mobile_header_archive": "Archive",
+  "mobile_header_playlists": "Training lists",
+  "mobile_header_settings": "Settings",
+  "mobile_header_back_aria": "Back",
+  "mobile_tv_dot_aria_paired": "TV connected",
+  "mobile_tv_dot_aria_unpaired": "TV not connected",
+  "mobile_tab_more": "More",
+  "mobile_sheet_toggle_aria": "Show or hide details"
 }

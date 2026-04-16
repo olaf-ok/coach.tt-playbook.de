@@ -221,5 +221,14 @@
   "tv_display_empty_strokes": "Keine Schläge eingezeichnet.",
   "qr_scanner_cancel": "Abbrechen",
   "qr_scanner_camera_error": "Kamera konnte nicht gestartet werden.",
-  "overflow_menu_aria": "Aktionen"
+  "overflow_menu_aria": "Aktionen",
+  "mobile_header_draw": "Übung",
+  "mobile_header_archive": "Archiv",
+  "mobile_header_playlists": "Trainingslisten",
+  "mobile_header_settings": "Einstellungen",
+  "mobile_header_back_aria": "Zurück",
+  "mobile_tv_dot_aria_paired": "TV verbunden",
+  "mobile_tv_dot_aria_unpaired": "TV nicht verbunden",
+  "mobile_tab_more": "Mehr",
+  "mobile_sheet_toggle_aria": "Details anzeigen oder ausblenden"
 }

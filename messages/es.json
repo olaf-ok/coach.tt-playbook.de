@@ -221,5 +221,14 @@
   "tv_display_empty_strokes": "No hay golpes dibujados.",
   "qr_scanner_cancel": "Cancelar",
   "qr_scanner_camera_error": "No se pudo iniciar la cámara.",
-  "overflow_menu_aria": "Acciones"
+  "overflow_menu_aria": "Acciones",
+  "mobile_header_draw": "Ejercicio",
+  "mobile_header_archive": "Archivo",
+  "mobile_header_playlists": "Listas de entrenamiento",
+  "mobile_header_settings": "Ajustes",
+  "mobile_header_back_aria": "Atrás",
+  "mobile_tv_dot_aria_paired": "TV conectada",
+  "mobile_tv_dot_aria_unpaired": "TV no conectada",
+  "mobile_tab_more": "Más",
+  "mobile_sheet_toggle_aria": "Mostrar u ocultar detalles"
 }
