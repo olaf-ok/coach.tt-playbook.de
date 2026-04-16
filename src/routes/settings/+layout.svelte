@@ -117,4 +117,12 @@
     flex: 1;
     overflow-y: auto;
   }
+  @media (max-width: 767.98px) {
+    .sub-nav {
+      display: none;
+    }
+    .settings-page {
+      flex-direction: column;
+    }
+  }
 </style>

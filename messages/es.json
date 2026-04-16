@@ -230,5 +230,6 @@
   "mobile_tv_dot_aria_paired": "TV conectada",
   "mobile_tv_dot_aria_unpaired": "TV no conectada",
   "mobile_tab_more": "Más",
-  "mobile_sheet_toggle_aria": "Mostrar u ocultar detalles"
+  "mobile_sheet_toggle_aria": "Mostrar u ocultar detalles",
+  "settings_hint_pick_left": "Elige una sección de la lista a la izquierda."
 }
