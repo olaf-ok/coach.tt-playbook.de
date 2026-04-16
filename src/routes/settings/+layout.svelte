@@ -10,7 +10,7 @@
 
   const items: NavItem[] = [
     { id: 'account', href: '/settings/account', label: 'Account', available: true },
-    { id: 'language', href: '/settings/language', label: 'Sprache', available: false },
+    { id: 'language', href: '/settings/language', label: 'Sprache', available: true },
     { id: 'tv', href: '/settings/tv', label: 'TV-Verbindung', available: true },
     { id: 'display', href: '/settings/display', label: 'Anzeige', available: true },
     { id: 'pro', href: '/settings/pro', label: 'Pro-Abo', available: true },

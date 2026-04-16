@@ -1,4 +1,12 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "smoke_test": "Hallo Welt"
+  "settings_title": "Einstellungen",
+  "settings_language_title": "Sprache",
+  "settings_language_hint": "Wähle die Sprache der App. „System“ folgt der Browser-Sprache.",
+  "settings_language_active": "Aktiv: {label}",
+  "lang_option_system_label": "System",
+  "lang_option_system_sub": "Folgt der Browser-Sprache",
+  "lang_option_de_label": "Deutsch",
+  "lang_option_en_label": "English",
+  "lang_option_es_label": "Español"
 }
