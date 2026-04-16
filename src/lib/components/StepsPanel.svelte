@@ -140,7 +140,9 @@
   .panel {
     width: 320px;
     height: 100%;
-    background: var(--bg-surface);
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-left: 1px solid var(--color-border);
     display: flex;
     flex-direction: column;
@@ -171,14 +173,26 @@
     display: flex;
     gap: 10px;
     padding: 10px;
-    background: var(--bg-elevated);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: var(--radius-card);
     cursor: pointer;
-    transition: background var(--transition-quick);
+    transition: background var(--transition-quick), transform 0.15s ease, box-shadow var(--transition-quick);
+  }
+
+  .step:hover {
+    background: rgba(255, 255, 255, 0.07);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .step:active {
+    transform: translateY(0);
   }
 
   .step.selected {
     outline: 1.5px solid var(--step-color);
+    background: rgba(255, 255, 255, 0.06);
   }
 
   .step-dot {

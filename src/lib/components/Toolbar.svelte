@@ -66,7 +66,9 @@
   .toolbar {
     height: 64px;
     padding: 0 16px;
-    background: var(--bg-surface);
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--color-border);
     display: flex;
     align-items: center;
@@ -138,21 +140,27 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    transition: opacity var(--transition-quick), background var(--transition-quick);
+    transition: opacity var(--transition-quick), background var(--transition-quick), transform 0.15s ease, box-shadow var(--transition-quick);
+  }
+  .btn:active:not(:disabled) {
+    transform: scale(0.96);
   }
   .btn-primary {
     background: var(--color-accent);
     color: #fff;
+    box-shadow: 0 2px 8px rgba(10, 132, 255, 0.3);
   }
   .btn-primary:hover {
     opacity: 0.9;
+    box-shadow: 0 4px 16px rgba(10, 132, 255, 0.4);
   }
   .btn-secondary {
-    background: var(--bg-elevated);
+    background: rgba(255, 255, 255, 0.06);
     color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
   }
   .btn-secondary:hover:not(:disabled) {
-    background: var(--color-chip-bg);
+    background: var(--bg-glass-hover);
   }
   .btn:disabled {
     opacity: 0.4;

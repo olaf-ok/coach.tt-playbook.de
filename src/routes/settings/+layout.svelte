@@ -62,7 +62,9 @@
   .sub-nav {
     width: 260px;
     border-right: 1px solid var(--color-border);
-    background: var(--bg-surface);
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     display: flex;
     flex-direction: column;
     padding: 16px;
@@ -88,9 +90,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: background var(--transition-quick), transform 0.15s ease;
   }
   .item:hover {
-    background: var(--bg-elevated);
+    background: var(--bg-glass-hover);
+    transform: translateX(2px);
   }
   .item.active {
     background: var(--color-accent);

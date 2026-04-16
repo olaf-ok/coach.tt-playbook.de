@@ -54,7 +54,9 @@
   .sidebar {
     width: 68px;
     height: 100%;
-    background: var(--bg-surface);
+    background: var(--bg-glass);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border-right: 1px solid var(--color-border);
     display: flex;
     flex-direction: column;
@@ -92,15 +94,20 @@
     justify-content: center;
     color: var(--color-text-secondary);
     text-decoration: none;
-    transition: background var(--transition-quick), color var(--transition-quick);
+    transition: background var(--transition-quick), color var(--transition-quick), transform 0.15s ease;
   }
   .tab:hover {
-    background: var(--bg-elevated);
+    background: var(--bg-glass-hover);
     color: var(--color-text-primary);
+    transform: scale(1.06);
+  }
+  .tab:active {
+    transform: scale(0.95);
   }
   .tab.active {
-    background: var(--bg-elevated);
+    background: var(--bg-glass-hover);
     color: var(--color-text-primary);
+    box-shadow: var(--shadow-glass);
   }
   .bottom {
     display: flex;
