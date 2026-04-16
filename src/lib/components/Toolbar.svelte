@@ -153,4 +153,28 @@
     opacity: 0.4;
     cursor: not-allowed;
   }
+
+  @media (max-width: 767.98px) {
+    .toolbar {
+      height: 52px;
+      padding: 0 10px;
+      gap: 8px;
+    }
+    .name-field {
+      max-width: none;
+      font-size: 14px;
+      height: 36px;
+    }
+    .tv-btn {
+      display: none;
+    }
+    .btn {
+      height: 36px;
+      padding: 0 12px;
+      font-size: 13px;
+    }
+    .btn-secondary :global(span) {
+      display: none;
+    }
+  }
 </style>
