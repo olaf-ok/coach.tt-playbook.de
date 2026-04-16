@@ -9,7 +9,7 @@
   }
 
   const items: NavItem[] = [
-    { id: 'account', href: '/settings/account', label: 'Account', available: false },
+    { id: 'account', href: '/settings/account', label: 'Account', available: true },
     { id: 'language', href: '/settings/language', label: 'Sprache', available: false },
     { id: 'tv', href: '/settings/tv', label: 'TV-Verbindung', available: true },
     { id: 'display', href: '/settings/display', label: 'Anzeige', available: true },
