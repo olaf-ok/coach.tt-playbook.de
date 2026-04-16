@@ -67,9 +67,10 @@
     height: 64px;
     padding: 0 16px;
     background: var(--bg-glass);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
     border-bottom: 1px solid var(--color-border);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.04);
     display: flex;
     align-items: center;
     gap: 16px;

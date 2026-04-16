@@ -63,8 +63,9 @@
     width: 260px;
     border-right: 1px solid var(--color-border);
     background: var(--bg-glass);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.04);
     display: flex;
     flex-direction: column;
     padding: 16px;
