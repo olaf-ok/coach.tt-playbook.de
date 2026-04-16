@@ -1,24 +1,26 @@
 <script lang="ts">
-  import { DEFAULT_STROKE_TYPES } from '$lib/constants/strokeTypes';
+  import { DEFAULT_STROKE_TYPE_CODES, type StrokeTypeCode } from '$lib/constants/strokeTypes';
+  import { strokeTypeLabel } from '$lib/i18n/stroke-type-labels';
 
   interface Props {
-    activeType: string | null;
-    onSelect: (shortLabel: string) => void;
+    activeType: StrokeTypeCode | null;
+    onSelect: (code: StrokeTypeCode) => void;
   }
 
   let { activeType, onSelect }: Props = $props();
 </script>
 
 <div class="tags">
-  {#each DEFAULT_STROKE_TYPES as type (type.shortLabel)}
+  {#each DEFAULT_STROKE_TYPE_CODES as code (code)}
+    {@const label = strokeTypeLabel(code)}
     <button
       type="button"
       class="tag"
-      class:active={activeType === type.shortLabel}
-      title={type.fullLabel}
-      onclick={() => onSelect(type.shortLabel)}
+      class:active={activeType === code}
+      title={label.full}
+      onclick={() => onSelect(code)}
     >
-      {type.shortLabel}
+      {label.short}
     </button>
   {/each}
 </div>

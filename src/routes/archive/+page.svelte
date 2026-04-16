@@ -5,21 +5,26 @@
   import PlusIcon from '$lib/icons/PlusIcon.svelte';
   import { deleteExercise, saveExercise, loadExercise } from '$lib/db/exercises';
   import type { Exercise } from '$lib/types/exercise';
+  import { DEFAULT_STROKE_TYPE_CODES, type StrokeTypeCode } from '$lib/constants/strokeTypes';
+  import { strokeTypeLabel } from '$lib/i18n/stroke-type-labels';
 
   let { data } = $props();
   let exercises = $derived(data.exercises);
 
   let query = $state('');
-  let activeTag = $state<string | null>(null);
+  let activeTag = $state<StrokeTypeCode | null>(null);
 
-  const allTags = $derived(
-    Array.from(
-      new Set(
-        exercises.flatMap(
-          (e) => e.strokes.map((s) => s.strokeType).filter(Boolean) as string[],
-        ),
+  // Nur Codes anzeigen, die in mind. einer Übung tatsächlich vorkommen.
+  const usedCodes = $derived(
+    new Set(
+      exercises.flatMap(
+        (e) => e.strokes.map((s) => s.strokeType).filter(Boolean) as StrokeTypeCode[],
       ),
-    ).sort(),
+    ),
+  );
+
+  const visibleCodes = $derived(
+    DEFAULT_STROKE_TYPE_CODES.filter((c) => usedCodes.has(c)),
   );
 
   let filtered = $derived(
@@ -91,7 +96,7 @@
     />
   </div>
 
-  {#if allTags.length > 0}
+  {#if visibleCodes.length > 0}
     <div class="chips">
       <button
         type="button"
@@ -101,14 +106,16 @@
       >
         Alle
       </button>
-      {#each allTags as tag (tag)}
+      {#each visibleCodes as code (code)}
+        {@const label = strokeTypeLabel(code)}
         <button
           type="button"
           class="chip"
-          class:active={activeTag === tag}
-          onclick={() => (activeTag = tag)}
+          class:active={activeTag === code}
+          title={label.full}
+          onclick={() => (activeTag = code)}
         >
-          {tag}
+          {label.short}
         </button>
       {/each}
     </div>

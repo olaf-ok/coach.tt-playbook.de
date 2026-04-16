@@ -3,6 +3,13 @@
   import { getStrokeColor } from '$lib/constants/colors';
   import StrokeTypeButtons from './StrokeTypeButtons.svelte';
   import UndoIcon from '$lib/icons/UndoIcon.svelte';
+  import { isStrokeTypeCode, type StrokeTypeCode } from '$lib/constants/strokeTypes';
+  import { strokeTypeLabel } from '$lib/i18n/stroke-type-labels';
+
+  function tagLabel(strokeType: string | null): string {
+    if (!strokeType || !isStrokeTypeCode(strokeType)) return '';
+    return strokeTypeLabel(strokeType).short;
+  }
 
   interface Props {
     selectedStrokeId: string | null;
@@ -20,9 +27,9 @@
     canUndo = false,
   }: Props = $props();
 
-  function setType(shortLabel: string) {
+  function setType(code: StrokeTypeCode) {
     if (!selectedStrokeId) return;
-    currentExercise.assignStrokeType(selectedStrokeId, shortLabel);
+    currentExercise.assignStrokeType(selectedStrokeId, code);
   }
 
   function setDescription(event: Event, id: string) {
@@ -80,7 +87,7 @@
               onSelect={setType}
             />
           {:else if stroke.strokeType}
-            <span class="step-type">{stroke.strokeType}</span>
+            <span class="step-type">{tagLabel(stroke.strokeType)}</span>
           {/if}
           <textarea
             class="step-desc"

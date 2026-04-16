@@ -1,3 +1,5 @@
+import type { StrokeTypeCode } from '../constants/strokeTypes';
+
 export interface Point {
   x: number; // 0.0–1.0 relativ zum Tisch
   y: number; // 0.0–1.0 relativ zum Tisch
@@ -9,7 +11,7 @@ export interface Stroke {
   startPoint: Point;
   endPoint: Point;
   controlPoint: Point | null;
-  strokeType: string | null;
+  strokeType: StrokeTypeCode | null;
   description: string | null;
 }
 
@@ -22,12 +24,6 @@ export interface Exercise {
   duration: string | null;
   createdAt: number;
   updatedAt: number;
-}
-
-export interface StrokeType {
-  shortLabel: string;
-  fullLabel: string;
-  isDefault: boolean;
 }
 
 export function createEmptyExercise(): Exercise {

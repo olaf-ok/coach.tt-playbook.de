@@ -1,6 +1,7 @@
 import type { Exercise, Stroke, Point } from '../types/exercise';
 import { createEmptyExercise } from '../types/exercise';
 import { getStrokeColor } from '../constants/colors';
+import type { StrokeTypeCode } from '../constants/strokeTypes';
 
 function createExerciseStore() {
   let exercise = $state<Exercise>(createEmptyExercise());
@@ -35,8 +36,8 @@ function createExerciseStore() {
     updateStroke(id, { controlPoint: cp });
   }
 
-  function assignStrokeType(id: string, shortLabel: string | null): void {
-    updateStroke(id, { strokeType: shortLabel });
+  function assignStrokeType(id: string, code: StrokeTypeCode | null): void {
+    updateStroke(id, { strokeType: code });
   }
 
   function setDescription(id: string, text: string): void {
