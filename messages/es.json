@@ -220,5 +220,6 @@
   "tv_display_strokes_other": "{count} golpes",
   "tv_display_empty_strokes": "No hay golpes dibujados.",
   "qr_scanner_cancel": "Cancelar",
-  "qr_scanner_camera_error": "No se pudo iniciar la cámara."
+  "qr_scanner_camera_error": "No se pudo iniciar la cámara.",
+  "overflow_menu_aria": "Acciones"
 }

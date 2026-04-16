@@ -220,5 +220,6 @@
   "tv_display_strokes_other": "{count} strokes",
   "tv_display_empty_strokes": "No strokes drawn.",
   "qr_scanner_cancel": "Cancel",
-  "qr_scanner_camera_error": "Could not start the camera."
+  "qr_scanner_camera_error": "Could not start the camera.",
+  "overflow_menu_aria": "Actions"
 }

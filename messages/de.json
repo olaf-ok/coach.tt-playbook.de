@@ -220,5 +220,6 @@
   "tv_display_strokes_other": "{count} Schläge",
   "tv_display_empty_strokes": "Keine Schläge eingezeichnet.",
   "qr_scanner_cancel": "Abbrechen",
-  "qr_scanner_camera_error": "Kamera konnte nicht gestartet werden."
+  "qr_scanner_camera_error": "Kamera konnte nicht gestartet werden.",
+  "overflow_menu_aria": "Aktionen"
 }

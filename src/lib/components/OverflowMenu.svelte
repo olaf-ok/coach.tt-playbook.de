@@ -1,5 +1,6 @@
 <script lang="ts">
   import MoreIcon from '$lib/icons/MoreIcon.svelte';
+  import { m } from '$lib/paraglide/messages';
 
   interface MenuItem {
     label: string;
@@ -32,7 +33,7 @@
 </script>
 
 <div class="overflow" bind:this={root}>
-  <button type="button" class="trigger" aria-label="Aktionen" onclick={toggle}>
+  <button type="button" class="trigger" aria-label={m.overflow_menu_aria()} onclick={toggle}>
     <MoreIcon />
   </button>
   {#if open}
