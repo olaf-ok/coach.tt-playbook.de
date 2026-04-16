@@ -20,7 +20,7 @@
 <aside class="sidebar">
   <div class="top">
     <a href="/draw" class="brand" aria-label="TT Playbook — Startseite">
-      <AppIcon size={40} />
+      <AppIcon size={34} />
     </a>
     <div class="tabs">
       {#each topTabs as tab (tab.id)}
@@ -69,13 +69,14 @@
     gap: 16px;
   }
   .brand {
-    width: 44px;
-    height: 44px;
+    width: 52px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--color-text-primary);
     text-decoration: none;
+    overflow: visible;
   }
   .tabs {
     display: flex;

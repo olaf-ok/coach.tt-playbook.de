@@ -8,7 +8,7 @@
     ondone?: () => void;
   }
 
-  let { visibleMs = 1000, fadeMs = 300, ondone }: Props = $props();
+  let { visibleMs = 2000, fadeMs = 400, ondone }: Props = $props();
   let fading = $state(false);
 
   onMount(() => {
