@@ -53,6 +53,13 @@
 
     <footer class="foot">
       <button type="button" class="text-btn" onclick={onClose}>Vielleicht später</button>
+      <a
+        href="/settings/account"
+        class="text-btn account-link"
+        onclick={onClose}
+      >
+        Bereits ein Konto? Anmelden →
+      </a>
     </footer>
   </div>
 </div>
@@ -204,7 +211,11 @@
   }
   .foot {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .account-link {
+    text-decoration: none;
   }
   .text-btn {
     color: var(--color-text-secondary);

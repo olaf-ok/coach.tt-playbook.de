@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { pathToTabId, type TabId } from './sidebar-utils';
+  import AppIcon from '$lib/brand/AppIcon.svelte';
   import DrawIcon from '$lib/icons/DrawIcon.svelte';
   import ArchiveIcon from '$lib/icons/ArchiveIcon.svelte';
   import PlaylistIcon from '$lib/icons/PlaylistIcon.svelte';
@@ -17,19 +18,24 @@
 </script>
 
 <aside class="sidebar">
-  <div class="tabs">
-    {#each topTabs as tab (tab.id)}
-      {@const Icon = tab.icon}
-      <a
-        href={tab.href}
-        class="tab"
-        class:active={activeTab === tab.id}
-        aria-label={tab.label}
-        aria-current={activeTab === tab.id ? 'page' : undefined}
-      >
-        <Icon />
-      </a>
-    {/each}
+  <div class="top">
+    <a href="/draw" class="brand" aria-label="TT Playbook — Startseite">
+      <AppIcon size={40} />
+    </a>
+    <div class="tabs">
+      {#each topTabs as tab (tab.id)}
+        {@const Icon = tab.icon}
+        <a
+          href={tab.href}
+          class="tab"
+          class:active={activeTab === tab.id}
+          aria-label={tab.label}
+          aria-current={activeTab === tab.id ? 'page' : undefined}
+        >
+          <Icon />
+        </a>
+      {/each}
+    </div>
   </div>
 
   <div class="bottom">
@@ -55,6 +61,21 @@
     align-items: center;
     padding: 16px 0;
     justify-content: space-between;
+  }
+  .top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .brand {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-primary);
+    text-decoration: none;
   }
   .tabs {
     display: flex;

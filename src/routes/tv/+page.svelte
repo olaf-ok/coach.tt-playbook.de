@@ -3,6 +3,7 @@
   import QRCode from 'qrcode';
   import TvDisplay from '$lib/components/TvDisplay.svelte';
   import { tvSession } from '$lib/tv/session.svelte';
+  import AppIcon from '$lib/brand/AppIcon.svelte';
 
   const client = tvSession.ensureClient();
   let qrSvg = $state<string>('');
@@ -28,6 +29,9 @@
 </script>
 
 <section class="tv-root">
+  <div class="watermark" aria-hidden="true">
+    <AppIcon size={32} />
+  </div>
   {#if client.status === 'paired'}
     <TvDisplay exercise={client.lastExercise} />
   {:else}
@@ -63,6 +67,16 @@
     flex: 1;
     display: flex;
     overflow: hidden;
+    position: relative;
+  }
+  .watermark {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    color: var(--color-text-primary);
+    opacity: 0.4;
+    z-index: 2;
+    pointer-events: none;
   }
   .pair-view {
     flex: 1;

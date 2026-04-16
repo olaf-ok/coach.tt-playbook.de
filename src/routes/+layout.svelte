@@ -5,6 +5,8 @@
 	import { invalidateAll } from '$app/navigation';
 	import favicon from '$lib/assets/favicon.svg';
 	import Sidebar from '$lib/components/Sidebar.svelte';
+	import Splash from '$lib/splash/Splash.svelte';
+	import { shouldShowSplash, SPLASH_SESSION_KEY } from '$lib/splash/splash-state';
 	import { seedIfEmpty } from '$lib/db/seed';
 	import { theme } from '$lib/theme/store.svelte';
 	import { tvSession } from '$lib/tv/session.svelte';
@@ -14,8 +16,16 @@
 	const hideChrome = $derived($page.url.pathname.startsWith('/tv'));
 	const isTvView = $derived($page.url.pathname.startsWith('/tv'));
 
+	let showSplash = $state(false);
+
 	onMount(async () => {
 		theme.init();
+
+		if (shouldShowSplash(sessionStorage, $page.url.pathname)) {
+			sessionStorage.setItem(SPLASH_SESSION_KEY, '1');
+			showSplash = true;
+		}
+
 		try {
 			const seeded = await seedIfEmpty();
 			if (seeded) await invalidateAll();
@@ -49,6 +59,10 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 </svelte:head>
+
+{#if showSplash}
+	<Splash ondone={() => (showSplash = false)} />
+{/if}
 
 <div class="app-root">
 	{#if !hideChrome}<Sidebar />{/if}
