@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
+  import { m } from '$lib/paraglide/messages';
 
   interface Props {
     onDecoded: (text: string) => void;
@@ -31,7 +32,7 @@
       );
     } catch (err) {
       errorMessage =
-        err instanceof Error ? err.message : 'Kamera konnte nicht gestartet werden.';
+        err instanceof Error ? err.message : m.qr_scanner_camera_error();
     }
   });
 
@@ -52,7 +53,7 @@
   {#if errorMessage}
     <p class="error">{errorMessage}</p>
   {/if}
-  <button type="button" class="cancel" onclick={onCancel}>Abbrechen</button>
+  <button type="button" class="cancel" onclick={onCancel}>{m.qr_scanner_cancel()}</button>
 </div>
 
 <style>

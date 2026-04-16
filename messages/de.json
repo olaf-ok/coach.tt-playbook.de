@@ -205,5 +205,20 @@
   "paywall_popular_badge": "Beliebt",
   "paywall_note": "Zahlung via Stripe — kommt bald. Keine In-App-Purchases, kein Store-Abzug.",
   "paywall_later": "Vielleicht später",
-  "paywall_existing_account": "Bereits ein Konto? Anmelden →"
+  "paywall_existing_account": "Bereits ein Konto? Anmelden →",
+  "tv_pair_subtitle": "Tablet mit diesem Bildschirm verbinden",
+  "tv_pair_code_label": "Code",
+  "tv_pair_hint_prefix": "Scanne den QR-Code auf deinem Tablet oder gib den Code unter ",
+  "tv_pair_hint_suffix": " manuell ein.",
+  "tv_status_connecting_server": "Verbinde mit Server…",
+  "tv_status_error": "Fehler: {reason}",
+  "tv_status_error_unknown": "unbekannt",
+  "tv_status_closed": "Verbindung geschlossen.",
+  "tv_display_exercise_fallback": "Übung",
+  "tv_display_repeats": "{n}×",
+  "tv_display_strokes_one": "1 Schlag",
+  "tv_display_strokes_other": "{count} Schläge",
+  "tv_display_empty_strokes": "Keine Schläge eingezeichnet.",
+  "qr_scanner_cancel": "Abbrechen",
+  "qr_scanner_camera_error": "Kamera konnte nicht gestartet werden."
 }

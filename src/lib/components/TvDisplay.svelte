@@ -6,6 +6,7 @@
   import { TABLE_ASPECT } from '$lib/canvas/tableDimensions';
   import { getStrokeColor } from '$lib/constants/colors';
   import { strokeTypeShort } from '$lib/i18n/stroke-type-labels';
+  import { m } from '$lib/paraglide/messages';
   import type { Exercise } from '$lib/types/exercise';
 
   interface Props {
@@ -93,11 +94,13 @@
   {#if exercise}
     <aside class="info">
       <header>
-        <h1 class="title">{exercise.name || 'Übung'}</h1>
+        <h1 class="title">{exercise.name || m.tv_display_exercise_fallback()}</h1>
         <div class="meta">
-          {#if exercise.repetitions}<span class="chip">{exercise.repetitions}×</span>{/if}
+          {#if exercise.repetitions}<span class="chip">{m.tv_display_repeats({ n: exercise.repetitions })}</span>{/if}
           {#if exercise.duration}<span class="chip">{exercise.duration}</span>{/if}
-          <span class="chip">{exercise.strokes.length} Schläge</span>
+          <span class="chip">
+            {exercise.strokes.length === 1 ? m.tv_display_strokes_one() : m.tv_display_strokes_other({ count: exercise.strokes.length })}
+          </span>
         </div>
       </header>
 
@@ -120,7 +123,7 @@
           {/each}
         </ol>
       {:else}
-        <p class="empty">Keine Schläge eingezeichnet.</p>
+        <p class="empty">{m.tv_display_empty_strokes()}</p>
       {/if}
     </aside>
   {/if}

@@ -4,6 +4,7 @@
   import TvDisplay from '$lib/components/TvDisplay.svelte';
   import { tvSession } from '$lib/tv/session.svelte';
   import AppIcon from '$lib/brand/AppIcon.svelte';
+  import { m } from '$lib/paraglide/messages';
 
   const client = tvSession.ensureClient();
   let qrSvg = $state<string>('');
@@ -36,27 +37,26 @@
     <TvDisplay exercise={client.lastExercise} />
   {:else}
     <div class="pair-view">
-      <h1>TT Playbook Trainer</h1>
-      <p class="sub">Tablet mit diesem Bildschirm verbinden</p>
+      <h1>{m.common_brand_full()}</h1>
+      <p class="sub">{m.tv_pair_subtitle()}</p>
 
       {#if client.status === 'registered' && client.code}
         <div class="qr-wrap">
           {@html qrSvg}
         </div>
         <div class="code-group">
-          <span class="code-label">Code</span>
+          <span class="code-label">{m.tv_pair_code_label()}</span>
           <span class="code">{client.code}</span>
         </div>
         <p class="hint">
-          Scanne den QR-Code auf deinem Tablet oder gib den Code unter <span class="path">/connect-tv</span>
-          manuell ein.
+          {m.tv_pair_hint_prefix()}<span class="path">/connect-tv</span>{m.tv_pair_hint_suffix()}
         </p>
       {:else if client.status === 'connecting'}
-        <p class="status">Verbinde mit Server…</p>
+        <p class="status">{m.tv_status_connecting_server()}</p>
       {:else if client.status === 'error'}
-        <p class="error">Fehler: {client.errorReason ?? 'unbekannt'}</p>
+        <p class="error">{m.tv_status_error({ reason: client.errorReason ?? m.tv_status_error_unknown() })}</p>
       {:else if client.status === 'closed'}
-        <p class="status">Verbindung geschlossen.</p>
+        <p class="status">{m.tv_status_closed()}</p>
       {/if}
     </div>
   {/if}
