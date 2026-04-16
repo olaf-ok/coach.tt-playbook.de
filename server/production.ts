@@ -61,7 +61,17 @@ wss.on('connection', (ws: WebSocket) => {
   ws.on('close', () => registry.handleDisconnect(peer));
 });
 
+const LEGACY_HOSTS = new Set(['trainer.tt-playbook.de']);
+const CANONICAL_HOST = 'coach.tt-playbook.de';
+
 const server = createServer((req, res) => {
+  const host = req.headers.host?.split(':')[0].toLowerCase();
+  if (host && LEGACY_HOSTS.has(host)) {
+    res.statusCode = 301;
+    res.setHeader('Location', `https://${CANONICAL_HOST}${req.url ?? '/'}`);
+    res.end();
+    return;
+  }
   try {
     (handler as (req: IncomingMessage, res: typeof res) => void)(req, res);
   } catch (err) {
