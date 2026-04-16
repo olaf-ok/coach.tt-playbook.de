@@ -25,3 +25,31 @@ describe('pathToMobileTabId', () => {
     expect(pathToMobileTabId('/foo')).toBeNull();
   });
 });
+
+import { resolveMobileHeader } from './mobile-nav-utils';
+
+describe('resolveMobileHeader', () => {
+  it('Root-Routen ohne Back-Button', () => {
+    expect(resolveMobileHeader('/draw')).toEqual({ titleKey: 'mobile_header_draw', showBack: false, backHref: null });
+    expect(resolveMobileHeader('/archive')).toEqual({ titleKey: 'mobile_header_archive', showBack: false, backHref: null });
+    expect(resolveMobileHeader('/playlists')).toEqual({ titleKey: 'mobile_header_playlists', showBack: false, backHref: null });
+    expect(resolveMobileHeader('/settings')).toEqual({ titleKey: 'mobile_header_settings', showBack: false, backHref: null });
+  });
+
+  it('Settings-Sub-Seiten: Back zu /settings', () => {
+    expect(resolveMobileHeader('/settings/tv')).toEqual({ titleKey: 'settings_nav_tv', showBack: true, backHref: '/settings' });
+    expect(resolveMobileHeader('/settings/display')).toEqual({ titleKey: 'settings_nav_display', showBack: true, backHref: '/settings' });
+    expect(resolveMobileHeader('/settings/account')).toEqual({ titleKey: 'settings_nav_account', showBack: true, backHref: '/settings' });
+    expect(resolveMobileHeader('/settings/language')).toEqual({ titleKey: 'settings_nav_language', showBack: true, backHref: '/settings' });
+    expect(resolveMobileHeader('/settings/pro')).toEqual({ titleKey: 'settings_nav_pro', showBack: true, backHref: '/settings' });
+    expect(resolveMobileHeader('/settings/about')).toEqual({ titleKey: 'settings_nav_about', showBack: true, backHref: '/settings' });
+  });
+
+  it('Draw mit ID: Back zu /archive', () => {
+    expect(resolveMobileHeader('/draw/abc-123')).toEqual({ titleKey: 'mobile_header_draw', showBack: true, backHref: '/archive' });
+  });
+
+  it('Unbekannt: ohne Back, leerer Titel', () => {
+    expect(resolveMobileHeader('/foo')).toEqual({ titleKey: null, showBack: false, backHref: null });
+  });
+});
