@@ -5,6 +5,7 @@
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
   import { tvSession } from '$lib/tv/session.svelte';
   import { decodeCode } from '$lib/tv/decodeCode';
+  import { m } from '$lib/paraglide/messages';
 
   const client = tvSession.ensureClient();
   let codeInput = $state('');
@@ -47,28 +48,27 @@
 </script>
 
 <section class="connect">
-  <h2>TV-Verbindung</h2>
+  <h2>{m.settings_tv_title()}</h2>
 
   {#if client.status === 'paired'}
     <div class="success">
-      <p>✓ Verbunden mit TV</p>
+      <p>{m.settings_tv_connected()}</p>
       <p class="hint">
-        Änderungen an der aktuellen Übung werden automatisch an den TV gesendet. Wechsle zurück
-        zum <a href="/draw">Zeichnen</a>.
+        {m.settings_tv_connected_hint_prefix()}<a href="/draw">{m.settings_tv_connected_hint_link()}</a>.
       </p>
-      <button type="button" class="secondary" onclick={() => client.disconnect()}>Trennen</button>
+      <button type="button" class="secondary" onclick={() => client.disconnect()}>{m.settings_tv_disconnect()}</button>
     </div>
   {:else if scannerOpen}
-    <p class="sub">Richte die Kamera auf den QR-Code am TV.</p>
+    <p class="sub">{m.settings_tv_scanner_hint()}</p>
     <QrScanner onDecoded={handleScanned} onCancel={() => (scannerOpen = false)} />
   {:else}
-    <p class="sub">Scanne den QR-Code am TV oder gib den 4-stelligen Code ein.</p>
+    <p class="sub">{m.settings_tv_pair_hint()}</p>
 
     <button type="button" class="primary scan-btn" onclick={() => (scannerOpen = true)}>
-      QR-Code scannen
+      {m.settings_tv_scan_button()}
     </button>
 
-    <div class="divider"><span>oder</span></div>
+    <div class="divider"><span>{m.settings_tv_divider_or()}</span></div>
 
     <form
       onsubmit={(e) => {
@@ -81,8 +81,8 @@
         inputmode="numeric"
         maxlength="4"
         bind:value={codeInput}
-        placeholder="1234"
-        aria-label="TV-Code"
+        placeholder={m.settings_tv_code_placeholder()}
+        aria-label={m.settings_tv_code_aria()}
         autocomplete="off"
         oninput={(e) => {
           const t = e.currentTarget;
@@ -90,23 +90,23 @@
           codeInput = t.value;
         }}
       />
-      <button type="submit" class="primary" disabled={!/^\d{4}$/.test(codeInput)}>Verbinden</button>
+      <button type="submit" class="primary" disabled={!/^\d{4}$/.test(codeInput)}>{m.settings_tv_connect()}</button>
     </form>
 
     {#if client.status === 'connecting'}
-      <p class="status">Verbinde…</p>
+      <p class="status">{m.settings_tv_connecting()}</p>
     {:else if client.status === 'error'}
       <p class="error">
-        {#if client.errorReason === 'unknown-code'}Code unbekannt. TV neu öffnen und neuen Code nutzen.
-        {:else if client.errorReason === 'already-paired'}TV ist bereits mit einem anderen Tablet verbunden.
-        {:else if client.errorReason === 'connection-failed'}Kein Server erreichbar. Dev-Server starten (`npm run server:dev`).
-        {:else}Fehler: {client.errorReason}
+        {#if client.errorReason === 'unknown-code'}{m.settings_tv_error_unknown_code()}
+        {:else if client.errorReason === 'already-paired'}{m.settings_tv_error_already_paired()}
+        {:else if client.errorReason === 'connection-failed'}{m.settings_tv_error_connection_failed()}
+        {:else}{m.settings_tv_error_generic({ reason: client.errorReason ?? '' })}
         {/if}
       </p>
     {/if}
 
     <p class="hint">
-      TV öffnet zunächst <span class="path">/tv</span> im Browser.
+      {m.settings_tv_foot_hint_prefix()}<span class="path">/tv</span>{m.settings_tv_foot_hint_suffix()}
     </p>
   {/if}
 </section>

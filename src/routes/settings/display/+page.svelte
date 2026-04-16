@@ -3,19 +3,20 @@
   import SunIcon from '$lib/icons/SunIcon.svelte';
   import MoonIcon from '$lib/icons/MoonIcon.svelte';
   import AutoThemeIcon from '$lib/icons/AutoThemeIcon.svelte';
+  import { m } from '$lib/paraglide/messages';
 
   const options: Array<{ value: ThemeMode; label: string; hint: string; icon: typeof SunIcon }> = [
-    { value: 'auto', label: 'System', hint: 'Folgt den Geräteeinstellungen.', icon: AutoThemeIcon },
-    { value: 'light', label: 'Hell', hint: 'Hellgrauer Hintergrund, helle Karten.', icon: SunIcon },
-    { value: 'dark', label: 'Dunkel', hint: 'Dunkler Hintergrund, gut bei dunkler Halle.', icon: MoonIcon },
+    { value: 'auto', label: m.settings_display_auto(), hint: m.settings_display_auto_hint(), icon: AutoThemeIcon },
+    { value: 'light', label: m.settings_display_light(), hint: m.settings_display_light_hint(), icon: SunIcon },
+    { value: 'dark', label: m.settings_display_dark(), hint: m.settings_display_dark_hint(), icon: MoonIcon },
   ];
 </script>
 
 <section class="display">
-  <h2>Anzeige</h2>
+  <h2>{m.settings_display_title()}</h2>
 
   <div class="group">
-    <p class="group-title">Erscheinungsbild</p>
+    <p class="group-title">{m.settings_display_group()}</p>
     <div class="options">
       {#each options as opt (opt.value)}
         {@const Icon = opt.icon}
@@ -37,8 +38,8 @@
   </div>
 
   <p class="note">
-    Aktuell aktiv: <strong>{theme.resolved === 'light' ? 'Hell' : 'Dunkel'}</strong>
-    {#if theme.mode === 'auto'} (System){/if}
+    {m.settings_display_active_label()} <strong>{theme.resolved === 'light' ? m.settings_display_light() : m.settings_display_dark()}</strong>
+    {#if theme.mode === 'auto'} {m.settings_display_active_system_suffix()}{/if}
   </p>
 </section>
 

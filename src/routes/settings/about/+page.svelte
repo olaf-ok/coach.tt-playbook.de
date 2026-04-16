@@ -1,23 +1,25 @@
+<script lang="ts">
+  import { m } from '$lib/paraglide/messages';
+</script>
+
 <section class="about">
-  <h2>Über</h2>
+  <h2>{m.settings_about_title()}</h2>
 
   <dl class="info">
-    <dt>App</dt>
-    <dd>TT Playbook Trainer</dd>
+    <dt>{m.settings_about_app()}</dt>
+    <dd>{m.common_brand_full()}</dd>
 
-    <dt>Version</dt>
-    <dd>0.0.1 (MVP)</dd>
+    <dt>{m.settings_about_version()}</dt>
+    <dd>{m.settings_about_version_value()}</dd>
 
-    <dt>TV-Endpunkt</dt>
+    <dt>{m.settings_about_tv_endpoint()}</dt>
     <dd><a href="/tv" target="_blank" rel="noopener">/tv</a></dd>
 
-    <dt>Built with</dt>
-    <dd>SvelteKit · Konva · Dexie · WebSockets</dd>
+    <dt>{m.settings_about_built_with()}</dt>
+    <dd>{m.settings_about_stack()}</dd>
   </dl>
 
-  <p class="hint">
-    Digitales Taktikboard für Tischtennistrainer. Zeichne auf dem Tablet, zeige auf dem TV.
-  </p>
+  <p class="hint">{m.settings_about_hint()}</p>
 </section>
 
 <style>

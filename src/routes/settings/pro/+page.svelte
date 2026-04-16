@@ -1,20 +1,21 @@
 <script lang="ts">
   import { proStatus, FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
+  import { m } from '$lib/paraglide/messages';
 </script>
 
 <section class="pro">
-  <h2>Pro-Abo</h2>
+  <h2>{m.settings_pro_title()}</h2>
 
   <div class="status-card" class:is-pro={proStatus.isPro}>
     <div class="status">
-      <span class="badge">{proStatus.isPro ? 'PRO' : 'FREE'}</span>
+      <span class="badge">{proStatus.isPro ? m.settings_pro_badge_pro() : m.settings_pro_badge_free()}</span>
       <div>
-        <p class="label">Aktueller Plan</p>
+        <p class="label">{m.settings_pro_current_plan()}</p>
         <p class="desc">
           {#if proStatus.isPro}
-            Unbegrenzt Übungen und Trainingslisten.
+            {m.settings_pro_pro_desc()}
           {:else}
-            Bis zu {FREE_EXERCISE_LIMIT} Übungen, 1 Trainingsliste.
+            {m.settings_pro_free_desc({ limit: FREE_EXERCISE_LIMIT })}
           {/if}
         </p>
       </div>
@@ -22,26 +23,24 @@
   </div>
 
   <div class="features">
-    <h3>Mit Pro freigeschaltet</h3>
+    <h3>{m.settings_pro_features_title()}</h3>
     <ul>
-      <li>Unbegrenzte Übungen und Trainingslisten</li>
-      <li>Eigene Schlagart-Tags erstellen</li>
-      <li>Mehrere Geräte synchronisieren (bald)</li>
-      <li>Frühe Features &amp; Trainer-Community</li>
+      <li>{m.settings_pro_feature_unlimited()}</li>
+      <li>{m.settings_pro_feature_custom_tags()}</li>
+      <li>{m.settings_pro_feature_multidevice()}</li>
+      <li>{m.settings_pro_feature_community()}</li>
     </ul>
   </div>
 
   <div class="cta-row">
-    <p class="coming">Zahlung via Stripe — kommt, sobald wir live deployed haben.</p>
+    <p class="coming">{m.settings_pro_coming()}</p>
   </div>
 
   <details class="dev">
-    <summary>Entwickler-Einstellung</summary>
-    <p class="hint">
-      Zum Testen kann der Pro-Status lokal umgeschaltet werden (wirkt sich nur auf dieses Gerät aus).
-    </p>
+    <summary>{m.settings_pro_dev_summary()}</summary>
+    <p class="hint">{m.settings_pro_dev_hint()}</p>
     <button type="button" onclick={() => proStatus.toggle()}>
-      {proStatus.isPro ? 'Pro deaktivieren' : 'Pro aktivieren (Dev)'}
+      {proStatus.isPro ? m.settings_pro_dev_deactivate() : m.settings_pro_dev_activate()}
     </button>
   </details>
 </section>
