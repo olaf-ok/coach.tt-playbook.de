@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { m } from '$lib/paraglide/messages';
 
   interface NavItem {
     id: string;
@@ -9,12 +10,12 @@
   }
 
   const items: NavItem[] = [
-    { id: 'account', href: '/settings/account', label: 'Account', available: true },
-    { id: 'language', href: '/settings/language', label: 'Sprache', available: true },
-    { id: 'tv', href: '/settings/tv', label: 'TV-Verbindung', available: true },
-    { id: 'display', href: '/settings/display', label: 'Anzeige', available: true },
-    { id: 'pro', href: '/settings/pro', label: 'Pro-Abo', available: true },
-    { id: 'about', href: '/settings/about', label: 'Über', available: true },
+    { id: 'account', href: '/settings/account', label: m.settings_nav_account(), available: true },
+    { id: 'language', href: '/settings/language', label: m.settings_nav_language(), available: true },
+    { id: 'tv', href: '/settings/tv', label: m.settings_nav_tv(), available: true },
+    { id: 'display', href: '/settings/display', label: m.settings_nav_display(), available: true },
+    { id: 'pro', href: '/settings/pro', label: m.settings_nav_pro(), available: true },
+    { id: 'about', href: '/settings/about', label: m.settings_nav_about(), available: true },
   ];
 
   let { children } = $props();
@@ -26,7 +27,7 @@
 <section class="settings-page">
   <aside class="sub-nav">
     <header class="head">
-      <h1>Einstellungen</h1>
+      <h1>{m.settings_title()}</h1>
     </header>
     <nav>
       {#each items as item (item.id)}
@@ -41,7 +42,7 @@
         {:else}
           <span class="item disabled">
             {item.label}
-            <span class="soon">bald</span>
+            <span class="soon">{m.common_soon()}</span>
           </span>
         {/if}
       {/each}

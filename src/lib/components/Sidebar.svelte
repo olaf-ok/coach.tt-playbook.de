@@ -6,12 +6,13 @@
   import ArchiveIcon from '$lib/icons/ArchiveIcon.svelte';
   import PlaylistIcon from '$lib/icons/PlaylistIcon.svelte';
   import SettingsIcon from '$lib/icons/SettingsIcon.svelte';
+  import { m } from '$lib/paraglide/messages';
   import type { Component } from 'svelte';
 
   const topTabs: Array<{ id: TabId; href: string; label: string; icon: Component }> = [
-    { id: 'draw', href: '/draw', label: 'Zeichnen', icon: DrawIcon },
-    { id: 'archive', href: '/archive', label: 'Archiv', icon: ArchiveIcon },
-    { id: 'playlists', href: '/playlists', label: 'Trainingslisten', icon: PlaylistIcon },
+    { id: 'draw', href: '/draw', label: m.sidebar_tab_draw(), icon: DrawIcon },
+    { id: 'archive', href: '/archive', label: m.sidebar_tab_archive(), icon: ArchiveIcon },
+    { id: 'playlists', href: '/playlists', label: m.sidebar_tab_playlists(), icon: PlaylistIcon },
   ];
 
   let activeTab = $derived(pathToTabId($page.url.pathname));
@@ -19,7 +20,7 @@
 
 <aside class="sidebar">
   <div class="top">
-    <a href="/draw" class="brand" aria-label="TT Playbook — Startseite">
+    <a href="/draw" class="brand" aria-label={m.sidebar_brand_aria()}>
       <AppIcon size={34} />
     </a>
     <div class="tabs">
@@ -43,7 +44,7 @@
       href="/settings"
       class="tab"
       class:active={$page.url.pathname.startsWith('/settings')}
-      aria-label="Einstellungen"
+      aria-label={m.sidebar_settings_aria()}
     >
       <SettingsIcon />
     </a>
