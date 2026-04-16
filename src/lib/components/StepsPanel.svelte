@@ -54,7 +54,8 @@
       aria-label="Letzten Pfeil rückgängig"
       title="Letzten Pfeil rückgängig"
     >
-      <UndoIcon size={16} />
+      <UndoIcon size={15} />
+      <span>Zurück</span>
     </button>
   </header>
 
@@ -185,12 +186,15 @@
   }
 
   .undo-btn {
-    width: 30px;
     height: 30px;
+    padding: 0 10px;
     border-radius: var(--radius-button);
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
     color: var(--color-text-secondary);
     background: transparent;
     border: 1px solid var(--color-border);
