@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { m } from '$lib/paraglide/messages';
   import type { Playlist } from '$lib/types/playlist';
 
   interface Props {
@@ -17,8 +18,10 @@
   class:active
   onclick={() => onSelect(playlist.id)}
 >
-  <span class="name">{playlist.name || 'Unbenannt'}</span>
-  <span class="meta">{exerciseCount} Übung{exerciseCount === 1 ? '' : 'en'}</span>
+  <span class="name">{playlist.name || m.exercise_unnamed()}</span>
+  <span class="meta">
+    {exerciseCount === 1 ? m.archive_count_one() : m.archive_count_other({ count: exerciseCount })}
+  </span>
 </button>
 
 <style>

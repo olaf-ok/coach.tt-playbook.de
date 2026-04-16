@@ -9,6 +9,7 @@
   import { addExerciseId, removeExerciseId, moveExerciseId } from '$lib/db/playlistOps';
   import { tvSession } from '$lib/tv/session.svelte';
   import PlusIcon from '$lib/icons/PlusIcon.svelte';
+  import { m } from '$lib/paraglide/messages';
 
   let { data } = $props();
 
@@ -18,7 +19,7 @@
 
   const tvPaired = $derived(tvSession.status === 'paired');
   const playHint = $derived(
-    tvPaired ? 'Übungen nacheinander an den TV senden' : 'Erst TV verbinden (Einstellungen → TV-Verbindung)',
+    tvPaired ? m.playlists_play_hint_paired() : m.playlists_play_hint_unpaired(),
   );
 
   $effect(() => {
@@ -39,7 +40,7 @@
   );
 
   async function createPlaylist() {
-    const name = prompt('Name der Trainingsliste:');
+    const name = prompt(m.playlists_create_prompt());
     if (name === null) return;
     const p = createEmptyPlaylist();
     p.name = name.trim();
@@ -50,7 +51,7 @@
 
   async function renameSelected() {
     if (!selected) return;
-    const next = prompt('Neuer Name:', selected.name);
+    const next = prompt(m.playlists_rename_prompt(), selected.name);
     if (next === null) return;
     const p = await loadPlaylist(selected.id);
     if (!p) return;
@@ -64,7 +65,7 @@
     const copy: Playlist = {
       ...selected,
       id: crypto.randomUUID(),
-      name: `${selected.name || 'Unbenannt'} (Kopie)`,
+      name: `${selected.name || m.exercise_unnamed()} (${m.archive_copy_suffix()})`,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
@@ -75,7 +76,7 @@
 
   async function deleteSelected() {
     if (!selected) return;
-    if (!confirm('Diese Trainingsliste wirklich löschen?')) return;
+    if (!confirm(m.playlists_delete_confirm())) return;
     const idToRemove = selected.id;
     await deletePlaylist(idToRemove);
     selectedId = data.playlists.find((p) => p.id !== idToRemove)?.id ?? null;
@@ -119,18 +120,18 @@
 <section class="playlists-page">
   <aside class="left">
     <header class="left-head">
-      <h1>Trainingslisten</h1>
+      <h1>{m.playlists_title()}</h1>
       <button
         type="button"
         class="add-btn"
-        aria-label="Neue Trainingsliste"
+        aria-label={m.playlists_add_aria()}
         onclick={createPlaylist}
       >
         <PlusIcon size={18} />
       </button>
     </header>
     {#if data.playlists.length === 0}
-      <p class="empty">Noch keine Trainingsliste.</p>
+      <p class="empty">{m.playlists_empty_list()}</p>
     {:else}
       <div class="list">
         {#each data.playlists as pl (pl.id)}
@@ -162,7 +163,7 @@
       />
     {:else}
       <div class="empty">
-        <p>Wähle oder erstelle eine Trainingsliste.</p>
+        <p>{m.playlists_empty_split()}</p>
       </div>
     {/if}
   </div>

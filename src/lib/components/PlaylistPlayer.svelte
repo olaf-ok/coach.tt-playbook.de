@@ -4,6 +4,7 @@
   import type { Playlist } from '$lib/types/playlist';
   import type { Exercise } from '$lib/types/exercise';
   import { tvSession } from '$lib/tv/session.svelte';
+  import { m } from '$lib/paraglide/messages';
 
   interface Props {
     playlist: Playlist;
@@ -48,20 +49,20 @@
 
 <svelte:window onkeydown={handleKey} />
 
-<div class="overlay" role="dialog" aria-modal="true" aria-label="Trainingsliste wird abgespielt">
+<div class="overlay" role="dialog" aria-modal="true" aria-label={m.playlists_player_playing_aria()}>
   <header class="top">
     <div class="meta">
       <span class="pill">{index + 1} / {exercises.length}</span>
-      <span class="title">{playlist.name || 'Trainingsliste'}</span>
+      <span class="title">{playlist.name || m.playlists_unnamed_title()}</span>
     </div>
-    <button class="exit" onclick={onExit} aria-label="Beenden">
+    <button class="exit" onclick={onExit} aria-label={m.playlists_player_exit_aria()}>
       <span aria-hidden="true">✕</span>
-      <span>Beenden</span>
+      <span>{m.playlists_player_exit()}</span>
     </button>
   </header>
 
   <div class="stage">
-    <button class="nav nav-prev" disabled={!canPrev} onclick={prev} aria-label="Vorherige">
+    <button class="nav nav-prev" disabled={!canPrev} onclick={prev} aria-label={m.playlists_player_prev_aria()}>
       ←
     </button>
 
@@ -71,31 +72,33 @@
           <ExerciseThumbnail exercise={current} width={440} height={280} />
         </div>
         <div class="card-text">
-          <h2>{current.name || 'Unbenannt'}</h2>
+          <h2>{current.name || m.exercise_unnamed()}</h2>
           <div class="card-meta">
-            <span>{current.strokes.length} Schläge</span>
-            {#if current.repetitions}<span>{current.repetitions}×</span>{/if}
+            <span>
+              {current.strokes.length === 1 ? m.exercise_meta_strokes_one() : m.exercise_meta_strokes_other({ count: current.strokes.length })}
+            </span>
+            {#if current.repetitions}<span>{m.exercise_meta_repeats_short({ n: current.repetitions })}</span>{/if}
             {#if current.duration}<span>{current.duration}</span>{/if}
           </div>
         </div>
       {/if}
     </div>
 
-    <button class="nav nav-next" disabled={!canNext} onclick={next} aria-label="Nächste">
+    <button class="nav nav-next" disabled={!canNext} onclick={next} aria-label={m.playlists_player_next_aria()}>
       →
     </button>
   </div>
 
-  <nav class="steps" aria-label="Schritte">
+  <nav class="steps" aria-label={m.playlists_player_steps_aria()}>
     {#each exercises as ex, i (ex.id)}
       <button
         class="step"
         class:active={i === index}
         onclick={() => goTo(i)}
-        aria-label={`Schritt ${i + 1}: ${ex.name}`}
+        aria-label={m.playlists_player_step_label({ n: i + 1, name: ex.name })}
       >
         <span class="step-idx">{i + 1}</span>
-        <span class="step-name">{ex.name || 'Unbenannt'}</span>
+        <span class="step-name">{ex.name || m.exercise_unnamed()}</span>
       </button>
     {/each}
   </nav>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { m } from '$lib/paraglide/messages';
   import type { Exercise } from '$lib/types/exercise';
 
   interface Props {
@@ -26,26 +27,28 @@
 </script>
 
 <div class="backdrop" onclick={handleBackdrop} role="presentation">
-  <div class="dialog" role="dialog" aria-modal="true" aria-label="Übung hinzufügen">
+  <div class="dialog" role="dialog" aria-modal="true" aria-label={m.playlists_dialog_title()}>
     <header class="head">
-      <h3>Übung hinzufügen</h3>
-      <button type="button" class="close" onclick={onClose} aria-label="Schließen">✕</button>
+      <h3>{m.playlists_dialog_title()}</h3>
+      <button type="button" class="close" onclick={onClose} aria-label={m.playlists_dialog_close_aria()}>✕</button>
     </header>
     <input
       type="search"
       bind:value={query}
-      placeholder="Suchen..."
-      aria-label="Übungen suchen"
+      placeholder={m.playlists_dialog_search_placeholder()}
+      aria-label={m.playlists_dialog_search_aria()}
     />
     {#if filtered.length === 0}
-      <p class="empty">Keine verfügbaren Übungen.</p>
+      <p class="empty">{m.playlists_dialog_empty()}</p>
     {:else}
       <ul>
         {#each filtered as ex (ex.id)}
           <li>
             <button type="button" onclick={() => onPick(ex.id)}>
-              <span class="name">{ex.name || 'Unbenannt'}</span>
-              <span class="meta">{ex.strokes.length} Schläge</span>
+              <span class="name">{ex.name || m.exercise_unnamed()}</span>
+              <span class="meta">
+                {ex.strokes.length === 1 ? m.exercise_meta_strokes_one() : m.exercise_meta_strokes_other({ count: ex.strokes.length })}
+              </span>
             </button>
           </li>
         {/each}

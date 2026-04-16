@@ -1,6 +1,7 @@
 <script lang="ts">
   import OverflowMenu from './OverflowMenu.svelte';
   import ExerciseThumbnail from './ExerciseThumbnail.svelte';
+  import { m } from '$lib/paraglide/messages';
   import type { Playlist } from '$lib/types/playlist';
   import type { Exercise } from '$lib/types/exercise';
 
@@ -38,27 +39,29 @@
 <div class="detail">
   <header class="head">
     <div class="title-row">
-      <h2>{playlist.name || 'Unbenannt'}</h2>
+      <h2>{playlist.name || m.exercise_unnamed()}</h2>
       <button
         type="button"
         class="primary"
         disabled={!canPlay}
         title={playHint}
         onclick={() => onPlay?.()}
-      >Auf TV spielen</button>
+      >{m.playlists_play_on_tv()}</button>
     </div>
     <div class="meta-row">
-      <span class="meta">{exercises.length} Übung{exercises.length === 1 ? '' : 'en'}</span>
+      <span class="meta">
+        {exercises.length === 1 ? m.archive_count_one() : m.archive_count_other({ count: exercises.length })}
+      </span>
       <div class="actions">
-        <button type="button" onclick={onRename}>Umbenennen</button>
-        <button type="button" onclick={onDuplicate}>Duplizieren</button>
-        <button type="button" class="danger" onclick={onDelete}>Löschen</button>
+        <button type="button" onclick={onRename}>{m.playlists_action_rename()}</button>
+        <button type="button" onclick={onDuplicate}>{m.playlists_action_duplicate()}</button>
+        <button type="button" class="danger" onclick={onDelete}>{m.playlists_action_delete()}</button>
       </div>
     </div>
   </header>
 
   {#if exercises.length === 0}
-    <p class="empty">Noch keine Übung in dieser Trainingsliste.</p>
+    <p class="empty">{m.playlists_empty_in_list()}</p>
   {:else}
     <ul class="list">
       {#each exercises as ex, i (ex.id)}
@@ -89,13 +92,15 @@
           <span class="idx">{i + 1}</span>
           <ExerciseThumbnail exercise={ex} width={96} height={60} />
           <div class="body">
-            <span class="name">{ex.name || 'Unbenannt'}</span>
-            <span class="inline-meta">{ex.strokes.length} Schläge</span>
+            <span class="name">{ex.name || m.exercise_unnamed()}</span>
+            <span class="inline-meta">
+              {ex.strokes.length === 1 ? m.exercise_meta_strokes_one() : m.exercise_meta_strokes_other({ count: ex.strokes.length })}
+            </span>
           </div>
           <OverflowMenu
             items={[
               {
-                label: 'Aus Trainingsliste entfernen',
+                label: m.playlists_remove_from_list(),
                 onSelect: () => onRemoveExercise(ex.id),
                 destructive: true,
               },
@@ -106,7 +111,7 @@
     </ul>
   {/if}
 
-  <button type="button" class="add" onclick={onAddExercise}>+ Übung hinzufügen</button>
+  <button type="button" class="add" onclick={onAddExercise}>{m.playlists_add_exercise()}</button>
 </div>
 
 <style>
