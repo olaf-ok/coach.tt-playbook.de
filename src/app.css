@@ -6,8 +6,8 @@
 :root,
 :root[data-theme='dark'] {
   --bg-app: #0a0a0a;
-  --bg-surface: #1c1c1e;
-  --bg-elevated: #2c2c2e;
+  --bg-surface: #141823;
+  --bg-elevated: #1d2332;
   --bg-glass: rgba(22, 26, 38, 0.55);
   --bg-glass-strong: rgba(28, 32, 48, 0.7);
   --bg-glass-hover: rgba(255, 255, 255, 0.1);
