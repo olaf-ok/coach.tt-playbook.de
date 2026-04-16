@@ -115,4 +115,7 @@
     display: flex;
     flex-direction: column;
   }
+  @media (max-width: 767.98px) {
+    .sidebar { display: none; }
+  }
 </style>
