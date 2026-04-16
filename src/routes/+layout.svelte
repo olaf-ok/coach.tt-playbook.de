@@ -5,6 +5,8 @@
 	import { invalidateAll } from '$app/navigation';
 	import favicon from '$lib/assets/favicon.svg';
 	import Sidebar from '$lib/components/Sidebar.svelte';
+	import MobileTabBar from '$lib/components/MobileTabBar.svelte';
+	import MobileHeader from '$lib/components/MobileHeader.svelte';
 	import Splash from '$lib/splash/Splash.svelte';
 	import { shouldShowSplash, SPLASH_SESSION_KEY } from '$lib/splash/splash-state';
 	import { seedIfEmpty } from '$lib/db/seed';
@@ -66,9 +68,13 @@
 
 <div class="app-root">
 	{#if !hideChrome}<Sidebar />{/if}
-	<main class="content">
-		{@render children()}
-	</main>
+	<div class="main-col">
+		{#if !hideChrome}<MobileHeader />{/if}
+		<main class="content">
+			{@render children()}
+		</main>
+		{#if !hideChrome}<MobileTabBar />{/if}
+	</div>
 </div>
 
 <style>
@@ -78,10 +84,24 @@
 		overflow: hidden;
 	}
 
+	.main-col {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		min-width: 0;
+	}
+
 	.content {
 		flex: 1;
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
+	}
+
+	@media (max-width: 767.98px) {
+		.content {
+			padding-bottom: calc(var(--mobile-tabbar-h) + env(safe-area-inset-bottom, 0));
+		}
 	}
 </style>
