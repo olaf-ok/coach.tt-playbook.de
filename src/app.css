@@ -36,6 +36,10 @@
   --radius-card: 14px;
   --radius-panel: 18px;
   --transition-quick: 0.2s ease;
+  /* Mobile-Breakpoint (für Nutzung via @media (max-width: ...)) */
+  --bp-mobile: 768px;
+  --mobile-header-h: 52px;
+  --mobile-tabbar-h: 56px;
 }
 
 :root[data-theme='light'] {
@@ -116,3 +120,7 @@ input,
 textarea {
   font-family: inherit;
 }
+
+/* Safe-Area-Helper */
+.safe-top { padding-top: env(safe-area-inset-top, 0); }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0); }
