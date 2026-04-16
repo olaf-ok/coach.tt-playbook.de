@@ -65,7 +65,8 @@ const LEGACY_HOSTS = new Set(['trainer.tt-playbook.de']);
 const CANONICAL_HOST = 'coach.tt-playbook.de';
 
 const server = createServer((req, res) => {
-  const host = req.headers.host?.split(':')[0].toLowerCase();
+  const fwdHost = (req.headers['x-forwarded-host'] as string | undefined)?.split(',')[0].trim().toLowerCase();
+  const host = (fwdHost || req.headers.host)?.split(':')[0].toLowerCase();
   if (host && LEGACY_HOSTS.has(host)) {
     res.statusCode = 301;
     res.setHeader('Location', `https://${CANONICAL_HOST}${req.url ?? '/'}`);
