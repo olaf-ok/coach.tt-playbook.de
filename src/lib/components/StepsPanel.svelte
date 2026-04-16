@@ -5,6 +5,7 @@
   import UndoIcon from '$lib/icons/UndoIcon.svelte';
   import { isStrokeTypeCode, type StrokeTypeCode } from '$lib/constants/strokeTypes';
   import { strokeTypeLabel } from '$lib/i18n/stroke-type-labels';
+  import { m } from '$lib/paraglide/messages';
 
   function tagLabel(strokeType: string | null): string {
     if (!strokeType || !isStrokeTypeCode(strokeType)) return '';
@@ -52,17 +53,17 @@
 
 <aside class="panel">
   <header class="panel-header">
-    <h2>Schritte</h2>
+    <h2>{m.steps_header()}</h2>
     <button
       type="button"
       class="undo-btn"
       disabled={!canUndo}
       onclick={() => onUndo?.()}
-      aria-label="Letzten Pfeil rückgängig"
-      title="Letzten Pfeil rückgängig"
+      aria-label={m.toolbar_undo_aria()}
+      title={m.toolbar_undo_aria()}
     >
       <UndoIcon size={15} />
-      <span>Zurück</span>
+      <span>{m.toolbar_undo()}</span>
     </button>
   </header>
 
@@ -91,7 +92,7 @@
           {/if}
           <textarea
             class="step-desc"
-            placeholder="Freitext (optional)"
+            placeholder={m.steps_freetext_placeholder()}
             rows="1"
             data-desc-id={stroke.id}
             value={stroke.description ?? ''}
@@ -101,7 +102,7 @@
         <button
           type="button"
           class="delete"
-          aria-label="Schritt löschen"
+          aria-label={m.steps_delete_aria()}
           onclick={(e) => {
             e.stopPropagation();
             onDeleteStroke?.(stroke.id);
@@ -111,13 +112,13 @@
     {/each}
 
     {#if currentExercise.exercise.strokes.length === 0}
-      <p class="hint">Tippe auf den Tisch oder ziehe einen Pfeil um zu starten.</p>
+      <p class="hint">{m.draw_hint_empty()}</p>
     {/if}
   </div>
 
   <footer class="meta">
     <div class="field">
-      <span class="field-label">Wiederholungen</span>
+      <span class="field-label">{m.steps_label_repeats()}</span>
       <div class="presets">
         {#each [5, 10, 15, 20] as n (n)}
           <button
@@ -133,14 +134,14 @@
           type="number"
           min="1"
           class="preset-input"
-          placeholder="Wählen"
+          placeholder={m.steps_select_placeholder()}
           bind:value={currentExercise.exercise.repetitions}
         />
       </div>
     </div>
 
     <div class="field">
-      <span class="field-label">Dauer</span>
+      <span class="field-label">{m.steps_label_duration()}</span>
       <div class="presets">
         {#each ['5 min', '10 min', '15 min'] as d (d)}
           <button
@@ -155,7 +156,7 @@
         <input
           type="text"
           class="preset-input"
-          placeholder="Wählen"
+          placeholder={m.steps_select_placeholder()}
           bind:value={currentExercise.exercise.duration}
         />
       </div>

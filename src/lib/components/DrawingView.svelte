@@ -10,6 +10,7 @@
   import { db } from '$lib/db/database';
   import { tvSession } from '$lib/tv/session.svelte';
   import { proStatus, FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
+  import { m } from '$lib/paraglide/messages';
   import type { Point } from '$lib/types/exercise';
 
   type ToastKind = 'info' | 'success' | 'warning';
@@ -24,7 +25,7 @@
 
   const input = new StrokeInputController((n) => {
     showToast(
-      `Viele Schläge (${n}) — Farben wiederholen sich ab hier. Übung ggf. in mehrere aufteilen.`,
+      m.draw_many_strokes_warning({ count: n }),
       'warning',
       5000,
     );
@@ -89,15 +90,15 @@
         }
       }
       if (currentExercise.exercise.name.trim() === '') {
-        currentExercise.exercise.name = 'Neue Übung';
+        currentExercise.exercise.name = m.draw_default_exercise_name();
       }
       // $state.snapshot: deep plain copy — strips Svelte 5 Proxy so IndexedDB akzeptiert es
       const plain = $state.snapshot(currentExercise.exercise);
       await saveExercise(plain);
-      showToast('Gespeichert', 'success');
+      showToast(m.draw_save_success(), 'success');
     } catch (err) {
       console.error('save failed', err);
-      showToast('Speichern fehlgeschlagen', 'warning', 3000);
+      showToast(m.draw_save_error(), 'warning', 3000);
     }
   }
 
@@ -105,7 +106,7 @@
     currentExercise.reset();
     selectedStrokeId = null;
     goto('/draw');
-    showToast('Neue Übung', 'info');
+    showToast(m.draw_save_new(), 'info');
   }
 
   function handleOpenTv() {

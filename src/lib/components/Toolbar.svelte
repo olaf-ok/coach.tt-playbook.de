@@ -1,6 +1,7 @@
 <script lang="ts">
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
   import PlusIcon from '$lib/icons/PlusIcon.svelte';
+  import { m } from '$lib/paraglide/messages';
 
   interface Props {
     onSave?: () => void;
@@ -24,7 +25,7 @@
     type="text"
     class="name-field"
     bind:value={currentExercise.exercise.name}
-    placeholder="Übungsname"
+    placeholder={m.toolbar_exercise_name_placeholder()}
   />
 
   <div class="actions">
@@ -33,17 +34,17 @@
       class="tv-btn"
       class:connected={tvConnected}
       onclick={() => onOpenTv?.()}
-      aria-label="TV-Verbindung"
-      title={tvConnected ? 'TV verbunden' : 'Mit TV verbinden'}
+      aria-label={m.toolbar_tv_status_aria()}
+      title={tvConnected ? m.toolbar_tv_connected_title() : m.toolbar_tv_disconnected_title()}
     >
       <span class="tv-dot" class:on={tvConnected}></span>
-      <span>TV</span>
+      <span>{m.toolbar_tv_label()}</span>
     </button>
     <button type="button" class="btn btn-secondary" onclick={() => onNew?.()}>
       <PlusIcon size={16} />
-      <span>Neu</span>
+      <span>{m.toolbar_new_exercise()}</span>
     </button>
-    <button type="button" class="btn btn-primary" onclick={() => onSave?.()}>Speichern</button>
+    <button type="button" class="btn btn-primary" onclick={() => onSave?.()}>{m.common_save()}</button>
   </div>
 </header>
 
