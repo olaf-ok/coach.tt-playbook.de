@@ -39,7 +39,7 @@
   );
 
   async function createPlaylist() {
-    const name = prompt('Name der Playlist:');
+    const name = prompt('Name der Trainingsliste:');
     if (name === null) return;
     const p = createEmptyPlaylist();
     p.name = name.trim();
@@ -75,7 +75,7 @@
 
   async function deleteSelected() {
     if (!selected) return;
-    if (!confirm('Diese Playlist wirklich löschen?')) return;
+    if (!confirm('Diese Trainingsliste wirklich löschen?')) return;
     const idToRemove = selected.id;
     await deletePlaylist(idToRemove);
     selectedId = data.playlists.find((p) => p.id !== idToRemove)?.id ?? null;
@@ -119,18 +119,18 @@
 <section class="playlists-page">
   <aside class="left">
     <header class="left-head">
-      <h1>Playlists</h1>
+      <h1>Trainingslisten</h1>
       <button
         type="button"
         class="add-btn"
-        aria-label="Neue Playlist"
+        aria-label="Neue Trainingsliste"
         onclick={createPlaylist}
       >
         <PlusIcon size={18} />
       </button>
     </header>
     {#if data.playlists.length === 0}
-      <p class="empty">Noch keine Playlist.</p>
+      <p class="empty">Noch keine Trainingsliste.</p>
     {:else}
       <div class="list">
         {#each data.playlists as pl (pl.id)}
@@ -162,7 +162,7 @@
       />
     {:else}
       <div class="empty">
-        <p>Wähle oder erstelle eine Playlist.</p>
+        <p>Wähle oder erstelle eine Trainingsliste.</p>
       </div>
     {/if}
   </div>

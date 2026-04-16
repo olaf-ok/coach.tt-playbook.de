@@ -12,9 +12,9 @@
         <p class="label">Aktueller Plan</p>
         <p class="desc">
           {#if proStatus.isPro}
-            Unbegrenzt Übungen und Playlists.
+            Unbegrenzt Übungen und Trainingslisten.
           {:else}
-            Bis zu {FREE_EXERCISE_LIMIT} Übungen, 1 Playlist.
+            Bis zu {FREE_EXERCISE_LIMIT} Übungen, 1 Trainingsliste.
           {/if}
         </p>
       </div>
@@ -24,7 +24,7 @@
   <div class="features">
     <h3>Mit Pro freigeschaltet</h3>
     <ul>
-      <li>Unbegrenzte Übungen und Playlists</li>
+      <li>Unbegrenzte Übungen und Trainingslisten</li>
       <li>Eigene Schlagart-Tags erstellen</li>
       <li>Mehrere Geräte synchronisieren (bald)</li>
       <li>Frühe Features &amp; Trainer-Community</li>

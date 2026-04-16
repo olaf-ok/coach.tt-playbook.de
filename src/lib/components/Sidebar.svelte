@@ -11,7 +11,7 @@
   const topTabs: Array<{ id: TabId; href: string; label: string; icon: Component }> = [
     { id: 'draw', href: '/draw', label: 'Zeichnen', icon: DrawIcon },
     { id: 'archive', href: '/archive', label: 'Archiv', icon: ArchiveIcon },
-    { id: 'playlists', href: '/playlists', label: 'Playlists', icon: PlaylistIcon },
+    { id: 'playlists', href: '/playlists', label: 'Trainingslisten', icon: PlaylistIcon },
   ];
 
   let activeTab = $derived(pathToTabId($page.url.pathname));

@@ -48,11 +48,11 @@
 
 <svelte:window onkeydown={handleKey} />
 
-<div class="overlay" role="dialog" aria-modal="true" aria-label="Playlist wird abgespielt">
+<div class="overlay" role="dialog" aria-modal="true" aria-label="Trainingsliste wird abgespielt">
   <header class="top">
     <div class="meta">
       <span class="pill">{index + 1} / {exercises.length}</span>
-      <span class="title">{playlist.name || 'Playlist'}</span>
+      <span class="title">{playlist.name || 'Trainingsliste'}</span>
     </div>
     <button class="exit" onclick={onExit} aria-label="Beenden">
       <span aria-hidden="true">✕</span>

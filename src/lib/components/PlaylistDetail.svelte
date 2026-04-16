@@ -58,7 +58,7 @@
   </header>
 
   {#if exercises.length === 0}
-    <p class="empty">Noch keine Übung in dieser Playlist.</p>
+    <p class="empty">Noch keine Übung in dieser Trainingsliste.</p>
   {:else}
     <ul class="list">
       {#each exercises as ex, i (ex.id)}
@@ -95,7 +95,7 @@
           <OverflowMenu
             items={[
               {
-                label: 'Aus Playlist entfernen',
+                label: 'Aus Trainingsliste entfernen',
                 onSelect: () => onRemoveExercise(ex.id),
                 destructive: true,
               },

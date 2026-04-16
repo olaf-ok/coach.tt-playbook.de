@@ -24,7 +24,7 @@
     </header>
 
     <ul class="features">
-      <li>Unbegrenzte Übungen und Playlists</li>
+      <li>Unbegrenzte Übungen und Trainingslisten</li>
       <li>Eigene Schlagart-Tags erstellen</li>
       <li>Mehrere Geräte synchronisieren <span class="soon">bald</span></li>
       <li>Frühe Features &amp; Trainer-Community</li>
