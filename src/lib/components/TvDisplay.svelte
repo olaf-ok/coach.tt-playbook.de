@@ -5,6 +5,7 @@
   import { StrokeRenderer } from '$lib/canvas/StrokeRenderer';
   import { TABLE_ASPECT } from '$lib/canvas/tableDimensions';
   import { getStrokeColor } from '$lib/constants/colors';
+  import { strokeTypeShort } from '$lib/i18n/stroke-type-labels';
   import type { Exercise } from '$lib/types/exercise';
 
   interface Props {
@@ -107,7 +108,7 @@
               <span class="step-num">{stroke.number}</span>
               <div class="step-body">
                 {#if stroke.strokeType}
-                  <span class="step-type">{stroke.strokeType}</span>
+                  <span class="step-type">{strokeTypeShort(stroke.strokeType)}</span>
                 {:else}
                   <span class="step-type step-type--muted">—</span>
                 {/if}

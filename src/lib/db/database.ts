@@ -26,9 +26,11 @@ class TTPlaybookDB extends Dexie {
           .table('exercises')
           .toCollection()
           .modify((ex: Exercise) => {
-            ex.strokes = ex.strokes.map((s) => ({
+            ex.strokes = (ex.strokes ?? []).map((s) => ({
               ...s,
-              strokeType: migrateStrokeType(s.strokeType as unknown as string | null)
+              strokeType: migrateStrokeType(
+                (s.strokeType ?? null) as unknown as string | null
+              )
             }));
           });
       });

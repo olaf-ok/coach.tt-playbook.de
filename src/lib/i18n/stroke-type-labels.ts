@@ -1,10 +1,15 @@
 import { m } from '$lib/paraglide/messages';
-import type { StrokeTypeCode } from '$lib/constants/strokeTypes';
+import { isStrokeTypeCode, type StrokeTypeCode } from '$lib/constants/strokeTypes';
 
 export interface StrokeTypeLabel {
   code: StrokeTypeCode;
   short: string;
   full: string;
+}
+
+export function strokeTypeShort(value: string | null): string {
+  if (!value || !isStrokeTypeCode(value)) return '';
+  return strokeTypeLabel(value).short;
 }
 
 export function strokeTypeLabel(code: StrokeTypeCode): StrokeTypeLabel {

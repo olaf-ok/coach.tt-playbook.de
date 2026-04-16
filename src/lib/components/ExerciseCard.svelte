@@ -1,6 +1,7 @@
 <script lang="ts">
   import ExerciseThumbnail from './ExerciseThumbnail.svelte';
   import OverflowMenu from './OverflowMenu.svelte';
+  import { strokeTypeShort } from '$lib/i18n/stroke-type-labels';
   import type { Exercise } from '$lib/types/exercise';
 
   interface Props {
@@ -16,8 +17,12 @@
   const strokeCount = $derived(exercise.strokes.length);
   const uniqueTags = $derived(
     Array.from(
-      new Set(exercise.strokes.map((s) => s.strokeType).filter(Boolean)),
-    ) as string[],
+      new Set(
+        exercise.strokes
+          .map((s) => strokeTypeShort(s.strokeType))
+          .filter((label) => label !== ''),
+      ),
+    ),
   );
 </script>
 
