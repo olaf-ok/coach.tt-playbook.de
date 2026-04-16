@@ -12,11 +12,26 @@
   import { proStatus, FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
   import { m } from '$lib/paraglide/messages';
   import type { Point } from '$lib/types/exercise';
+  import { nextSheetState, type SheetState } from './steps-sheet-state';
 
   type ToastKind = 'info' | 'success' | 'warning';
   let selectedStrokeId = $state<string | null>(null);
   let toast = $state<{ text: string; kind: ToastKind } | null>(null);
   let paywallOpen = $state(false);
+  let sheetState = $state<SheetState>('peek');
+
+  // Auf Mobile: Sheet öffnet auto wenn ein Stroke selektiert wird
+  $effect(() => {
+    if (!selectedStrokeId) return;
+    if (typeof window === 'undefined') return;
+    if (window.matchMedia('(max-width: 767.98px)').matches) {
+      sheetState = nextSheetState(sheetState, 'open');
+    }
+  });
+
+  function toggleSheet() {
+    sheetState = nextSheetState(sheetState, 'toggle');
+  }
 
   function showToast(text: string, kind: ToastKind = 'info', ms = 2000) {
     toast = { text, kind };
@@ -142,6 +157,8 @@
     onDeleteStroke={handleDeleteStroke}
     onUndo={handleUndo}
     canUndo={currentExercise.exercise.strokes.length > 0}
+    sheetState={sheetState}
+    onSheetToggle={toggleSheet}
   />
 </div>
 
@@ -185,5 +202,16 @@
   }
   .toast--warning {
     background: var(--color-danger);
+  }
+
+  @media (max-width: 767.98px) {
+    .layout {
+      flex-direction: column;
+    }
+    .canvas-area {
+      flex: 1;
+      /* Sheet overlay'd — Canvas-Höhe bleibt konstant mit Peek unten */
+      padding-bottom: 72px;
+    }
   }
 </style>
