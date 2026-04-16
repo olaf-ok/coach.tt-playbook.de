@@ -1,5 +1,6 @@
 <script lang="ts">
   import { FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
+  import { m } from '$lib/paraglide/messages';
 
   interface Props {
     onClose: () => void;
@@ -13,52 +14,47 @@
 </script>
 
 <div class="backdrop" onclick={handleBackdrop} role="presentation">
-  <div class="dialog" role="dialog" aria-modal="true" aria-label="Upgrade auf Pro">
+  <div class="dialog" role="dialog" aria-modal="true" aria-label={m.paywall_aria_label()}>
     <header class="head">
-      <span class="badge">PRO</span>
-      <h3>Unbegrenzt Übungen mit TT Playbook Pro</h3>
-      <p class="sub">
-        Du hast deine {FREE_EXERCISE_LIMIT} Gratis-Übungen erstellt. Schalte Pro frei und speichere
-        unbegrenzt.
-      </p>
+      <span class="badge">{m.paywall_badge()}</span>
+      <h3>{m.paywall_title()}</h3>
+      <p class="sub">{m.paywall_sub({ limit: FREE_EXERCISE_LIMIT })}</p>
     </header>
 
     <ul class="features">
-      <li>Unbegrenzte Übungen und Trainingslisten</li>
-      <li>Eigene Schlagart-Tags erstellen</li>
-      <li>Mehrere Geräte synchronisieren <span class="soon">bald</span></li>
-      <li>Frühe Features &amp; Trainer-Community</li>
+      <li>{m.paywall_feature_unlimited()}</li>
+      <li>{m.paywall_feature_custom_tags()}</li>
+      <li>{m.paywall_feature_multidevice()} <span class="soon">{m.common_soon()}</span></li>
+      <li>{m.paywall_feature_community()}</li>
     </ul>
 
     <div class="plans">
       <div class="plan">
-        <span class="plan-name">Monatlich</span>
+        <span class="plan-name">{m.paywall_plan_monthly()}</span>
         <span class="price">9,90&nbsp;€</span>
-        <span class="period">pro Monat, jederzeit kündbar</span>
-        <button type="button" class="plan-btn secondary" disabled>Monatlich wählen</button>
+        <span class="period">{m.paywall_plan_monthly_period()}</span>
+        <button type="button" class="plan-btn secondary" disabled>{m.paywall_plan_monthly_select()}</button>
       </div>
 
       <div class="plan popular">
-        <span class="popular-badge">Beliebt</span>
-        <span class="plan-name">Jährlich</span>
+        <span class="popular-badge">{m.paywall_popular_badge()}</span>
+        <span class="plan-name">{m.paywall_plan_yearly()}</span>
         <span class="price">99&nbsp;€</span>
-        <span class="period">= 8,25&nbsp;€/Monat · 17&nbsp;% sparen</span>
-        <button type="button" class="plan-btn primary" disabled>Jährlich wählen</button>
+        <span class="period">{m.paywall_plan_yearly_period()}</span>
+        <button type="button" class="plan-btn primary" disabled>{m.paywall_plan_yearly_select()}</button>
       </div>
     </div>
 
-    <p class="note">
-      Zahlung via Stripe — kommt bald. Keine In-App-Purchases, kein Store-Abzug.
-    </p>
+    <p class="note">{m.paywall_note()}</p>
 
     <footer class="foot">
-      <button type="button" class="text-btn" onclick={onClose}>Vielleicht später</button>
+      <button type="button" class="text-btn" onclick={onClose}>{m.paywall_later()}</button>
       <a
         href="/settings/account"
         class="text-btn account-link"
         onclick={onClose}
       >
-        Bereits ein Konto? Anmelden →
+        {m.paywall_existing_account()}
       </a>
     </footer>
   </div>

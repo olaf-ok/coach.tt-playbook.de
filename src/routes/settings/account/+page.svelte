@@ -1,6 +1,7 @@
 <script lang="ts">
   import { mockUser } from '$lib/auth/mock-user.svelte';
   import { proStatus } from '$lib/pro/status.svelte';
+  import { m } from '$lib/paraglide/messages';
 
   type Mode = 'login' | 'signup';
   let mode = $state<Mode>('login');
@@ -24,7 +25,7 @@
       email = '';
       password = '';
     } catch (err) {
-      error = err instanceof Error ? err.message : 'Fehler';
+      error = err instanceof Error ? err.message : m.account_error_generic();
     } finally {
       busy = false;
     }
@@ -41,7 +42,7 @@
 
 <section class="account">
   <header class="head">
-    <h2>Account</h2>
+    <h2>{m.account_title()}</h2>
   </header>
 
   {#if mockUser.loggedIn && mockUser.current}
@@ -49,20 +50,20 @@
       <div class="avatar">{initial(mockUser.current.email)}</div>
       <div class="email">{mockUser.current.email}</div>
       {#if proStatus.isPro}
-        <span class="badge pro">Pro aktiv</span>
+        <span class="badge pro">{m.account_badge_pro()}</span>
       {:else}
-        <span class="badge">Free</span>
+        <span class="badge">{m.account_badge_free()}</span>
       {/if}
     </div>
 
     <div class="card">
-      <h3>Abonnement</h3>
-      <p class="muted">Abo verwalten kommt mit der Stripe-Integration.</p>
-      <button type="button" class="btn secondary" disabled>Abo verwalten (bald)</button>
+      <h3>{m.account_subscription_heading()}</h3>
+      <p class="muted">{m.account_subscription_hint()}</p>
+      <button type="button" class="btn secondary" disabled>{m.account_subscription_manage()}</button>
     </div>
 
     <div class="actions">
-      <button type="button" class="btn danger" onclick={logout}>Abmelden</button>
+      <button type="button" class="btn danger" onclick={logout}>{m.account_logout()}</button>
     </div>
   {:else}
     <div class="tabs" role="tablist">
@@ -73,7 +74,7 @@
         aria-selected={mode === 'login'}
         onclick={() => (mode = 'login')}
       >
-        Anmelden
+        {m.account_tab_login()}
       </button>
       <button
         type="button"
@@ -82,30 +83,30 @@
         aria-selected={mode === 'signup'}
         onclick={() => (mode = 'signup')}
       >
-        Registrieren
+        {m.account_tab_signup()}
       </button>
     </div>
 
     <form class="form" onsubmit={submit}>
       <label class="field">
-        <span>E-Mail</span>
+        <span>{m.account_field_email()}</span>
         <input
           type="email"
           bind:value={email}
           autocomplete="email"
           required
-          placeholder="du@beispiel.de"
+          placeholder={m.account_field_email_placeholder()}
         />
       </label>
       <label class="field">
-        <span>Passwort</span>
+        <span>{m.account_field_password()}</span>
         <input
           type="password"
           bind:value={password}
           autocomplete={mode === 'login' ? 'current-password' : 'new-password'}
           required
           minlength="6"
-          placeholder="mindestens 6 Zeichen"
+          placeholder={m.account_field_password_placeholder()}
         />
       </label>
 
@@ -116,15 +117,13 @@
       <button type="submit" class="btn primary" disabled={!canSubmit}>
         {#if busy}
           <span class="spinner" aria-hidden="true"></span>
-          {mode === 'login' ? 'Anmelden…' : 'Konto wird erstellt…'}
+          {mode === 'login' ? m.account_submit_login_busy() : m.account_submit_signup_busy()}
         {:else}
-          {mode === 'login' ? 'Anmelden' : 'Konto erstellen'}
+          {mode === 'login' ? m.account_submit_login() : m.account_submit_signup()}
         {/if}
       </button>
 
-      <p class="note">
-        Noch kein echtes Backend — Eingaben werden lokal gespeichert und schalten Pro frei.
-      </p>
+      <p class="note">{m.account_note()}</p>
     </form>
   {/if}
 </section>
