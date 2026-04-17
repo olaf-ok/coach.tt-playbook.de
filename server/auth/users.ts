@@ -67,3 +67,44 @@ export function markEmailVerified(db: AuthDatabase, userId: string): void {
 export function updatePasswordHash(db: AuthDatabase, userId: string, newHash: string): void {
   db.prepare(`UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?`).run(newHash, Date.now(), userId);
 }
+
+export interface UserSummary {
+  id: string;
+  email: string;
+  emailVerified: boolean;
+  proUntil: number | null;
+  createdAt: number;
+}
+
+interface SummaryRow {
+  id: string;
+  email: string;
+  email_verified: number;
+  pro_until: number | null;
+  created_at: number;
+}
+
+export function listUsers(db: AuthDatabase): UserSummary[] {
+  const rows = db
+    .prepare(`SELECT id, email, email_verified, pro_until, created_at FROM users ORDER BY created_at DESC`)
+    .all() as unknown as SummaryRow[];
+  return rows.map((r) => ({
+    id: r.id,
+    email: r.email,
+    emailVerified: !!r.email_verified,
+    proUntil: r.pro_until,
+    createdAt: r.created_at,
+  }));
+}
+
+export function deleteUser(db: AuthDatabase, id: string): void {
+  db.prepare(`DELETE FROM users WHERE id = ?`).run(id);
+}
+
+export function setProUntil(db: AuthDatabase, id: string, timestamp: number | null): void {
+  db.prepare(`UPDATE users SET pro_until = ?, updated_at = ? WHERE id = ?`).run(
+    timestamp,
+    Date.now(),
+    id,
+  );
+}
