@@ -1,9 +1,14 @@
 <script lang="ts">
   import { m } from '$lib/paraglide/messages';
+  import AppLogo from '$lib/brand/AppLogo.svelte';
 </script>
 
 <section class="about">
   <h2>{m.settings_about_title()}</h2>
+
+  <div class="logo">
+    <AppLogo size={140} />
+  </div>
 
   <dl class="info">
     <dt>{m.settings_about_app()}</dt>
@@ -30,6 +35,10 @@
     font-weight: 600;
     color: var(--color-text-primary);
     margin: 0;
+  }
+  .logo {
+    color: var(--color-text-primary);
+    padding: 8px 0;
   }
   .info {
     display: grid;
