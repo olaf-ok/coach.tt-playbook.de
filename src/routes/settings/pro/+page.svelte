@@ -1,7 +1,7 @@
 <script lang="ts">
   import { auth } from '$lib/auth/client.svelte';
   import { billing } from '$lib/billing/client.svelte';
-  import { PRICE_DISPLAY, CURRENCY_LABEL, type Plan } from '$lib/billing/prices';
+  import { PRICE_DISPLAY, type Plan } from '$lib/billing/prices';
   import { FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
   import { m } from '$lib/paraglide/messages';
 
@@ -31,9 +31,6 @@
     }
   }
 
-  function switchCurrency() {
-    billing.setCurrency(billing.currency === 'eur' ? 'usd' : 'eur');
-  }
 </script>
 
 <section class="pro">
@@ -112,16 +109,6 @@
       </button>
     </div>
 
-    <button
-      type="button"
-      class="currency-switch"
-      onclick={switchCurrency}
-      disabled={checkoutBusy}
-    >
-      {m.billing_currency_switch({
-        currency: CURRENCY_LABEL[billing.currency === 'eur' ? 'usd' : 'eur'],
-      })}
-    </button>
   {/if}
 </section>
 
@@ -265,23 +252,6 @@
     font-size: 14px;
     font-weight: 600;
     color: var(--color-accent);
-  }
-  .currency-switch {
-    align-self: center;
-    background: none;
-    border: none;
-    color: var(--color-text-secondary);
-    font-size: 13px;
-    padding: 4px 8px;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  .currency-switch:hover:not([disabled]) {
-    color: var(--color-text-primary);
-  }
-  .currency-switch[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
   }
   .cta-row {
     display: flex;
