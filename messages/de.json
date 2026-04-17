@@ -266,7 +266,7 @@
   "billing_portal_failed_toast": "Abo-Verwaltung nicht verfügbar.",
   "settings_pro_signin_hint": "Melde dich an, um Pro zu abonnieren.",
   "settings_tv_howto_title": "So funktioniert die TV-Verbindung",
-  "settings_tv_howto_step1": "Öffne im Browser deines Smart-TVs (oder eines Laptops/Stick-PCs am TV) die Adresse coach.tt-playbook.de/tv.",
+  "settings_tv_howto_step1": "Öffne im Browser deines Smart-TVs (oder eines Laptops/Stick-PCs am TV) die Adresse tv.tt-playbook.de.",
   "settings_tv_howto_step2": "Auf dem TV erscheinen ein QR-Code und ein vierstelliger Zahlencode.",
   "settings_tv_howto_step3": "Hier auf Tablet oder Smartphone den QR-Code scannen oder den vierstelligen Code eintippen.",
   "settings_tv_howto_step4": "Sobald verbunden, wird jede Übung, die du zeichnest oder aus dem Archiv öffnest, sofort auf dem TV groß angezeigt — ideal für Halle und Training.",
@@ -317,7 +317,7 @@
 
   "help_s6_title": "6. TV-Verbindung",
   "help_s6_intro": "Tablet/Smartphone steuert die Anzeige, der TV (oder ein an den TV angeschlossener Laptop/Stick-PC) zeigt die Übung groß an.",
-  "help_s6_step1": "Im TV-Browser (Smart-TV, Stick-PC, Laptop am HDMI-Eingang) <code>coach.tt-playbook.de/tv</code> öffnen.",
+  "help_s6_step1": "Im TV-Browser (Smart-TV, Stick-PC, Laptop am HDMI-Eingang) <code>tv.tt-playbook.de</code> öffnen.",
   "help_s6_step2": "Der TV zeigt einen QR-Code und einen vierstelligen Code.",
   "help_s6_step3": "Auf dem Tablet/Smartphone: Einstellungen → TV-Verbindung → entweder QR scannen (Kamera-Symbol) oder den Code per Hand eintippen.",
   "help_s6_step4": "Sobald verbunden, wird jede Übung, die du zeichnest oder im Archiv öffnest, sofort auf dem TV gezeigt.",

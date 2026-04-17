@@ -266,7 +266,7 @@
   "billing_portal_failed_toast": "Gestión de suscripción no disponible.",
   "settings_pro_signin_hint": "Inicia sesión para suscribirte a Pro.",
   "settings_tv_howto_title": "Cómo funciona la conexión con el televisor",
-  "settings_tv_howto_step1": "Abre coach.tt-playbook.de/tv en el navegador del Smart TV (o de un portátil/stick PC conectado al televisor).",
+  "settings_tv_howto_step1": "Abre tv.tt-playbook.de en el navegador del Smart TV (o de un portátil/stick PC conectado al televisor).",
   "settings_tv_howto_step2": "En el televisor aparecen un código QR y un código numérico de cuatro dígitos.",
   "settings_tv_howto_step3": "Aquí, en la tablet o el móvil, escanea el código QR o escribe el código de cuatro dígitos.",
   "settings_tv_howto_step4": "Una vez emparejados, cada ejercicio que dibujes o abras desde el archivo se muestra al instante en el televisor a pantalla completa — ideal para entrenar en pista.",
@@ -317,7 +317,7 @@
 
   "help_s6_title": "6. Conexión con el televisor",
   "help_s6_intro": "La tablet o el móvil controla, y el televisor (o un portátil/stick PC conectado al TV) muestra el ejercicio a pantalla completa.",
-  "help_s6_step1": "Abre <code>coach.tt-playbook.de/tv</code> en el navegador del televisor (Smart TV, stick PC, portátil por HDMI).",
+  "help_s6_step1": "Abre <code>tv.tt-playbook.de</code> en el navegador del televisor (Smart TV, stick PC, portátil por HDMI).",
   "help_s6_step2": "El televisor muestra un código QR y un código numérico de cuatro dígitos.",
   "help_s6_step3": "En la tablet o el móvil: Ajustes → Conexión TV → escanea el QR (icono de cámara) o escribe el código a mano.",
   "help_s6_step4": "Una vez emparejados, cada ejercicio que dibujes o abras desde el archivo aparece al instante en el televisor.",

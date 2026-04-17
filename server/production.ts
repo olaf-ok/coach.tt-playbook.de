@@ -73,6 +73,7 @@ wss.on('connection', (ws: WebSocket) => {
 
 const LEGACY_HOSTS = new Set(['trainer.tt-playbook.de']);
 const CANONICAL_HOST = 'coach.tt-playbook.de';
+const TV_HOST = 'tv.tt-playbook.de';
 
 const server = createServer((req, res) => {
   const fwdHost = (req.headers['x-forwarded-host'] as string | undefined)?.split(',')[0].trim().toLowerCase();
@@ -82,6 +83,11 @@ const server = createServer((req, res) => {
     res.setHeader('Location', `https://${CANONICAL_HOST}${req.url ?? '/'}`);
     res.end();
     return;
+  }
+  // Short TV URL: tv.tt-playbook.de → /tv. Only rewrite the root path so /ws,
+  // /api, asset paths etc. keep working when the TV browser is active.
+  if (host === TV_HOST && (req.url === '/' || req.url === '')) {
+    req.url = '/tv';
   }
   try {
     (handler as (req: IncomingMessage, res: typeof res) => void)(req, res);
