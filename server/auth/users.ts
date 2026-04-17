@@ -24,9 +24,15 @@ function rowToUser(row: Row): UserRecord {
     id: row.id,
     email: row.email,
     passwordHash: row.password_hash,
-    emailVerified: row.email_verified === 1,
+    emailVerified: !!row.email_verified,
     proUntil: row.pro_until,
   };
+}
+
+// Defense-in-depth: normalise even if caller forgot. Schema already enforces
+// COLLATE NOCASE, but trimming whitespace isn't covered by that.
+function normalizeEmail(email: string): string {
+  return email.trim().toLowerCase();
 }
 
 export async function createUser(
@@ -34,17 +40,18 @@ export async function createUser(
   email: string,
   passwordHash: string,
 ): Promise<UserRecord> {
+  const trimmed = email.trim();
   const id = uuidv7();
   const now = Date.now();
   db.prepare(
     `INSERT INTO users (id, email, password_hash, email_verified, pro_until, created_at, updated_at)
      VALUES (?, ?, ?, 0, NULL, ?, ?)`,
-  ).run(id, email, passwordHash, now, now);
-  return { id, email, passwordHash, emailVerified: false, proUntil: null };
+  ).run(id, trimmed, passwordHash, now, now);
+  return { id, email: trimmed, passwordHash, emailVerified: false, proUntil: null };
 }
 
 export function findUserByEmail(db: AuthDatabase, email: string): UserRecord | null {
-  const row = db.prepare(`SELECT * FROM users WHERE email = ?`).get(email) as Row | undefined;
+  const row = db.prepare(`SELECT * FROM users WHERE email = ?`).get(normalizeEmail(email)) as Row | undefined;
   return row ? rowToUser(row) : null;
 }
 
