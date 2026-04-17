@@ -9,11 +9,11 @@ describe('auth deps smoke test', () => {
 		db.close();
 	});
 
-	it('argon2 kann Passwort hashen und verifizieren', async () => {
-		const argon2 = await import('argon2');
-		const hash = await argon2.hash('test-password');
-		expect(await argon2.verify(hash, 'test-password')).toBe(true);
-		expect(await argon2.verify(hash, 'wrong')).toBe(false);
+	it('@node-rs/argon2 kann Passwort hashen und verifizieren', async () => {
+		const { hash, verify } = await import('@node-rs/argon2');
+		const hashed = await hash('test-password');
+		expect(await verify(hashed, 'test-password')).toBe(true);
+		expect(await verify(hashed, 'wrong')).toBe(false);
 	});
 
 	it('uuid exportiert v7', async () => {

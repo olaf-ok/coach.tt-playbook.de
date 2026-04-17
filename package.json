@@ -54,7 +54,7 @@
 		"vitest-browser-svelte": "^2.1.0"
 	},
 	"dependencies": {
-		"argon2": "^0.44.0",
+		"@node-rs/argon2": "^2.0.2",
 		"better-sqlite3": "^12.9.0",
 		"dexie": "^4.4.2",
 		"html5-qrcode": "^2.3.8",
