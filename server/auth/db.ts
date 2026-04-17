@@ -1,9 +1,9 @@
-import BetterSqlite3 from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { SCHEMA_V1 } from './schema';
 
-export type AuthDatabase = BetterSqlite3.Database;
+export type AuthDatabase = DatabaseSync;
 
 const CURRENT_USER_VERSION = 1;
 
@@ -15,9 +15,9 @@ export function openDatabase(path: string): AuthDatabase {
   if (path !== ':memory:') {
     mkdirSync(dirname(path), { recursive: true });
   }
-  const db = new BetterSqlite3(path);
-  db.pragma('journal_mode = WAL');
-  db.pragma('foreign_keys = ON');
+  const db = new DatabaseSync(path);
+  db.exec('PRAGMA journal_mode = WAL');
+  db.exec('PRAGMA foreign_keys = ON');
   migrate(db);
   return db;
 }
@@ -32,7 +32,7 @@ function migrate(db: AuthDatabase): void {
     db.exec('BEGIN');
     try {
       db.exec(sql);
-      db.pragma(`user_version = ${next}`);
+      db.exec(`PRAGMA user_version = ${next}`);
       db.exec('COMMIT');
     } catch (err) {
       db.exec('ROLLBACK');

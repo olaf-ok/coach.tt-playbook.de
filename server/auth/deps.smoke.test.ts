@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 
 describe('auth deps smoke test', () => {
-	it('better-sqlite3 kann in-memory DB öffnen', async () => {
-		const BetterSqlite3 = (await import('better-sqlite3')).default;
-		const db = new BetterSqlite3(':memory:');
+	it('node:sqlite ist verfügbar', async () => {
+		const { DatabaseSync } = await import('node:sqlite');
+		const db = new DatabaseSync(':memory:');
 		const result = db.prepare('SELECT 1 AS one').get() as { one: number };
 		expect(result.one).toBe(1);
 		db.close();

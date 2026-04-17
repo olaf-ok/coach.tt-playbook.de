@@ -1,17 +1,17 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 vi.mock('../../../../../server/auth/db', async () => {
-  const BetterSqlite3 = (await import('better-sqlite3')).default;
+  const { DatabaseSync } = await import('node:sqlite');
   const fs = await import('node:fs');
   const path = await import('node:path');
-  const memDb = new BetterSqlite3(':memory:');
+  const memDb = new DatabaseSync(':memory:');
   const schemaSql = fs.readFileSync(
     path.resolve(process.cwd(), 'server/auth/schema.sql'),
     'utf8',
   );
-  memDb.pragma('foreign_keys = ON');
+  memDb.exec('PRAGMA foreign_keys = ON');
   memDb.exec(schemaSql);
-  memDb.pragma('user_version = 1');
+  memDb.exec('PRAGMA user_version = 1');
   return { getDatabase: () => memDb, resetSingletonForTests: () => {} };
 });
 vi.mock('../../../../../server/auth/mailer', () => ({

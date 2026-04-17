@@ -81,5 +81,5 @@ export function deleteAllUserSessions(db: AuthDatabase, userId: string): void {
 // low-traffic. Returns the number of rows removed.
 export function cleanupExpiredSessions(db: AuthDatabase): number {
   const result = db.prepare(`DELETE FROM sessions WHERE expires_at <= ?`).run(Date.now());
-  return result.changes;
+  return Number(result.changes);
 }

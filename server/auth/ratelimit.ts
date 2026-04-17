@@ -46,5 +46,5 @@ export function checkAndConsume(db: AuthDatabase, action: Action, key: string): 
 // counting (checkAndConsume rewrites them via INSERT OR REPLACE on expiry).
 export function cleanupExpiredRateLimits(db: AuthDatabase): number {
   const result = db.prepare(`DELETE FROM rate_limits WHERE window_end <= ?`).run(Date.now());
-  return result.changes;
+  return Number(result.changes);
 }
