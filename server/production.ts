@@ -84,10 +84,15 @@ const server = createServer((req, res) => {
     res.end();
     return;
   }
-  // Short TV URL: tv.tt-playbook.de → /tv. Only rewrite the root path so /ws,
-  // /api, asset paths etc. keep working when the TV browser is active.
+  // Short TV URL: tv.tt-playbook.de → /tv. 302 (not internal rewrite) because
+  // the app is a SPA — the client router needs to see /tv in the URL bar to
+  // mount the TV page instead of the default draw route. /ws, /api etc. pass
+  // through unchanged so the TV WebSocket and assets keep working.
   if (host === TV_HOST && (req.url === '/' || req.url === '')) {
-    req.url = '/tv';
+    res.statusCode = 302;
+    res.setHeader('Location', `https://${CANONICAL_HOST}/tv`);
+    res.end();
+    return;
   }
   try {
     (handler as (req: IncomingMessage, res: typeof res) => void)(req, res);
