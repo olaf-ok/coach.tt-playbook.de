@@ -7,6 +7,7 @@
     emailVerified: boolean;
     proUntil: number | null;
     createdAt: number;
+    stripeSubscriptionStatus: string | null;
   }
 
   let users = $state<AdminUser[]>([]);
@@ -122,6 +123,11 @@
             >
               {proLabel(u.proUntil)}
             </span>
+            {#if u.stripeSubscriptionStatus}
+              <span class="badge subscription subscription-{u.stripeSubscriptionStatus}">
+                {u.stripeSubscriptionStatus}
+              </span>
+            {/if}
             <span class="muted">Angelegt {fmtDate(u.createdAt)}</span>
           </div>
           <div class="actions">
@@ -263,6 +269,23 @@
     color: #fff;
   }
   .badge.free {
+    background: var(--bg-elevated);
+    color: var(--color-text-secondary);
+  }
+  .badge.subscription {
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+  }
+  .badge.subscription-active {
+    background: var(--color-success);
+    color: #fff;
+  }
+  .badge.subscription-past_due {
+    background: var(--color-danger);
+    color: #fff;
+  }
+  .badge.subscription-canceled {
     background: var(--bg-elevated);
     color: var(--color-text-secondary);
   }
