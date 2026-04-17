@@ -1,6 +1,8 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
   import { auth } from '$lib/auth/client.svelte';
+  import { billing } from '$lib/billing/client.svelte';
   import { m } from '$lib/paraglide/messages';
 
   type Mode = 'login' | 'signup' | 'forgot';
@@ -10,6 +12,35 @@
   let busy = $state(false);
   let error = $state<string | null>(null);
   let info = $state<string | null>(null);
+
+  let portalBusy = $state(false);
+  let toast = $state<{ kind: 'ok' | 'info' | 'error'; msg: string } | null>(null);
+
+  async function openPortal() {
+    portalBusy = true;
+    try {
+      await billing.openPortal();
+    } catch (e) {
+      toast = {
+        kind: 'error',
+        msg: e instanceof Error ? e.message : m.billing_portal_failed_toast(),
+      };
+      portalBusy = false;
+    }
+  }
+
+  // Handle ?checkout=success / ?checkout=cancel after Stripe redirect.
+  $effect(() => {
+    const status = $page.url.searchParams.get('checkout');
+    if (status === 'success') {
+      toast = { kind: 'ok', msg: m.billing_checkout_success_toast() };
+      auth.init();
+      goto('/settings/account', { replaceState: true });
+    } else if (status === 'cancel') {
+      toast = { kind: 'info', msg: m.billing_checkout_cancel_toast() };
+      goto('/settings/account', { replaceState: true });
+    }
+  });
 
   const emailValid = $derived(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
   const canSubmit = $derived(
@@ -76,6 +107,10 @@
     <h2>{m.account_title()}</h2>
   </header>
 
+  {#if toast}
+    <div class="toast toast-{toast.kind}" role="status">{toast.msg}</div>
+  {/if}
+
   {#if auth.user}
     <div class="profile">
       <div class="avatar">{initial(auth.user.email)}</div>
@@ -87,6 +122,11 @@
     </div>
 
     <div class="actions">
+      {#if auth.isPro}
+        <button type="button" class="btn secondary" onclick={openPortal} disabled={portalBusy}>
+          {m.billing_portal_button()}
+        </button>
+      {/if}
       <button type="button" class="btn danger" onclick={logout}>{m.account_logout()}</button>
     </div>
   {:else}
@@ -176,7 +216,34 @@
   }
   .btn.primary { background: var(--color-accent); color: #fff; }
   .btn.danger { background: var(--color-danger); color: #fff; }
+  .btn.secondary {
+    background: var(--bg-elevated);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+  }
   .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .toast {
+    padding: 12px 16px;
+    border-radius: var(--radius-panel);
+    font-size: 14px;
+    border: 1px solid;
+  }
+  .toast-ok {
+    background: color-mix(in oklab, var(--color-success) 18%, transparent);
+    border-color: var(--color-success);
+    color: var(--color-success);
+  }
+  .toast-info {
+    background: var(--bg-surface);
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+  }
+  .toast-error {
+    background: color-mix(in oklab, var(--color-danger) 18%, transparent);
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+  }
   .error { color: var(--color-danger); font-size: 13px; margin: 0; }
   .info { color: var(--color-text-secondary); font-size: 13px; margin: 0; }
   .link { margin: 0; font-size: 13px; }
