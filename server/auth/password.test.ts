@@ -29,4 +29,13 @@ describe('password', () => {
     expect(DUMMY_HASH).toMatch(/^\$argon2id\$/);
     expect(await verifyPassword(DUMMY_HASH, 'random')).toBe(false);
   });
+
+  it('DUMMY_HASH verifyPassword läuft echte argon2-Zeit (nicht via catch)', async () => {
+    const t0 = performance.now();
+    const result = await verifyPassword(DUMMY_HASH, 'irrelevant');
+    const duration = performance.now() - t0;
+    expect(result).toBe(false);
+    // echter argon2id-verify braucht >10ms; Parse-Exception wäre <1ms
+    expect(duration).toBeGreaterThan(5);
+  });
 });
