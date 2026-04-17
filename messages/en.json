@@ -257,5 +257,11 @@
   "mobile_tab_more": "More",
   "mobile_sheet_toggle_aria": "Show or hide details",
   "settings_hint_pick_left": "Please pick a section from the list on the left.",
-  "playlists_back_to_list": "Back to list"
+  "playlists_back_to_list": "Back to list",
+  "billing_currency_switch": "Show prices in {currency}",
+  "billing_checkout_success_toast": "Thanks — Pro is now active.",
+  "billing_checkout_cancel_toast": "Checkout cancelled.",
+  "billing_checkout_failed_toast": "Could not start checkout.",
+  "billing_portal_button": "Manage subscription",
+  "billing_portal_failed_toast": "Subscription management unavailable."
 }

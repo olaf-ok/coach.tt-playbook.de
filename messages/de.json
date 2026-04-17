@@ -257,5 +257,11 @@
   "mobile_tab_more": "Mehr",
   "mobile_sheet_toggle_aria": "Details anzeigen oder ausblenden",
   "settings_hint_pick_left": "Bitte einen Bereich aus der Liste links wählen.",
-  "playlists_back_to_list": "Zur Liste"
+  "playlists_back_to_list": "Zur Liste",
+  "billing_currency_switch": "Preise in {currency} anzeigen",
+  "billing_checkout_success_toast": "Vielen Dank — Pro ist jetzt aktiv.",
+  "billing_checkout_cancel_toast": "Checkout abgebrochen.",
+  "billing_checkout_failed_toast": "Checkout konnte nicht gestartet werden.",
+  "billing_portal_button": "Abo verwalten",
+  "billing_portal_failed_toast": "Abo-Verwaltung nicht verfügbar."
 }

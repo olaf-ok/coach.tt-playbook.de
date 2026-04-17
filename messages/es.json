@@ -257,5 +257,11 @@
   "mobile_tab_more": "Más",
   "mobile_sheet_toggle_aria": "Mostrar u ocultar detalles",
   "settings_hint_pick_left": "Elige una sección de la lista a la izquierda.",
-  "playlists_back_to_list": "A la lista"
+  "playlists_back_to_list": "A la lista",
+  "billing_currency_switch": "Mostrar precios en {currency}",
+  "billing_checkout_success_toast": "Gracias — Pro está activo.",
+  "billing_checkout_cancel_toast": "Pago cancelado.",
+  "billing_checkout_failed_toast": "No se pudo iniciar el pago.",
+  "billing_portal_button": "Gestionar suscripción",
+  "billing_portal_failed_toast": "Gestión de suscripción no disponible."
 }
