@@ -17,6 +17,12 @@
       : emailValid && password.length >= 10 && !busy,
   );
 
+  function setMode(next: Mode) {
+    mode = next;
+    error = null;
+    info = null;
+  }
+
   function initial(e: string): string {
     return (e[0] ?? '?').toUpperCase();
   }
@@ -84,8 +90,8 @@
     </div>
   {:else}
     <div class="tabs" role="tablist">
-      <button class:active={mode === 'login'} onclick={() => (mode = 'login')}>Anmelden</button>
-      <button class:active={mode === 'signup'} onclick={() => (mode = 'signup')}>Registrieren</button>
+      <button class:active={mode === 'login'} onclick={() => setMode('login')}>Anmelden</button>
+      <button class:active={mode === 'signup'} onclick={() => setMode('signup')}>Registrieren</button>
     </div>
 
     <form onsubmit={submit}>
@@ -112,12 +118,12 @@
       </button>
       {#if mode === 'login'}
         <p class="link">
-          <button type="button" class="linkbtn" onclick={() => (mode = 'forgot')}>Passwort vergessen?</button>
+          <button type="button" class="linkbtn" onclick={() => setMode('forgot')}>Passwort vergessen?</button>
         </p>
       {/if}
       {#if mode === 'forgot'}
         <p class="link">
-          <button type="button" class="linkbtn" onclick={() => (mode = 'login')}>Zurück zum Login</button>
+          <button type="button" class="linkbtn" onclick={() => setMode('login')}>Zurück zum Login</button>
         </p>
       {/if}
     </form>
