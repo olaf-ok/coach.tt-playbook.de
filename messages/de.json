@@ -271,5 +271,9 @@
   "settings_tv_howto_step3": "Hier auf Tablet oder Smartphone den QR-Code scannen oder den vierstelligen Code eintippen.",
   "settings_tv_howto_step4": "Sobald verbunden, wird jede Übung, die du zeichnest oder aus dem Archiv öffnest, sofort auf dem TV groß angezeigt — ideal für Halle und Training.",
   "settings_tv_howto_step5": "Tablet und TV müssen im selben WLAN sein. Die Verbindung bleibt aktiv, bis du dich abmeldest oder den TV-Tab schließt.",
-  "settings_about_imprint": "Impressum"
+  "settings_about_imprint": "Impressum",
+  "settings_about_imprint_represented": "Vertretungsberechtigt",
+  "settings_about_imprint_phone": "Telefon",
+  "settings_about_imprint_email": "E-Mail",
+  "settings_about_imprint_web": "Web"
 }
