@@ -46,7 +46,6 @@
       <li>{m.paywall_feature_unlimited()}</li>
       <li>{m.paywall_feature_custom_tags()}</li>
       <li>{m.paywall_feature_multidevice()} <span class="soon">{m.common_soon()}</span></li>
-      <li>{m.paywall_feature_community()}</li>
     </ul>
 
     {#if error}
