@@ -41,3 +41,44 @@ describe('auth db', () => {
     db2.close();
   });
 });
+
+describe('db migration v2 (stripe fields)', () => {
+  it('adds stripe columns to users table', () => {
+    const db = openDatabase(':memory:');
+    const cols = db
+      .prepare(`PRAGMA table_info(users)`)
+      .all() as Array<{ name: string }>;
+    const names = cols.map((c) => c.name);
+    expect(names).toContain('stripe_customer_id');
+    expect(names).toContain('stripe_subscription_id');
+    expect(names).toContain('stripe_subscription_status');
+    db.close();
+  });
+
+  it('creates stripe_events table for idempotency', () => {
+    const db = openDatabase(':memory:');
+    const row = db
+      .prepare(`SELECT name FROM sqlite_master WHERE type='table' AND name='stripe_events'`)
+      .get();
+    expect(row).toBeDefined();
+    db.close();
+  });
+
+  it('creates unique index on stripe_customer_id', () => {
+    const db = openDatabase(':memory:');
+    const row = db
+      .prepare(
+        `SELECT name FROM sqlite_master WHERE type='index' AND name='idx_users_stripe_customer_id'`,
+      )
+      .get();
+    expect(row).toBeDefined();
+    db.close();
+  });
+
+  it('user_version is 2 after migration', () => {
+    const db = openDatabase(':memory:');
+    const row = db.prepare('PRAGMA user_version').get() as { user_version: number };
+    expect(row.user_version).toBe(2);
+    db.close();
+  });
+});

@@ -37,3 +37,15 @@ CREATE TABLE IF NOT EXISTS rate_limits (
   count       INTEGER NOT NULL,
   window_end  INTEGER NOT NULL
 );
+
+ALTER TABLE users ADD COLUMN stripe_customer_id TEXT;
+ALTER TABLE users ADD COLUMN stripe_subscription_id TEXT;
+ALTER TABLE users ADD COLUMN stripe_subscription_status TEXT;
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_users_stripe_customer_id
+  ON users(stripe_customer_id) WHERE stripe_customer_id IS NOT NULL;
+
+CREATE TABLE IF NOT EXISTS stripe_events (
+  event_id    TEXT PRIMARY KEY,
+  created_at  INTEGER NOT NULL
+);

@@ -1,14 +1,15 @@
 import { DatabaseSync } from 'node:sqlite';
 import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { SCHEMA_V1 } from './schema';
+import { SCHEMA_V1, SCHEMA_V2 } from './schema';
 
 export type AuthDatabase = DatabaseSync;
 
-const CURRENT_USER_VERSION = 1;
+const CURRENT_USER_VERSION = 2;
 
 const MIGRATIONS: Record<number, string> = {
   1: SCHEMA_V1,
+  2: SCHEMA_V2,
 };
 
 export function openDatabase(path: string): AuthDatabase {
