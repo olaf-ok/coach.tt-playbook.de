@@ -1,18 +1,19 @@
 <script lang="ts">
-  import { proStatus, FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
+  import { auth } from '$lib/auth/client.svelte';
+  import { FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
   import { m } from '$lib/paraglide/messages';
 </script>
 
 <section class="pro">
   <h2>{m.settings_pro_title()}</h2>
 
-  <div class="status-card" class:is-pro={proStatus.isPro}>
+  <div class="status-card" class:is-pro={auth.isPro}>
     <div class="status">
-      <span class="badge">{proStatus.isPro ? m.settings_pro_badge_pro() : m.settings_pro_badge_free()}</span>
+      <span class="badge">{auth.isPro ? m.settings_pro_badge_pro() : m.settings_pro_badge_free()}</span>
       <div>
         <p class="label">{m.settings_pro_current_plan()}</p>
         <p class="desc">
-          {#if proStatus.isPro}
+          {#if auth.isPro}
             {m.settings_pro_pro_desc()}
           {:else}
             {m.settings_pro_free_desc({ limit: FREE_EXERCISE_LIMIT })}
@@ -32,17 +33,11 @@
     </ul>
   </div>
 
-  <div class="cta-row">
-    <p class="coming">{m.settings_pro_coming()}</p>
-  </div>
-
-  <details class="dev">
-    <summary>{m.settings_pro_dev_summary()}</summary>
-    <p class="hint">{m.settings_pro_dev_hint()}</p>
-    <button type="button" onclick={() => proStatus.toggle()}>
-      {proStatus.isPro ? m.settings_pro_dev_deactivate() : m.settings_pro_dev_activate()}
-    </button>
-  </details>
+  {#if !auth.isPro}
+    <div class="cta-row">
+      <p class="coming">{m.settings_pro_coming()}</p>
+    </div>
+  {/if}
 </section>
 
 <style>
@@ -129,26 +124,5 @@
     color: var(--color-text-secondary);
     font-size: 13px;
     margin: 0;
-  }
-  .dev {
-    padding-top: 16px;
-    border-top: 1px solid var(--color-border);
-  }
-  .dev summary {
-    cursor: pointer;
-    color: var(--color-text-secondary);
-    font-size: 13px;
-  }
-  .dev .hint {
-    color: var(--color-text-secondary);
-    font-size: 13px;
-    margin: 10px 0;
-  }
-  .dev button {
-    padding: 10px 14px;
-    border-radius: var(--radius-button);
-    background: var(--bg-surface);
-    color: var(--color-text-primary);
-    font-size: 13px;
   }
 </style>

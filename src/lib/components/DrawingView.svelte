@@ -9,7 +9,8 @@
   import { saveExercise, loadExercise } from '$lib/db/exercises';
   import { db } from '$lib/db/database';
   import { tvSession } from '$lib/tv/session.svelte';
-  import { proStatus, FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
+  import { auth } from '$lib/auth/client.svelte';
+  import { FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
   import { m } from '$lib/paraglide/messages';
   import type { Point } from '$lib/types/exercise';
   import { nextSheetState, type SheetState } from './steps-sheet-state';
@@ -85,7 +86,7 @@
 
   async function handleSave() {
     try {
-      if (!proStatus.isPro) {
+      if (!auth.isPro) {
         const existing = await loadExercise(currentExercise.exercise.id);
         if (!existing) {
           const count = await db.exercises.count();
