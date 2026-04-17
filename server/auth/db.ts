@@ -1,16 +1,14 @@
 import BetterSqlite3 from 'better-sqlite3';
-import { mkdirSync, readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import { SCHEMA_V1 } from './schema';
 
 export type AuthDatabase = BetterSqlite3.Database;
 
 const CURRENT_USER_VERSION = 1;
 
 const MIGRATIONS: Record<number, string> = {
-  1: readFileSync(resolve(__dirname, 'schema.sql'), 'utf8'),
+  1: SCHEMA_V1,
 };
 
 export function openDatabase(path: string): AuthDatabase {
