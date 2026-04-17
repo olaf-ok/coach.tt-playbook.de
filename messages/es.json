@@ -231,5 +231,6 @@
   "mobile_tv_dot_aria_unpaired": "TV no conectada",
   "mobile_tab_more": "Más",
   "mobile_sheet_toggle_aria": "Mostrar u ocultar detalles",
-  "settings_hint_pick_left": "Elige una sección de la lista a la izquierda."
+  "settings_hint_pick_left": "Elige una sección de la lista a la izquierda.",
+  "playlists_back_to_list": "A la lista"
 }

@@ -24,6 +24,9 @@
 
   $effect(() => {
     if (selectedId === null && data.playlists.length > 0) {
+      if (typeof window !== 'undefined' && window.matchMedia('(max-width: 767.98px)').matches) {
+        return; // Auf Mobile: erst bei manuellem Tap selektieren
+      }
       selectedId = data.playlists[0].id;
     }
   });
@@ -115,9 +118,13 @@
     if (!selected || selectedExercises.length === 0 || !tvPaired) return;
     playing = true;
   }
+
+  function clearSelection() {
+    selectedId = null;
+  }
 </script>
 
-<section class="playlists-page">
+<section class="playlists-page" class:has-selection={selected !== null}>
   <aside class="left">
     <header class="left-head">
       <h1>{m.playlists_title()}</h1>
@@ -160,6 +167,7 @@
         onPlay={startPlay}
         canPlay={tvPaired && selectedExercises.length > 0}
         playHint={playHint}
+        onBack={clearSelection}
       />
     {:else}
       <div class="empty">
@@ -232,5 +240,16 @@
     padding: 48px;
     text-align: center;
     color: var(--color-text-secondary);
+  }
+  @media (max-width: 767.98px) {
+    .playlists-page {
+      flex-direction: column;
+    }
+    .left, .right {
+      width: 100%;
+      border-right: none;
+    }
+    .has-selection .left { display: none; }
+    .playlists-page:not(.has-selection) .right { display: none; }
   }
 </style>

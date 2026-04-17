@@ -17,6 +17,7 @@
     onPlay?: () => void;
     canPlay?: boolean;
     playHint?: string;
+    onBack?: () => void;
   }
 
   let {
@@ -31,12 +32,23 @@
     onPlay,
     canPlay = false,
     playHint = '',
+    onBack,
   }: Props = $props();
 
   let dragIndex = $state<number | null>(null);
 </script>
 
 <div class="detail">
+  {#if onBack}
+    <button
+      type="button"
+      class="mobile-back"
+      onclick={onBack}
+      aria-label={m.playlists_back_to_list()}
+    >
+      ‹ {m.playlists_back_to_list()}
+    </button>
+  {/if}
   <header class="head">
     <div class="title-row">
       <h2>{playlist.name || m.exercise_unnamed()}</h2>
@@ -206,5 +218,17 @@
     padding: 24px;
     text-align: center;
     color: var(--color-text-secondary);
+  }
+  .mobile-back {
+    display: none;
+    align-self: flex-start;
+    padding: 6px 10px;
+    background: transparent;
+    color: var(--color-accent);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  @media (max-width: 767.98px) {
+    .mobile-back { display: inline-flex; align-items: center; gap: 4px; }
   }
 </style>
