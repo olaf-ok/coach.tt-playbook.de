@@ -5,257 +5,113 @@
 <section class="help">
   <h2>{m.settings_help_title()}</h2>
 
-  <p class="intro">
-    Der TT Playbook Trainer ersetzt das physische Whiteboard in der Halle. Du
-    zeichnest Übungen auf Tablet oder Smartphone und überträgst sie live auf
-    einen TV — mit klar nummerierten Pfeilen, Schlagart-Codes und einer
-    Übungs-Bibliothek, die du jederzeit wieder abrufen kannst.
-  </p>
+  <p class="intro">{m.help_intro()}</p>
 
   <article>
-    <h3>1. Erste Schritte</h3>
+    <h3>{m.help_s1_title()}</h3>
     <ul>
-      <li>
-        <strong>Konto anlegen:</strong> Einstellungen → Account → „Registrieren".
-        E-Mail bestätigen über den Link, der per Mail kommt.
-      </li>
-      <li>
-        <strong>Anmelden:</strong> Mit E-Mail + Passwort einloggen. Im Free-Plan
-        kannst du bis zu 5 Übungen anlegen, eine Trainingsliste führen und alle
-        Zeichen- und TV-Funktionen voll nutzen.
-      </li>
-      <li>
-        <strong>Pro freischalten:</strong> Einstellungen → Pro → Plan wählen
-        (monatlich oder jährlich). Hebt das 5-Übungen-Limit auf, erlaubt
-        unbegrenzt Trainingslisten und eigene Schlagart-Codes (kommt).
-      </li>
+      <li>{@html m.help_s1_register()}</li>
+      <li>{@html m.help_s1_signin()}</li>
+      <li>{@html m.help_s1_pro()}</li>
     </ul>
   </article>
 
   <article>
-    <h3>2. Übung zeichnen</h3>
-    <p>Hauptansicht ist der Tischtennis-Tisch im Hochformat (Spieler unten, Gegner oben).</p>
+    <h3>{m.help_s2_title()}</h3>
+    <p>{m.help_s2_intro()}</p>
     <ul>
-      <li>
-        <strong>Pfeil zeichnen:</strong> Auf den Tisch tippen und ziehen, oder
-        zwei Mal hintereinander tippen (Start + Ziel).
-      </li>
-      <li>
-        <strong>Nummerierung + Farben:</strong> Jeder Pfeil bekommt automatisch
-        die nächste Nummer. Farbe folgt der Nummer:
-        <em>1=Rot, 2=Grün, 3=Gelb, 4=Lila, 5=Orange, 6=Cyan</em>. Ab dem 7. Schlag
-        wiederholen sich die Farben — ein dezenter Hinweis macht das sichtbar.
-      </li>
-      <li>
-        <strong>Schlagart taggen:</strong> Nach dem Zeichnen klappt rechts das
-        Schritte-Panel auf. Wähle dort die Schlagart-Codes (z.B. SAQ, VH-T,
-        RH-BLQ, FLIP, …) — sie werden dreisprachig angezeigt.
-      </li>
-      <li>
-        <strong>Freitext:</strong> Pro Schlag kannst du einen Kommentar
-        ergänzen (z.B. „kurz halten", „auf Außenecke").
-      </li>
-      <li>
-        <strong>Wiederholungen + Dauer:</strong> Im Schritte-Panel oben:
-        Preset-Buttons 5/10/15/20 Wdh. und 5/10/15 Minuten oder freie Eingabe.
-      </li>
-      <li>
-        <strong>Pfeil löschen:</strong> Pfeil antippen → Mülleimer im Panel.
-        Restliche Pfeile werden automatisch neu nummeriert.
-      </li>
-      <li>
-        <strong>Zurück:</strong> „Zurück"-Button (gebogener Pfeil) im
-        Panel-Header — macht den letzten Pfeil rückgängig.
-      </li>
-      <li>
-        <strong>Neue Übung:</strong> „+ Neu"-Button in der Toolbar setzt den
-        Tisch zurück.
-      </li>
+      <li>{@html m.help_s2_draw()}</li>
+      <li>{@html m.help_s2_colors()}</li>
+      <li>{@html m.help_s2_tag()}</li>
+      <li>{@html m.help_s2_freetext()}</li>
+      <li>{@html m.help_s2_reps()}</li>
+      <li>{@html m.help_s2_delete()}</li>
+      <li>{@html m.help_s2_undo()}</li>
+      <li>{@html m.help_s2_new()}</li>
     </ul>
   </article>
 
   <article>
-    <h3>3. Übung speichern</h3>
+    <h3>{m.help_s3_title()}</h3>
     <ul>
-      <li>
-        Name vergeben (Toolbar oben), dann „Speichern". Free-Plan: maximal
-        5 Übungen — beim Versuch, eine sechste zu speichern, erscheint die
-        Pro-Aufforderung.
-      </li>
-      <li>
-        Bestehende Übung bearbeiten + erneut „Speichern" überschreibt sie.
-      </li>
+      <li>{m.help_s3_save()}</li>
+      <li>{m.help_s3_overwrite()}</li>
     </ul>
   </article>
 
   <article>
-    <h3>4. Archiv</h3>
+    <h3>{m.help_s4_title()}</h3>
     <ul>
-      <li>
-        <strong>Übersicht:</strong> Alle gespeicherten Übungen mit Mini-Vorschau
-        (Thumbnail), Name, Anzahl Schläge.
-      </li>
-      <li>
-        <strong>Suchen:</strong> Suchfeld oben filtert nach Name.
-      </li>
-      <li>
-        <strong>Filtern:</strong> Chips nach Schlagart — zeigt nur Übungen, die
-        diesen Code enthalten.
-      </li>
-      <li>
-        <strong>Aktionen pro Übung:</strong> Drei-Punkte-Menü auf der Karte →
-        Umbenennen, Duplizieren, Löschen.
-      </li>
-      <li>
-        <strong>Öffnen:</strong> Karte antippen lädt die Übung zum Bearbeiten.
-      </li>
+      <li>{@html m.help_s4_overview()}</li>
+      <li>{@html m.help_s4_search()}</li>
+      <li>{@html m.help_s4_filter()}</li>
+      <li>{@html m.help_s4_actions()}</li>
+      <li>{@html m.help_s4_open()}</li>
     </ul>
   </article>
 
   <article>
-    <h3>5. Trainingslisten</h3>
-    <p>
-      Bündel mehrerer Übungen, die du nacheinander auf dem TV abspielen kannst —
-      ideal für eine Trainingseinheit.
-    </p>
+    <h3>{m.help_s5_title()}</h3>
+    <p>{m.help_s5_intro()}</p>
     <ul>
-      <li>
-        <strong>Anlegen:</strong> Trainingslisten → „+ Neue Liste" → Name eingeben.
-      </li>
-      <li>
-        <strong>Übungen hinzufügen:</strong> In der Liste „+ Übung hinzufügen" →
-        aus dem Archiv auswählen.
-      </li>
-      <li>
-        <strong>Reihenfolge ändern:</strong> Übungen in der Liste per
-        Drag &amp; Drop verschieben.
-      </li>
-      <li>
-        <strong>Auf TV abspielen:</strong> „Auf TV spielen" startet den Player
-        auf dem verbundenen TV. Vor/Zurück per Buttons oder Pfeiltasten.
-        Schritt-für-Schritt-Navigation innerhalb einer Übung möglich. Escape
-        beendet.
-      </li>
-      <li>
-        Free-Plan: 1 Trainingsliste. Pro: unbegrenzt.
-      </li>
+      <li>{@html m.help_s5_create()}</li>
+      <li>{@html m.help_s5_add()}</li>
+      <li>{@html m.help_s5_reorder()}</li>
+      <li>{@html m.help_s5_play()}</li>
+      <li>{m.help_s5_limit()}</li>
     </ul>
   </article>
 
   <article>
-    <h3>6. TV-Verbindung</h3>
-    <p>
-      Tablet/Smartphone steuert die Anzeige, der TV (oder ein an den TV
-      angeschlossener Laptop/Stick-PC) zeigt die Übung groß an.
-    </p>
+    <h3>{m.help_s6_title()}</h3>
+    <p>{m.help_s6_intro()}</p>
     <ol>
-      <li>
-        Im TV-Browser (Smart-TV, Stick-PC, Laptop am HDMI-Eingang)
-        <code>coach.tt-playbook.de/tv</code> öffnen.
-      </li>
-      <li>Der TV zeigt einen QR-Code und einen vierstelligen Code.</li>
-      <li>
-        Auf dem Tablet/Smartphone: Einstellungen → TV-Verbindung → entweder QR
-        scannen (Kamera-Symbol) oder den Code per Hand eintippen.
-      </li>
-      <li>
-        Sobald verbunden, wird jede Übung, die du zeichnest oder im Archiv
-        öffnest, sofort auf dem TV gezeigt.
-      </li>
-      <li>
-        <strong>Anforderung:</strong> Beide Geräte im selben WLAN.
-      </li>
-      <li>
-        <strong>Theme-Sync:</strong> Wechselst du auf dem Tablet zwischen Hell
-        und Dunkel, schaltet auch der TV mit.
-      </li>
+      <li>{@html m.help_s6_step1()}</li>
+      <li>{m.help_s6_step2()}</li>
+      <li>{m.help_s6_step3()}</li>
+      <li>{m.help_s6_step4()}</li>
+      <li>{@html m.help_s6_step5_wifi()}</li>
+      <li>{@html m.help_s6_step6_theme()}</li>
     </ol>
   </article>
 
   <article>
-    <h3>7. Pro-Abo</h3>
+    <h3>{m.help_s7_title()}</h3>
     <ul>
-      <li>
-        <strong>Free:</strong> 5 Übungen, 1 Trainingsliste, voller Zeichen- und
-        TV-Modus.
-      </li>
-      <li>
-        <strong>Pro:</strong> Unbegrenzte Übungen, unbegrenzte Trainingslisten,
-        eigene Schlagart-Codes (geplant), Cloud-Sync (geplant).
-      </li>
-      <li>
-        <strong>Buchen:</strong> Einstellungen → Pro → Plan-Karte anklicken →
-        Stripe-Checkout abschließen. Direkt zurück zur App, Pro-Status ist
-        sofort aktiv.
-      </li>
-      <li>
-        <strong>Verwalten:</strong> Einstellungen → Account → „Abo verwalten"
-        öffnet das Stripe-Kundenportal: Zahlungsmittel ändern, Rechnungen
-        einsehen, Abo kündigen.
-      </li>
-      <li>
-        <strong>Kündigen:</strong> Abo läuft bis zum Ende der bezahlten Periode
-        weiter — kein Zugriffsverlust mitten im Monat. Danach Free-Modus.
-      </li>
+      <li>{@html m.help_s7_free()}</li>
+      <li>{@html m.help_s7_pro()}</li>
+      <li>{@html m.help_s7_buy()}</li>
+      <li>{@html m.help_s7_manage()}</li>
+      <li>{@html m.help_s7_cancel()}</li>
     </ul>
   </article>
 
   <article>
-    <h3>8. Einstellungen</h3>
+    <h3>{m.help_s8_title()}</h3>
     <ul>
-      <li>
-        <strong>Account:</strong> Anmelden, Registrieren, Passwort zurücksetzen,
-        Pro-Status, Abo verwalten, Logout.
-      </li>
-      <li>
-        <strong>Sprache:</strong> Deutsch, Englisch, Spanisch oder System-Sprache.
-        Wirkt auf die App, die Schlagart-Codes und die E-Mails.
-      </li>
-      <li>
-        <strong>TV-Verbindung:</strong> QR scannen, Code eingeben, Verbindung
-        trennen.
-      </li>
-      <li>
-        <strong>Anzeige:</strong> Hell, Dunkel oder System-Modus.
-      </li>
-      <li>
-        <strong>Pro:</strong> Plan buchen, Pro-Status sehen.
-      </li>
-      <li>
-        <strong>Über:</strong> App-Version + Impressum.
-      </li>
+      <li>{@html m.help_s8_account()}</li>
+      <li>{@html m.help_s8_language()}</li>
+      <li>{@html m.help_s8_tv()}</li>
+      <li>{@html m.help_s8_display()}</li>
+      <li>{@html m.help_s8_pro()}</li>
+      <li>{@html m.help_s8_help()}</li>
+      <li>{@html m.help_s8_about()}</li>
     </ul>
   </article>
 
   <article>
-    <h3>9. Tipps für die Halle</h3>
+    <h3>{m.help_s9_title()}</h3>
     <ul>
-      <li>
-        Tablet vor dem Training mit dem TV pairen — die Verbindung bleibt für
-        die ganze Einheit stehen.
-      </li>
-      <li>
-        Häufig genutzte Übungen einmal anlegen und in eine Trainingsliste
-        ziehen — beim nächsten Training nur noch „Auf TV spielen".
-      </li>
-      <li>
-        Im Schritte-Panel den Freitext nutzen, um Coaching-Hinweise pro Schlag
-        zu hinterlegen („Tisch verlassen", „kurzer Aufschlag").
-      </li>
-      <li>
-        Helle Hallen → Anzeige auf Hell. Dunkle Hallen → Dunkel. Das Tablet
-        steuert beides für TV mit.
-      </li>
+      <li>{m.help_s9_pair_first()}</li>
+      <li>{m.help_s9_lists()}</li>
+      <li>{m.help_s9_freetext()}</li>
+      <li>{m.help_s9_theme()}</li>
     </ul>
   </article>
 
   <article>
-    <h3>10. Hilfe &amp; Kontakt</h3>
-    <p>
-      Fragen, Wünsche, Probleme: <a href="mailto:info@ok-marked.com">info@ok-marked.com</a>.
-      Beim Melden eines Bugs hilft eine kurze Beschreibung, was du tun wolltest
-      und was statt dessen passiert ist.
-    </p>
+    <h3>{m.help_s10_title()}</h3>
+    <p>{@html m.help_s10_contact()}</p>
   </article>
 </section>
 
@@ -311,15 +167,15 @@
   article p:last-child {
     margin-bottom: 0;
   }
-  strong {
+  :global(.help strong) {
     color: var(--color-text-primary);
     font-weight: 600;
   }
-  em {
+  :global(.help em) {
     color: var(--color-text-secondary);
     font-style: normal;
   }
-  code {
+  :global(.help code) {
     background: var(--bg-elevated);
     border: 1px solid var(--color-border);
     border-radius: 4px;
@@ -328,11 +184,11 @@
     font-family: ui-monospace, monospace;
     color: var(--color-text-primary);
   }
-  a {
+  :global(.help a) {
     color: var(--color-accent);
     text-decoration: none;
   }
-  a:hover {
+  :global(.help a:hover) {
     text-decoration: underline;
   }
 
