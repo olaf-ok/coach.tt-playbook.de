@@ -25,3 +25,9 @@ Thumbs.db
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .superpowers/
+
+# Auth-Datenbank (persistent, läuft mit)
+data/auth.db
+data/auth.db-journal
+data/auth.db-wal
+data/auth.db-shm

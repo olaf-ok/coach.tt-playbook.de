@@ -28,7 +28,7 @@ export default defineConfig({
 		expect: { requireAssertions: true },
 		environment: 'node',
 		setupFiles: ['src/test-setup.ts'],
-		include: ['src/**/*.{test,spec}.{js,ts}'],
+		include: ['src/**/*.{test,spec}.{js,ts}', 'server/**/*.{test,spec}.{js,ts}'],
 		exclude: ['src/**/*.svelte.{test,spec}.{js,ts}']
 	}
 });
