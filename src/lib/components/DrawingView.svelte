@@ -20,15 +20,6 @@
   let paywallOpen = $state(false);
   let sheetState = $state<SheetState>('peek');
 
-  // Auf Mobile: Sheet öffnet auto wenn ein Stroke selektiert wird
-  $effect(() => {
-    if (!selectedStrokeId) return;
-    if (typeof window === 'undefined') return;
-    if (window.matchMedia('(max-width: 767.98px)').matches) {
-      sheetState = nextSheetState(sheetState, 'open');
-    }
-  });
-
   function toggleSheet() {
     sheetState = nextSheetState(sheetState, 'toggle');
   }
