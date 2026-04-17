@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { auth } from '$lib/auth/client.svelte';
+  import { m } from '$lib/paraglide/messages';
 
   let status = $state<'loading' | 'error'>('loading');
   let errorMessage = $state('');
@@ -22,10 +23,10 @@
         return;
       }
       const body = await res.json().catch(() => ({}));
-      errorMessage = body.error ?? 'Link ungültig oder abgelaufen.';
+      errorMessage = body.error ?? m.verify_token_error_generic();
       status = 'error';
     } catch {
-      errorMessage = 'Verbindung fehlgeschlagen.';
+      errorMessage = m.verify_token_error_connection();
       status = 'error';
     }
   });
@@ -33,11 +34,11 @@
 
 <section class="page">
   {#if status === 'loading'}
-    <p>E-Mail wird bestätigt…</p>
+    <p>{m.verify_token_checking()}</p>
   {:else}
-    <h1>Bestätigung fehlgeschlagen</h1>
+    <h1>{m.verify_token_failed_title()}</h1>
     <p>{errorMessage}</p>
-    <a href="/verify-email">Neue Bestätigungs-Mail anfordern</a>
+    <a href="/verify-email">{m.verify_token_resend_link()}</a>
   {/if}
 </section>
 

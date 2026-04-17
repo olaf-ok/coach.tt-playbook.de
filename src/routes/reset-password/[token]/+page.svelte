@@ -2,6 +2,7 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { auth } from '$lib/auth/client.svelte';
+  import { m } from '$lib/paraglide/messages';
 
   let password = $state('');
   let confirm = $state('');
@@ -28,9 +29,9 @@
         return;
       }
       const body = await res.json().catch(() => ({}));
-      error = body.error ?? 'Zurücksetzen fehlgeschlagen.';
+      error = body.error ?? m.reset_error_generic();
     } catch {
-      error = 'Verbindung fehlgeschlagen.';
+      error = m.reset_error_connection();
     } finally {
       busy = false;
     }
@@ -38,22 +39,22 @@
 </script>
 
 <section class="page">
-  <h1>Neues Passwort setzen</h1>
+  <h1>{m.reset_title()}</h1>
   <form onsubmit={submit}>
     <label>
-      <span>Neues Passwort (min. 10 Zeichen)</span>
+      <span>{m.reset_label_new()}</span>
       <input type="password" bind:value={password} autocomplete="new-password" minlength="10" required />
     </label>
     <label>
-      <span>Passwort wiederholen</span>
+      <span>{m.reset_label_confirm()}</span>
       <input type="password" bind:value={confirm} autocomplete="new-password" minlength="10" required />
     </label>
     {#if password && confirm && password !== confirm}
-      <p class="error">Passwörter stimmen nicht überein.</p>
+      <p class="error">{m.reset_error_mismatch()}</p>
     {/if}
     {#if error}<p class="error">{error}</p>{/if}
     <button type="submit" disabled={!canSubmit}>
-      {busy ? 'Wird gespeichert…' : 'Passwort setzen'}
+      {busy ? m.reset_submit_busy() : m.reset_submit()}
     </button>
   </form>
 </section>

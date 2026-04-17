@@ -1,10 +1,25 @@
 <script lang="ts">
   import { auth } from '$lib/auth/client.svelte';
   import { page } from '$app/stores';
+  import { m } from '$lib/paraglide/messages';
 
   const email = $derived($page.url.searchParams.get('email') ?? '');
   let sending = $state(false);
   let sent = $state(false);
+
+  function escapeHtml(s: string): string {
+    return s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+  const introHtml = $derived(
+    m.verify_email_intro({
+      email: `<strong>${escapeHtml(email || m.verify_email_fallback_address())}</strong>`,
+    }),
+  );
 
   async function resend() {
     if (!email) return;
@@ -16,13 +31,13 @@
 </script>
 
 <section class="page">
-  <h1>Check deine Mails</h1>
-  <p>Wir haben einen Bestätigungs-Link an <strong>{email || 'deine Adresse'}</strong> geschickt.</p>
-  <p class="muted">Klicke auf den Link in der Mail, um dein Konto zu aktivieren. Der Link läuft in 24 Stunden ab.</p>
+  <h1>{m.verify_email_title()}</h1>
+  <p>{@html introHtml}</p>
+  <p class="muted">{m.verify_email_hint()}</p>
 
   {#if email}
     <button type="button" onclick={resend} disabled={sending || sent}>
-      {#if sent}Erneut gesendet{:else if sending}Wird gesendet…{:else}Mail erneut senden{/if}
+      {#if sent}{m.verify_email_resent()}{:else if sending}{m.verify_email_resending()}{:else}{m.verify_email_resend()}{/if}
     </button>
   {/if}
 </section>

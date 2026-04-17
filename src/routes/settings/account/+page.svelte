@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { auth } from '$lib/auth/client.svelte';
+  import { m } from '$lib/paraglide/messages';
 
   type Mode = 'login' | 'signup' | 'forgot';
   let mode = $state<Mode>('login');
@@ -28,9 +29,9 @@
   }
 
   function formatPro(proUntil: number | null): string {
-    if (!proUntil || proUntil <= Date.now()) return 'Free';
+    if (!proUntil || proUntil <= Date.now()) return m.account_badge_free();
     const d = new Date(proUntil);
-    return `Pro bis ${d.toLocaleDateString('de-DE')}`;
+    return m.account_badge_pro_until({ date: d.toLocaleDateString('de-DE') });
   }
 
   async function submit(e: Event) {
@@ -43,8 +44,8 @@
       if (mode === 'login') {
         const res = await auth.login(email, password);
         if (!res.ok) {
-          error = res.error ?? 'Login fehlgeschlagen';
-          if (res.canResend) error += ' (Mail erneut senden?)';
+          error = res.error ?? m.account_error_login_failed();
+          if (res.canResend) error += ' ' + m.account_error_resend_hint();
         } else {
           email = '';
           password = '';
@@ -52,13 +53,13 @@
       } else if (mode === 'signup') {
         const res = await auth.signup(email, password);
         if (!res.ok) {
-          error = res.error ?? 'Registrierung fehlgeschlagen';
+          error = res.error ?? m.account_error_signup_failed();
         } else {
           goto(`/verify-email?email=${encodeURIComponent(email)}`);
         }
       } else if (mode === 'forgot') {
         await auth.requestReset(email);
-        info = 'Falls registriert, haben wir einen Reset-Link geschickt.';
+        info = m.account_info_reset_sent();
       }
     } finally {
       busy = false;
@@ -72,7 +73,7 @@
 
 <section class="account">
   <header class="head">
-    <h2>Account</h2>
+    <h2>{m.account_title()}</h2>
   </header>
 
   {#if auth.user}
@@ -80,28 +81,28 @@
       <div class="avatar">{initial(auth.user.email)}</div>
       <div class="email">{auth.user.email}</div>
       {#if !auth.user.emailVerified}
-        <span class="badge warning">E-Mail unbestätigt</span>
+        <span class="badge warning">{m.account_badge_email_unverified()}</span>
       {/if}
       <span class="badge" class:pro={auth.isPro}>{formatPro(auth.user.proUntil)}</span>
     </div>
 
     <div class="actions">
-      <button type="button" class="btn danger" onclick={logout}>Ausloggen</button>
+      <button type="button" class="btn danger" onclick={logout}>{m.account_logout()}</button>
     </div>
   {:else}
     <div class="tabs" role="tablist">
-      <button class:active={mode === 'login'} onclick={() => setMode('login')}>Anmelden</button>
-      <button class:active={mode === 'signup'} onclick={() => setMode('signup')}>Registrieren</button>
+      <button class:active={mode === 'login'} onclick={() => setMode('login')}>{m.account_tab_login()}</button>
+      <button class:active={mode === 'signup'} onclick={() => setMode('signup')}>{m.account_tab_signup()}</button>
     </div>
 
     <form onsubmit={submit}>
       <label>
-        <span>E-Mail</span>
+        <span>{m.account_field_email()}</span>
         <input type="email" bind:value={email} autocomplete="email" required />
       </label>
       {#if mode !== 'forgot'}
         <label>
-          <span>Passwort (min. 10 Zeichen)</span>
+          <span>{m.account_password_min_10()}</span>
           <input
             type="password"
             bind:value={password}
@@ -114,16 +115,16 @@
       {#if error}<p class="error">{error}</p>{/if}
       {#if info}<p class="info">{info}</p>{/if}
       <button type="submit" class="btn primary" disabled={!canSubmit}>
-        {#if busy}Wird verarbeitet…{:else if mode === 'login'}Anmelden{:else if mode === 'signup'}Registrieren{:else}Reset-Link senden{/if}
+        {#if busy}{m.account_submit_busy()}{:else if mode === 'login'}{m.account_submit_login()}{:else if mode === 'signup'}{m.account_submit_signup()}{:else}{m.account_submit_forgot()}{/if}
       </button>
       {#if mode === 'login'}
         <p class="link">
-          <button type="button" class="linkbtn" onclick={() => setMode('forgot')}>Passwort vergessen?</button>
+          <button type="button" class="linkbtn" onclick={() => setMode('forgot')}>{m.account_link_forgot()}</button>
         </p>
       {/if}
       {#if mode === 'forgot'}
         <p class="link">
-          <button type="button" class="linkbtn" onclick={() => setMode('login')}>Zurück zum Login</button>
+          <button type="button" class="linkbtn" onclick={() => setMode('login')}>{m.account_link_back_to_login()}</button>
         </p>
       {/if}
     </form>
