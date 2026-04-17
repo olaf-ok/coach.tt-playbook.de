@@ -64,6 +64,17 @@
   {:else}
     <p class="sub">{m.settings_tv_pair_hint()}</p>
 
+    <details class="howto">
+      <summary>{m.settings_tv_howto_title()}</summary>
+      <ol>
+        <li>{m.settings_tv_howto_step1()}</li>
+        <li>{m.settings_tv_howto_step2()}</li>
+        <li>{m.settings_tv_howto_step3()}</li>
+        <li>{m.settings_tv_howto_step4()}</li>
+        <li>{m.settings_tv_howto_step5()}</li>
+      </ol>
+    </details>
+
     <button type="button" class="primary scan-btn" onclick={() => (scannerOpen = true)}>
       {m.settings_tv_scan_button()}
     </button>
@@ -218,6 +229,39 @@
   }
   a {
     color: var(--color-accent);
+  }
+  .howto {
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-panel);
+    padding: 14px 18px;
+  }
+  .howto summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .howto summary::before {
+    content: '▸';
+    color: var(--color-text-secondary);
+    transition: transform 0.15s;
+  }
+  .howto[open] summary::before {
+    transform: rotate(90deg);
+  }
+  .howto ol {
+    margin: 12px 0 0;
+    padding: 0 0 0 22px;
+    color: var(--color-text-primary);
+    font-size: 14px;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   @media (max-width: 767.98px) {

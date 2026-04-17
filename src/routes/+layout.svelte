@@ -2,14 +2,12 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { invalidateAll } from '$app/navigation';
 	import favicon from '$lib/assets/favicon.svg';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import MobileTabBar from '$lib/components/MobileTabBar.svelte';
 	import MobileHeader from '$lib/components/MobileHeader.svelte';
 	import Splash from '$lib/splash/Splash.svelte';
 	import { shouldShowSplash, SPLASH_SESSION_KEY } from '$lib/splash/splash-state';
-	import { seedIfEmpty } from '$lib/db/seed';
 	import { theme } from '$lib/theme/store.svelte';
 	import { tvSession } from '$lib/tv/session.svelte';
 	import { auth } from '$lib/auth/client.svelte';
@@ -30,13 +28,6 @@
 		if (shouldShowSplash(sessionStorage, $page.url.pathname)) {
 			sessionStorage.setItem(SPLASH_SESSION_KEY, '1');
 			showSplash = true;
-		}
-
-		try {
-			const seeded = await seedIfEmpty();
-			if (seeded) await invalidateAll();
-		} catch (err) {
-			console.warn('seed failed', err);
 		}
 	});
 
