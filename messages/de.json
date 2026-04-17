@@ -275,5 +275,7 @@
   "settings_about_imprint_represented": "Vertretungsberechtigt",
   "settings_about_imprint_phone": "Telefon",
   "settings_about_imprint_email": "E-Mail",
-  "settings_about_imprint_web": "Web"
+  "settings_about_imprint_web": "Web",
+  "settings_nav_help": "Hilfe",
+  "settings_help_title": "Bedienungsanleitung"
 }
