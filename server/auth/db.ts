@@ -1,5 +1,5 @@
 import BetterSqlite3 from 'better-sqlite3';
-import { readFileSync } from 'node:fs';
+import { mkdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
@@ -14,6 +14,9 @@ const MIGRATIONS: Record<number, string> = {
 };
 
 export function openDatabase(path: string): AuthDatabase {
+  if (path !== ':memory:') {
+    mkdirSync(dirname(path), { recursive: true });
+  }
   const db = new BetterSqlite3(path);
   db.pragma('journal_mode = WAL');
   db.pragma('foreign_keys = ON');
@@ -43,6 +46,8 @@ function migrate(db: AuthDatabase): void {
 
 let singleton: AuthDatabase | null = null;
 
+// Should be called once at server boot (see server/production.ts) so that
+// subsequent concurrent request handlers never race to initialize.
 export function getDatabase(): AuthDatabase {
   if (singleton) return singleton;
   const path = process.env.AUTH_DB_PATH ?? resolve(process.cwd(), 'data', 'auth.db');
