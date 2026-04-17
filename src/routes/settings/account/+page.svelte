@@ -1,306 +1,180 @@
 <script lang="ts">
-  import { mockUser } from '$lib/auth/mock-user.svelte';
-  import { proStatus } from '$lib/pro/status.svelte';
-  import { m } from '$lib/paraglide/messages';
+  import { goto } from '$app/navigation';
+  import { auth } from '$lib/auth/client.svelte';
 
-  type Mode = 'login' | 'signup';
+  type Mode = 'login' | 'signup' | 'forgot';
   let mode = $state<Mode>('login');
   let email = $state('');
   let password = $state('');
   let busy = $state(false);
   let error = $state<string | null>(null);
+  let info = $state<string | null>(null);
 
+  const emailValid = $derived(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
   const canSubmit = $derived(
-    email.includes('@') && password.length >= 6 && !busy,
+    mode === 'forgot'
+      ? emailValid && !busy
+      : emailValid && password.length >= 10 && !busy,
   );
+
+  function initial(e: string): string {
+    return (e[0] ?? '?').toUpperCase();
+  }
+
+  function formatPro(proUntil: number | null): string {
+    if (!proUntil || proUntil <= Date.now()) return 'Free';
+    const d = new Date(proUntil);
+    return `Pro bis ${d.toLocaleDateString('de-DE')}`;
+  }
 
   async function submit(e: Event) {
     e.preventDefault();
     if (!canSubmit) return;
     error = null;
+    info = null;
     busy = true;
     try {
-      if (mode === 'login') await mockUser.login(email);
-      else await mockUser.signup(email);
-      email = '';
-      password = '';
-    } catch (err) {
-      error = err instanceof Error ? err.message : m.account_error_generic();
+      if (mode === 'login') {
+        const res = await auth.login(email, password);
+        if (!res.ok) {
+          error = res.error ?? 'Login fehlgeschlagen';
+          if (res.canResend) error += ' (Mail erneut senden?)';
+        } else {
+          email = '';
+          password = '';
+        }
+      } else if (mode === 'signup') {
+        const res = await auth.signup(email, password);
+        if (!res.ok) {
+          error = res.error ?? 'Registrierung fehlgeschlagen';
+        } else {
+          goto(`/verify-email?email=${encodeURIComponent(email)}`);
+        }
+      } else if (mode === 'forgot') {
+        await auth.requestReset(email);
+        info = 'Falls registriert, haben wir einen Reset-Link geschickt.';
+      }
     } finally {
       busy = false;
     }
   }
 
-  function logout() {
-    mockUser.logout();
-  }
-
-  function initial(e: string): string {
-    return (e[0] ?? '?').toUpperCase();
+  async function logout() {
+    await auth.logout();
   }
 </script>
 
 <section class="account">
   <header class="head">
-    <h2>{m.account_title()}</h2>
+    <h2>Account</h2>
   </header>
 
-  {#if mockUser.loggedIn && mockUser.current}
+  {#if auth.user}
     <div class="profile">
-      <div class="avatar">{initial(mockUser.current.email)}</div>
-      <div class="email">{mockUser.current.email}</div>
-      {#if proStatus.isPro}
-        <span class="badge pro">{m.account_badge_pro()}</span>
-      {:else}
-        <span class="badge">{m.account_badge_free()}</span>
+      <div class="avatar">{initial(auth.user.email)}</div>
+      <div class="email">{auth.user.email}</div>
+      {#if !auth.user.emailVerified}
+        <span class="badge warning">E-Mail unbestätigt</span>
       {/if}
-    </div>
-
-    <div class="card">
-      <h3>{m.account_subscription_heading()}</h3>
-      <p class="muted">{m.account_subscription_hint()}</p>
-      <button type="button" class="btn secondary" disabled>{m.account_subscription_manage()}</button>
+      <span class="badge" class:pro={auth.isPro}>{formatPro(auth.user.proUntil)}</span>
     </div>
 
     <div class="actions">
-      <button type="button" class="btn danger" onclick={logout}>{m.account_logout()}</button>
+      <button type="button" class="btn danger" onclick={logout}>Ausloggen</button>
     </div>
   {:else}
     <div class="tabs" role="tablist">
-      <button
-        type="button"
-        role="tab"
-        class:active={mode === 'login'}
-        aria-selected={mode === 'login'}
-        onclick={() => (mode = 'login')}
-      >
-        {m.account_tab_login()}
-      </button>
-      <button
-        type="button"
-        role="tab"
-        class:active={mode === 'signup'}
-        aria-selected={mode === 'signup'}
-        onclick={() => (mode = 'signup')}
-      >
-        {m.account_tab_signup()}
-      </button>
+      <button class:active={mode === 'login'} onclick={() => (mode = 'login')}>Anmelden</button>
+      <button class:active={mode === 'signup'} onclick={() => (mode = 'signup')}>Registrieren</button>
     </div>
 
-    <form class="form" onsubmit={submit}>
-      <label class="field">
-        <span>{m.account_field_email()}</span>
-        <input
-          type="email"
-          bind:value={email}
-          autocomplete="email"
-          required
-          placeholder={m.account_field_email_placeholder()}
-        />
+    <form onsubmit={submit}>
+      <label>
+        <span>E-Mail</span>
+        <input type="email" bind:value={email} autocomplete="email" required />
       </label>
-      <label class="field">
-        <span>{m.account_field_password()}</span>
-        <input
-          type="password"
-          bind:value={password}
-          autocomplete={mode === 'login' ? 'current-password' : 'new-password'}
-          required
-          minlength="6"
-          placeholder={m.account_field_password_placeholder()}
-        />
-      </label>
-
-      {#if error}
-        <p class="error">{error}</p>
+      {#if mode !== 'forgot'}
+        <label>
+          <span>Passwort (min. 10 Zeichen)</span>
+          <input
+            type="password"
+            bind:value={password}
+            autocomplete={mode === 'login' ? 'current-password' : 'new-password'}
+            minlength="10"
+            required
+          />
+        </label>
       {/if}
-
+      {#if error}<p class="error">{error}</p>{/if}
+      {#if info}<p class="info">{info}</p>{/if}
       <button type="submit" class="btn primary" disabled={!canSubmit}>
-        {#if busy}
-          <span class="spinner" aria-hidden="true"></span>
-          {mode === 'login' ? m.account_submit_login_busy() : m.account_submit_signup_busy()}
-        {:else}
-          {mode === 'login' ? m.account_submit_login() : m.account_submit_signup()}
-        {/if}
+        {#if busy}Wird verarbeitet…{:else if mode === 'login'}Anmelden{:else if mode === 'signup'}Registrieren{:else}Reset-Link senden{/if}
       </button>
-
-      <p class="note">{m.account_note()}</p>
+      {#if mode === 'login'}
+        <p class="link">
+          <button type="button" class="linkbtn" onclick={() => (mode = 'forgot')}>Passwort vergessen?</button>
+        </p>
+      {/if}
+      {#if mode === 'forgot'}
+        <p class="link">
+          <button type="button" class="linkbtn" onclick={() => (mode = 'login')}>Zurück zum Login</button>
+        </p>
+      {/if}
     </form>
   {/if}
 </section>
 
 <style>
-  .account {
-    padding: 32px;
-    max-width: 520px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .head h2 {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    margin: 0;
-  }
+  .account { padding: 32px; max-width: 520px; display: flex; flex-direction: column; gap: 20px; }
+  .head h2 { font-size: 22px; font-weight: 600; color: var(--color-text-primary); margin: 0; }
   .profile {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 20px;
-    background: var(--bg-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-panel);
+    display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+    padding: 20px; background: var(--bg-surface);
+    border: 1px solid var(--color-border); border-radius: var(--radius-panel);
   }
   .avatar {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--color-accent);
-    color: #fff;
-    font-size: 22px;
-    font-weight: 600;
-    display: grid;
-    place-items: center;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--color-accent); color: #fff;
+    font-size: 22px; font-weight: 600; display: grid; place-items: center;
   }
-  .email {
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--color-text-primary);
-  }
+  .email { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
   .badge {
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: var(--bg-elevated);
-    color: var(--color-text-secondary);
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    font-size: 12px; padding: 4px 10px; border-radius: 999px;
+    background: var(--bg-elevated); color: var(--color-text-secondary);
+    letter-spacing: 1px; text-transform: uppercase;
   }
-  .badge.pro {
-    background: var(--color-success);
-    color: #fff;
-  }
-  .card {
-    padding: 16px 20px;
-    background: var(--bg-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-panel);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .card h3 {
-    font-size: 15px;
-    font-weight: 600;
-    margin: 0;
-    color: var(--color-text-primary);
-  }
-  .muted {
-    color: var(--color-text-secondary);
-    font-size: 13px;
-    margin: 0;
-  }
+  .badge.pro { background: var(--color-success); color: #fff; }
+  .badge.warning { background: var(--color-danger); color: #fff; }
   .tabs {
-    display: flex;
-    gap: 4px;
-    padding: 4px;
-    background: var(--bg-surface);
-    border-radius: var(--radius-button);
-    border: 1px solid var(--color-border);
-    align-self: flex-start;
+    display: flex; gap: 4px; padding: 4px;
+    background: var(--bg-surface); border-radius: var(--radius-button);
+    border: 1px solid var(--color-border); align-self: flex-start;
   }
   .tabs button {
-    padding: 8px 16px;
-    border-radius: 6px;
-    background: transparent;
-    color: var(--color-text-secondary);
-    font-size: 14px;
-    font-weight: 500;
+    padding: 8px 16px; border-radius: 6px; background: transparent;
+    color: var(--color-text-secondary); font-size: 14px; font-weight: 500;
   }
-  .tabs button.active {
-    background: var(--bg-elevated);
-    color: var(--color-text-primary);
-  }
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .field span {
-    font-size: 13px;
-    color: var(--color-text-secondary);
-  }
-  .field input {
-    padding: 10px 12px;
-    background: var(--bg-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-button);
-    color: var(--color-text-primary);
-    font-size: 15px;
-  }
-  .field input:focus {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 0;
+  .tabs button.active { background: var(--bg-elevated); color: var(--color-text-primary); }
+  form { display: flex; flex-direction: column; gap: 14px; }
+  label { display: flex; flex-direction: column; gap: 6px; }
+  label span { font-size: 13px; color: var(--color-text-secondary); }
+  input {
+    padding: 10px 12px; background: var(--bg-surface);
+    border: 1px solid var(--color-border); border-radius: var(--radius-button);
+    color: var(--color-text-primary); font-size: 15px;
   }
   .btn {
-    padding: 12px 16px;
-    border-radius: var(--radius-button);
-    font-weight: 600;
-    font-size: 15px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    padding: 12px 16px; border-radius: var(--radius-button);
+    font-weight: 600; font-size: 15px;
   }
-  .btn.primary {
-    background: var(--color-accent);
-    color: #fff;
-  }
-  .btn.secondary {
-    background: var(--bg-elevated);
-    color: var(--color-text-primary);
-    border: 1px solid var(--color-border);
-  }
-  .btn.danger {
-    background: var(--color-danger);
-    color: #fff;
-  }
-  .btn[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  .actions {
-    display: flex;
-    justify-content: flex-start;
-  }
-  .note {
-    font-size: 12px;
-    color: var(--color-text-secondary);
-    margin: 0;
-  }
-  .error {
-    color: var(--color-danger);
-    font-size: 13px;
-    margin: 0;
-  }
-  .spinner {
-    width: 14px;
-    height: 14px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    display: inline-block;
-  }
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
+  .btn.primary { background: var(--color-accent); color: #fff; }
+  .btn.danger { background: var(--color-danger); color: #fff; }
+  .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+  .error { color: var(--color-danger); font-size: 13px; margin: 0; }
+  .info { color: var(--color-text-secondary); font-size: 13px; margin: 0; }
+  .link { margin: 0; font-size: 13px; }
+  .linkbtn {
+    background: none; color: var(--color-accent); padding: 0;
+    text-decoration: underline; cursor: pointer;
   }
 </style>

@@ -12,6 +12,7 @@
 	import { seedIfEmpty } from '$lib/db/seed';
 	import { theme } from '$lib/theme/store.svelte';
 	import { tvSession } from '$lib/tv/session.svelte';
+	import { auth } from '$lib/auth/client.svelte';
 
 	let { children } = $props();
 
@@ -22,6 +23,7 @@
 
 	onMount(async () => {
 		theme.init();
+		await auth.init();
 
 		if (shouldShowSplash(sessionStorage, $page.url.pathname)) {
 			sessionStorage.setItem(SPLASH_SESSION_KEY, '1');
