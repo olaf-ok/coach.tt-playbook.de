@@ -9,6 +9,16 @@ import { resolve } from 'node:path';
 import { WebSocketServer, WebSocket } from 'ws';
 import { RoomRegistry } from '../src/lib/tv/rooms';
 import type { ClientMessage, PeerHandle, ServerMessage } from '../src/lib/tv/types';
+import { getDatabase } from './auth/db';
+
+// Trigger DB open + migrations at boot
+try {
+  getDatabase();
+  console.log('[auth] database initialized');
+} catch (err) {
+  console.error('[auth] database init failed:', err);
+  process.exit(1);
+}
 
 const PORT = Number(process.env.PORT ?? 3000);
 
