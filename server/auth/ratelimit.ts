@@ -40,3 +40,11 @@ export function checkAndConsume(db: AuthDatabase, action: Action, key: string): 
   db.prepare(`UPDATE rate_limits SET count = count + 1 WHERE key = ?`).run(compositeKey);
   return true;
 }
+
+// rate_limits grows with every unique (action, key) combination. Call periodically
+// to bound the table — safe to run any time since stale rows don't affect live
+// counting (checkAndConsume rewrites them via INSERT OR REPLACE on expiry).
+export function cleanupExpiredRateLimits(db: AuthDatabase): number {
+  const result = db.prepare(`DELETE FROM rate_limits WHERE window_end <= ?`).run(Date.now());
+  return result.changes;
+}

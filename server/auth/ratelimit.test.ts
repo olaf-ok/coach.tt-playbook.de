@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { openDatabase, type AuthDatabase } from './db';
-import { checkAndConsume, LIMITS } from './ratelimit';
+import { checkAndConsume, cleanupExpiredRateLimits, LIMITS } from './ratelimit';
 
 describe('ratelimit', () => {
   let db: AuthDatabase;
@@ -51,5 +51,17 @@ describe('ratelimit', () => {
     expect(LIMITS.reset).toBeDefined();
     expect(LIMITS.resendVerification).toBeDefined();
     expect(LIMITS.login).toBeDefined();
+  });
+
+  it('cleanupExpiredRateLimits entfernt nur abgelaufene Counter', () => {
+    checkAndConsume(db, 'login', 'ip:active');
+    checkAndConsume(db, 'login', 'ip:stale-1');
+    checkAndConsume(db, 'login', 'ip:stale-2');
+    // expire two of three
+    db.prepare(`UPDATE rate_limits SET window_end = ? WHERE key LIKE 'login:ip:stale-%'`).run(Date.now() - 1000);
+
+    const removed = cleanupExpiredRateLimits(db);
+    expect(removed).toBe(2);
+    expect(db.prepare(`SELECT COUNT(*) AS n FROM rate_limits`).get()).toEqual({ n: 1 });
   });
 });
