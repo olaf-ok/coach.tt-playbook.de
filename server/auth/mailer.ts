@@ -2,7 +2,10 @@ import { Resend } from 'resend';
 
 const APP_URL = () => process.env.APP_URL ?? 'https://coach.tt-playbook.de';
 const MAIL_FROM = () => process.env.MAIL_FROM ?? 'TT Playbook <noreply@tt-playbook.de>';
-const MAIL_MODE = () => process.env.MAIL_MODE ?? 'resend';
+// MAIL_MODE=console in dev (logs link to server console, no API call).
+// In prod we require Resend explicitly so a missing env var never silently swallows mail.
+const MAIL_MODE = () =>
+  process.env.MAIL_MODE ?? (process.env.NODE_ENV === 'production' ? 'resend' : 'console');
 
 let resendClient: Resend | null = null;
 function getResend(): Resend {
