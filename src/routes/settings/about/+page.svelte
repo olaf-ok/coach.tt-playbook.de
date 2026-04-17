@@ -12,14 +12,9 @@
     <dt>{m.settings_about_version()}</dt>
     <dd>{m.settings_about_version_value()}</dd>
 
-    <dt>{m.settings_about_tv_endpoint()}</dt>
-    <dd><a href="/tv" target="_blank" rel="noopener">/tv</a></dd>
-
-    <dt>{m.settings_about_built_with()}</dt>
-    <dd>{m.settings_about_stack()}</dd>
+    <dt>{m.settings_about_imprint()}</dt>
+    <dd>TT Playbook · OK MARKED LLC</dd>
   </dl>
-
-  <p class="hint">{m.settings_about_hint()}</p>
 </section>
 
 <style>
@@ -51,13 +46,5 @@
     color: var(--color-text-primary);
     font-size: 14px;
     margin: 0;
-  }
-  .hint {
-    color: var(--color-text-secondary);
-    font-size: 14px;
-    margin: 0;
-  }
-  a {
-    color: var(--color-accent);
   }
 </style>

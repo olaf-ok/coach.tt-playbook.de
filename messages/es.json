@@ -270,5 +270,6 @@
   "settings_tv_howto_step2": "En el televisor aparecen un código QR y un código numérico de cuatro dígitos.",
   "settings_tv_howto_step3": "Aquí, en la tablet o el móvil, escanea el código QR o escribe el código de cuatro dígitos.",
   "settings_tv_howto_step4": "Una vez emparejados, cada ejercicio que dibujes o abras desde el archivo se muestra al instante en el televisor a pantalla completa — ideal para entrenar en pista.",
-  "settings_tv_howto_step5": "La tablet y el televisor deben estar en la misma red Wi-Fi. La conexión se mantiene hasta que desconectes o cierres la pestaña del televisor."
+  "settings_tv_howto_step5": "La tablet y el televisor deben estar en la misma red Wi-Fi. La conexión se mantiene hasta que desconectes o cierres la pestaña del televisor.",
+  "settings_about_imprint": "Aviso legal"
 }

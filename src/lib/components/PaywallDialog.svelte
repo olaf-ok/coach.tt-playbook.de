@@ -2,7 +2,7 @@
   import { FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
   import { m } from '$lib/paraglide/messages';
   import { billing } from '$lib/billing/client.svelte';
-  import { PRICE_DISPLAY, CURRENCY_LABEL, type Plan } from '$lib/billing/prices';
+  import { PRICE_DISPLAY, type Plan } from '$lib/billing/prices';
 
   interface Props {
     onClose: () => void;
@@ -29,9 +29,6 @@
     }
   }
 
-  function switchCurrency() {
-    billing.setCurrency(billing.currency === 'eur' ? 'usd' : 'eur');
-  }
 </script>
 
 <div class="backdrop" onclick={handleBackdrop} role="presentation">
@@ -82,12 +79,6 @@
         </button>
       </div>
     </div>
-
-    <button type="button" class="currency-switch" onclick={switchCurrency} disabled={loading}>
-      {m.billing_currency_switch({
-        currency: CURRENCY_LABEL[billing.currency === 'eur' ? 'usd' : 'eur'],
-      })}
-    </button>
 
     <p class="note">{m.paywall_note()}</p>
 
@@ -264,23 +255,6 @@
   }
   .text-btn:hover {
     color: var(--color-text-primary);
-  }
-  .currency-switch {
-    background: none;
-    border: none;
-    color: var(--color-text-secondary);
-    font-size: 13px;
-    padding: 4px 8px;
-    margin: 0 auto;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  .currency-switch:hover:not([disabled]) {
-    color: var(--color-text-primary);
-  }
-  .currency-switch[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
   }
   .error-banner {
     background: color-mix(in oklab, var(--color-danger) 18%, transparent);

@@ -270,5 +270,6 @@
   "settings_tv_howto_step2": "The TV displays a QR code and a four-digit number.",
   "settings_tv_howto_step3": "On this tablet or phone, scan the QR code or type in the four-digit number.",
   "settings_tv_howto_step4": "Once paired, every exercise you draw or open from the archive shows up on the TV in full size — perfect for the hall and on-court coaching.",
-  "settings_tv_howto_step5": "Tablet and TV must be on the same Wi-Fi. The connection stays active until you disconnect or close the TV tab."
+  "settings_tv_howto_step5": "Tablet and TV must be on the same Wi-Fi. The connection stays active until you disconnect or close the TV tab.",
+  "settings_about_imprint": "Legal notice"
 }
