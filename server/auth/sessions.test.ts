@@ -5,6 +5,7 @@ import {
   validateAndRefreshSession,
   deleteSession,
   deleteAllUserSessions,
+  cleanupExpiredSessions,
   SESSION_TTL_MS,
 } from './sessions';
 
@@ -75,5 +76,19 @@ describe('sessions', () => {
 
   it('SESSION_TTL_MS ist 30 Tage', () => {
     expect(SESSION_TTL_MS).toBe(30 * 24 * 60 * 60 * 1000);
+  });
+
+  it('cleanupExpiredSessions entfernt nur abgelaufene Sessions', () => {
+    createSession(db, 'u1');
+    createSession(db, 'u1');
+    createSession(db, 'u1');
+    // expire two of three (by created_at ordering — any two rows)
+    db.prepare(
+      `UPDATE sessions SET expires_at = ? WHERE rowid IN (SELECT rowid FROM sessions LIMIT 2)`,
+    ).run(Date.now() - 1000);
+
+    const removed = cleanupExpiredSessions(db);
+    expect(removed).toBe(2);
+    expect(db.prepare(`SELECT * FROM sessions WHERE user_id = ?`).all('u1')).toHaveLength(1);
   });
 });

@@ -62,7 +62,7 @@ export function validateAndRefreshSession(db: AuthDatabase, token: string): Sess
   return {
     id: user.id,
     email: user.email,
-    emailVerified: user.email_verified === 1,
+    emailVerified: !!user.email_verified,
     proUntil: user.pro_until,
   };
 }
@@ -73,4 +73,13 @@ export function deleteSession(db: AuthDatabase, token: string): void {
 
 export function deleteAllUserSessions(db: AuthDatabase, userId: string): void {
   db.prepare(`DELETE FROM sessions WHERE user_id = ?`).run(userId);
+}
+
+// Periodic cleanup to bound the sessions table — expired rows also get collected
+// lazily in validateAndRefreshSession, but inactive sessions never trigger that
+// path. Call occasionally (e.g. daily cron) or let it grow if the deployment is
+// low-traffic. Returns the number of rows removed.
+export function cleanupExpiredSessions(db: AuthDatabase): number {
+  const result = db.prepare(`DELETE FROM sessions WHERE expires_at <= ?`).run(Date.now());
+  return result.changes;
 }
