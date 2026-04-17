@@ -219,4 +219,23 @@
   a {
     color: var(--color-accent);
   }
+
+  @media (max-width: 767.98px) {
+    .connect {
+      padding: 20px 16px;
+      gap: 16px;
+    }
+    form {
+      flex-direction: column;
+      gap: 10px;
+    }
+    form .primary {
+      width: 100%;
+    }
+    input {
+      font-size: 20px;
+      letter-spacing: 6px;
+      padding: 12px 14px;
+    }
+  }
 </style>
