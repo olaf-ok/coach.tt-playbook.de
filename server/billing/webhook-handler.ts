@@ -82,6 +82,19 @@ function handleCheckoutCompleted(
   });
 }
 
+// On API version 2024-11-20.acacia (the version we pin both the SDK and the
+// Dashboard webhook endpoint to), Subscription has current_period_end as a
+// top-level number. The SDK's TypeScript types reflect the latest API where
+// this field has been moved onto SubscriptionItem, so we read it through a
+// narrow runtime accessor.
+function readCurrentPeriodEnd(sub: Stripe.Subscription): number {
+  const value = (sub as unknown as { current_period_end?: number }).current_period_end;
+  if (typeof value !== 'number') {
+    throw new Error(`subscription ${sub.id} has no current_period_end`);
+  }
+  return value;
+}
+
 function handleSubscriptionUpsert(
   db: AuthDatabase,
   sub: Stripe.Subscription,
@@ -93,7 +106,7 @@ function handleSubscriptionUpsert(
   updateSubscriptionFields(db, userId, {
     subscriptionId: sub.id,
     status: sub.status,
-    proUntil: sub.current_period_end * 1000,
+    proUntil: readCurrentPeriodEnd(sub) * 1000,
   });
 }
 
