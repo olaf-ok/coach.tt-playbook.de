@@ -249,4 +249,38 @@
     border-radius: var(--radius-button);
     text-decoration: none;
   }
+
+  @media (max-width: 767.98px) {
+    .archive {
+      padding: 12px 14px;
+    }
+    .head {
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-size: 20px;
+    }
+    .new-btn {
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+    .search-wrap {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    .chips {
+      gap: 4px;
+      margin-bottom: 12px;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      padding-bottom: 4px;
+    }
+    .chip {
+      flex-shrink: 0;
+    }
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+  }
 </style>
