@@ -263,5 +263,6 @@
   "billing_checkout_cancel_toast": "Pago cancelado.",
   "billing_checkout_failed_toast": "No se pudo iniciar el pago.",
   "billing_portal_button": "Gestionar suscripción",
-  "billing_portal_failed_toast": "Gestión de suscripción no disponible."
+  "billing_portal_failed_toast": "Gestión de suscripción no disponible.",
+  "settings_pro_signin_hint": "Inicia sesión para suscribirte a Pro."
 }

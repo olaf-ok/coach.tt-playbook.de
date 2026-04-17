@@ -1,7 +1,39 @@
 <script lang="ts">
   import { auth } from '$lib/auth/client.svelte';
+  import { billing } from '$lib/billing/client.svelte';
+  import { PRICE_DISPLAY, CURRENCY_LABEL, type Plan } from '$lib/billing/prices';
   import { FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
   import { m } from '$lib/paraglide/messages';
+
+  let checkoutBusy = $state(false);
+  let portalBusy = $state(false);
+  let error = $state<string | null>(null);
+
+  async function subscribe(plan: Plan) {
+    checkoutBusy = true;
+    error = null;
+    try {
+      await billing.startCheckout(plan);
+    } catch (e) {
+      error = e instanceof Error ? e.message : m.billing_checkout_failed_toast();
+      checkoutBusy = false;
+    }
+  }
+
+  async function openPortal() {
+    portalBusy = true;
+    error = null;
+    try {
+      await billing.openPortal();
+    } catch (e) {
+      error = e instanceof Error ? e.message : m.billing_portal_failed_toast();
+      portalBusy = false;
+    }
+  }
+
+  function switchCurrency() {
+    billing.setCurrency(billing.currency === 'eur' ? 'usd' : 'eur');
+  }
 </script>
 
 <section class="pro">
@@ -29,14 +61,67 @@
       <li>{m.settings_pro_feature_unlimited()}</li>
       <li>{m.settings_pro_feature_custom_tags()}</li>
       <li>{m.settings_pro_feature_multidevice()}</li>
-      <li>{m.settings_pro_feature_community()}</li>
     </ul>
   </div>
 
-  {#if !auth.isPro}
+  {#if error}
+    <div class="error-banner" role="alert">{error}</div>
+  {/if}
+
+  {#if auth.isPro}
     <div class="cta-row">
-      <p class="coming">{m.settings_pro_coming()}</p>
+      <button
+        type="button"
+        class="btn-secondary"
+        onclick={openPortal}
+        disabled={portalBusy}
+      >
+        {m.billing_portal_button()}
+      </button>
     </div>
+  {:else if !auth.user}
+    <div class="signin-hint">
+      <p>{m.settings_pro_signin_hint()}</p>
+      <a href="/settings/account" class="btn-primary">{m.account_tab_login()}</a>
+    </div>
+  {:else}
+    <div class="plans">
+      <button
+        type="button"
+        class="plan"
+        disabled={checkoutBusy}
+        onclick={() => subscribe('monthly')}
+      >
+        <span class="plan-name">{m.paywall_plan_monthly()}</span>
+        <span class="price">{PRICE_DISPLAY.monthly[billing.currency]}</span>
+        <span class="period">{m.paywall_plan_monthly_period()}</span>
+        <span class="plan-cta">{m.paywall_plan_monthly_select()}</span>
+      </button>
+
+      <button
+        type="button"
+        class="plan popular"
+        disabled={checkoutBusy}
+        onclick={() => subscribe('yearly')}
+      >
+        <span class="popular-badge">{m.paywall_popular_badge()}</span>
+        <span class="plan-name">{m.paywall_plan_yearly()}</span>
+        <span class="price">{PRICE_DISPLAY.yearly[billing.currency]}</span>
+        <span class="period">{m.paywall_plan_yearly_period()}</span>
+        <span class="plan-cta">{m.paywall_plan_yearly_select()}</span>
+      </button>
+    </div>
+
+    <button
+      type="button"
+      class="currency-switch"
+      onclick={switchCurrency}
+      disabled={checkoutBusy}
+    >
+      {m.billing_currency_switch({
+        currency: CURRENCY_LABEL[billing.currency === 'eur' ? 'usd' : 'eur'],
+      })}
+    </button>
   {/if}
 </section>
 
@@ -120,9 +205,138 @@
     color: var(--color-accent);
     font-weight: 700;
   }
-  .coming {
+  .plans {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .plan {
+    position: relative;
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+    text-align: left;
+  }
+  .plan:hover:not([disabled]) {
+    transform: translateY(-2px);
+    border-color: var(--color-accent);
+  }
+  .plan[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .plan.popular {
+    border-color: var(--color-accent);
+  }
+  .popular-badge {
+    position: absolute;
+    top: -10px;
+    right: 14px;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 999px;
+  }
+  .plan-name {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+  .price {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+  .period {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+  }
+  .plan-cta {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+  .currency-switch {
+    align-self: center;
+    background: none;
+    border: none;
     color: var(--color-text-secondary);
     font-size: 13px;
+    padding: 4px 8px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .currency-switch:hover:not([disabled]) {
+    color: var(--color-text-primary);
+  }
+  .currency-switch[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .cta-row {
+    display: flex;
+    justify-content: flex-start;
+  }
+  .btn-secondary {
+    padding: 12px 20px;
+    background: var(--bg-elevated);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-secondary:hover:not([disabled]) {
+    background: var(--color-accent);
+    color: #fff;
+    border-color: var(--color-accent);
+  }
+  .btn-secondary[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .signin-hint {
+    padding: 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-panel);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .signin-hint p {
     margin: 0;
+    color: var(--color-text-primary);
+    font-size: 14px;
+  }
+  .btn-primary {
+    display: inline-block;
+    padding: 10px 18px;
+    background: var(--color-accent);
+    color: #fff;
+    border-radius: var(--radius-button);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .error-banner {
+    background: color-mix(in oklab, var(--color-danger) 18%, transparent);
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
   }
 </style>

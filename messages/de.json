@@ -263,5 +263,6 @@
   "billing_checkout_cancel_toast": "Checkout abgebrochen.",
   "billing_checkout_failed_toast": "Checkout konnte nicht gestartet werden.",
   "billing_portal_button": "Abo verwalten",
-  "billing_portal_failed_toast": "Abo-Verwaltung nicht verfügbar."
+  "billing_portal_failed_toast": "Abo-Verwaltung nicht verfügbar.",
+  "settings_pro_signin_hint": "Melde dich an, um Pro zu abonnieren."
 }

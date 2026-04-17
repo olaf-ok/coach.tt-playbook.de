@@ -263,5 +263,6 @@
   "billing_checkout_cancel_toast": "Checkout cancelled.",
   "billing_checkout_failed_toast": "Could not start checkout.",
   "billing_portal_button": "Manage subscription",
-  "billing_portal_failed_toast": "Subscription management unavailable."
+  "billing_portal_failed_toast": "Subscription management unavailable.",
+  "settings_pro_signin_hint": "Sign in to subscribe to Pro."
 }
