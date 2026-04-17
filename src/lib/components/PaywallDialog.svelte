@@ -1,6 +1,8 @@
 <script lang="ts">
   import { FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
   import { m } from '$lib/paraglide/messages';
+  import { billing } from '$lib/billing/client.svelte';
+  import { PRICE_DISPLAY, CURRENCY_LABEL, type Plan } from '$lib/billing/prices';
 
   interface Props {
     onClose: () => void;
@@ -8,8 +10,27 @@
 
   let { onClose }: Props = $props();
 
+  let loading = $state(false);
+  let error = $state<string | null>(null);
+
   function handleBackdrop(e: MouseEvent) {
     if (e.target === e.currentTarget) onClose();
+  }
+
+  async function subscribe(plan: Plan) {
+    loading = true;
+    error = null;
+    try {
+      await billing.startCheckout(plan);
+      // startCheckout redirects to Stripe; reaching here means it failed.
+    } catch (e) {
+      error = e instanceof Error ? e.message : m.billing_checkout_failed_toast();
+      loading = false;
+    }
+  }
+
+  function switchCurrency() {
+    billing.setCurrency(billing.currency === 'eur' ? 'usd' : 'eur');
   }
 </script>
 
@@ -28,22 +49,46 @@
       <li>{m.paywall_feature_community()}</li>
     </ul>
 
+    {#if error}
+      <div class="error-banner" role="alert">{error}</div>
+    {/if}
+
     <div class="plans">
       <div class="plan">
         <span class="plan-name">{m.paywall_plan_monthly()}</span>
-        <span class="price">9,90&nbsp;€</span>
+        <span class="price">{PRICE_DISPLAY.monthly[billing.currency]}</span>
         <span class="period">{m.paywall_plan_monthly_period()}</span>
-        <button type="button" class="plan-btn secondary" disabled>{m.paywall_plan_monthly_select()}</button>
+        <button
+          type="button"
+          class="plan-btn secondary"
+          disabled={loading}
+          onclick={() => subscribe('monthly')}
+        >
+          {m.paywall_plan_monthly_select()}
+        </button>
       </div>
 
       <div class="plan popular">
         <span class="popular-badge">{m.paywall_popular_badge()}</span>
         <span class="plan-name">{m.paywall_plan_yearly()}</span>
-        <span class="price">99&nbsp;€</span>
+        <span class="price">{PRICE_DISPLAY.yearly[billing.currency]}</span>
         <span class="period">{m.paywall_plan_yearly_period()}</span>
-        <button type="button" class="plan-btn primary" disabled>{m.paywall_plan_yearly_select()}</button>
+        <button
+          type="button"
+          class="plan-btn primary"
+          disabled={loading}
+          onclick={() => subscribe('yearly')}
+        >
+          {m.paywall_plan_yearly_select()}
+        </button>
       </div>
     </div>
+
+    <button type="button" class="currency-switch" onclick={switchCurrency} disabled={loading}>
+      {m.billing_currency_switch({
+        currency: CURRENCY_LABEL[billing.currency === 'eur' ? 'usd' : 'eur'],
+      })}
+    </button>
 
     <p class="note">{m.paywall_note()}</p>
 
@@ -220,5 +265,30 @@
   }
   .text-btn:hover {
     color: var(--color-text-primary);
+  }
+  .currency-switch {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    padding: 4px 8px;
+    margin: 0 auto;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .currency-switch:hover:not([disabled]) {
+    color: var(--color-text-primary);
+  }
+  .currency-switch[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .error-banner {
+    background: color-mix(in oklab, var(--color-danger) 18%, transparent);
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
   }
 </style>
