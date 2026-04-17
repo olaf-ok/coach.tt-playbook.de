@@ -1,6 +1,11 @@
 import type { AuthDatabase } from './db';
 
-export type Action = 'login' | 'signup' | 'reset' | 'resendVerification';
+export type Action =
+  | 'login'
+  | 'signup'
+  | 'reset'
+  | 'resendVerification'
+  | 'billingCheckout';
 
 interface Limit {
   max: number;
@@ -12,6 +17,7 @@ export const LIMITS: Record<Action, Limit> = {
   signup: { max: 3, windowMs: 60 * 60 * 1000 },
   reset: { max: 3, windowMs: 60 * 60 * 1000 },
   resendVerification: { max: 3, windowMs: 60 * 60 * 1000 },
+  billingCheckout: { max: 5, windowMs: 60 * 1000 },
 };
 
 interface Row {
