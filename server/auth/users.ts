@@ -9,6 +9,9 @@ export interface UserRecord {
   passwordHash: string;
   emailVerified: boolean;
   proUntil: number | null;
+  stripeCustomerId: string | null;
+  stripeSubscriptionId: string | null;
+  stripeSubscriptionStatus: string | null;
 }
 
 interface Row {
@@ -17,6 +20,9 @@ interface Row {
   password_hash: string;
   email_verified: number;
   pro_until: number | null;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+  stripe_subscription_status: string | null;
 }
 
 function rowToUser(row: Row): UserRecord {
@@ -26,6 +32,9 @@ function rowToUser(row: Row): UserRecord {
     passwordHash: row.password_hash,
     emailVerified: !!row.email_verified,
     proUntil: row.pro_until,
+    stripeCustomerId: row.stripe_customer_id,
+    stripeSubscriptionId: row.stripe_subscription_id,
+    stripeSubscriptionStatus: row.stripe_subscription_status,
   };
 }
 
@@ -47,7 +56,16 @@ export async function createUser(
     `INSERT INTO users (id, email, password_hash, email_verified, pro_until, created_at, updated_at)
      VALUES (?, ?, ?, 0, NULL, ?, ?)`,
   ).run(id, trimmed, passwordHash, now, now);
-  return { id, email: trimmed, passwordHash, emailVerified: false, proUntil: null };
+  return {
+    id,
+    email: trimmed,
+    passwordHash,
+    emailVerified: false,
+    proUntil: null,
+    stripeCustomerId: null,
+    stripeSubscriptionId: null,
+    stripeSubscriptionStatus: null,
+  };
 }
 
 export function findUserByEmail(db: AuthDatabase, email: string): UserRecord | null {
@@ -74,6 +92,7 @@ export interface UserSummary {
   emailVerified: boolean;
   proUntil: number | null;
   createdAt: number;
+  stripeSubscriptionStatus: string | null;
 }
 
 interface SummaryRow {
@@ -82,11 +101,15 @@ interface SummaryRow {
   email_verified: number;
   pro_until: number | null;
   created_at: number;
+  stripe_subscription_status: string | null;
 }
 
 export function listUsers(db: AuthDatabase): UserSummary[] {
   const rows = db
-    .prepare(`SELECT id, email, email_verified, pro_until, created_at FROM users ORDER BY created_at DESC`)
+    .prepare(
+      `SELECT id, email, email_verified, pro_until, created_at, stripe_subscription_status
+       FROM users ORDER BY created_at DESC`,
+    )
     .all() as unknown as SummaryRow[];
   return rows.map((r) => ({
     id: r.id,
@@ -94,6 +117,7 @@ export function listUsers(db: AuthDatabase): UserSummary[] {
     emailVerified: !!r.email_verified,
     proUntil: r.pro_until,
     createdAt: r.created_at,
+    stripeSubscriptionStatus: r.stripe_subscription_status,
   }));
 }
 
@@ -107,4 +131,53 @@ export function setProUntil(db: AuthDatabase, id: string, timestamp: number | nu
     Date.now(),
     id,
   );
+}
+
+export function setStripeCustomerId(db: AuthDatabase, userId: string, customerId: string): void {
+  db.prepare(
+    `UPDATE users SET stripe_customer_id = ?, updated_at = ? WHERE id = ?`,
+  ).run(customerId, Date.now(), userId);
+}
+
+export function findUserByStripeCustomerId(
+  db: AuthDatabase,
+  customerId: string,
+): UserRecord | null {
+  const row = db
+    .prepare(`SELECT * FROM users WHERE stripe_customer_id = ?`)
+    .get(customerId) as Row | undefined;
+  return row ? rowToUser(row) : null;
+}
+
+export interface SubscriptionUpdate {
+  subscriptionId: string;
+  status: string;
+  // null = explicitly leave proUntil unchanged (cancellation case: subscription
+  // ends but user keeps Pro until paid period expires).
+  proUntil: number | null;
+}
+
+export function updateSubscriptionFields(
+  db: AuthDatabase,
+  userId: string,
+  update: SubscriptionUpdate,
+): void {
+  if (update.proUntil === null) {
+    db.prepare(
+      `UPDATE users
+       SET stripe_subscription_id = ?,
+           stripe_subscription_status = ?,
+           updated_at = ?
+       WHERE id = ?`,
+    ).run(update.subscriptionId, update.status, Date.now(), userId);
+  } else {
+    db.prepare(
+      `UPDATE users
+       SET stripe_subscription_id = ?,
+           stripe_subscription_status = ?,
+           pro_until = ?,
+           updated_at = ?
+       WHERE id = ?`,
+    ).run(update.subscriptionId, update.status, update.proUntil, Date.now(), userId);
+  }
 }
