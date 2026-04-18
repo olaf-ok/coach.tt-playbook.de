@@ -56,7 +56,6 @@
     <h3>{m.settings_pro_features_title()}</h3>
     <ul>
       <li>{m.settings_pro_feature_unlimited()}</li>
-      <li>{m.settings_pro_feature_custom_tags()}</li>
       <li>{m.settings_pro_feature_multidevice()}</li>
     </ul>
   </div>
