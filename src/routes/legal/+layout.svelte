@@ -18,11 +18,13 @@
 
 <style>
   .legal-shell {
-    min-height: 100dvh;
+    height: 100%;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     background: var(--color-bg);
     color: var(--color-text-primary);
+    -webkit-overflow-scrolling: touch;
   }
   header {
     padding: 20px 32px;
