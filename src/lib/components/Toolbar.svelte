@@ -64,6 +64,7 @@
 
   .name-field {
     flex: 1;
+    min-width: 0;
     max-width: 320px;
     height: 40px;
     padding: 0 12px;
@@ -86,6 +87,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-shrink: 0;
   }
 
   .tv-btn {
