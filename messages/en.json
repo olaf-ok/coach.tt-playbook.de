@@ -281,7 +281,7 @@
   "help_s1_title": "1. Getting started",
   "help_s1_register": "<strong>Create account:</strong> Settings → Account → \"Sign up\". Confirm your email via the link sent to you.",
   "help_s1_signin": "<strong>Sign in:</strong> Log in with email + password. The Free plan allows up to 5 exercises, one training list, and full access to drawing and TV features.",
-  "help_s1_pro": "<strong>Unlock Pro:</strong> Settings → Pro → choose a plan (monthly or yearly). Removes the 5-exercise limit, unlocks unlimited training lists and custom stroke codes (coming).",
+  "help_s1_pro": "<strong>Unlock Pro:</strong> Settings → Pro → choose a plan (monthly or yearly). Removes the 5-exercise limit and unlocks unlimited training lists.",
 
   "help_s2_title": "2. Drawing an exercise",
   "help_s2_intro": "The main view is the table tennis table in portrait orientation (player at the bottom, opponent at the top).",
@@ -324,7 +324,7 @@
 
   "help_s7_title": "7. Pro subscription",
   "help_s7_free": "<strong>Free:</strong> 5 exercises, 1 training list, full drawing and TV mode.",
-  "help_s7_pro": "<strong>Pro:</strong> Unlimited exercises, unlimited training lists, custom stroke codes (planned), cloud sync (planned).",
+  "help_s7_pro": "<strong>Pro:</strong> Unlimited exercises, unlimited training lists, cloud sync (planned).",
   "help_s7_buy": "<strong>Subscribe:</strong> Settings → Pro → click a plan card → complete Stripe Checkout. You're returned to the app and Pro is active immediately.",
   "help_s7_manage": "<strong>Manage:</strong> Settings → Account → \"Manage subscription\" opens the Stripe customer portal: update payment method, view invoices, cancel.",
   "help_s7_cancel": "<strong>Cancel:</strong> The subscription continues to the end of the paid period — no mid-month loss of access. After that, Free mode.",

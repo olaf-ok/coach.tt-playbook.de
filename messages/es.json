@@ -281,7 +281,7 @@
   "help_s1_title": "1. Primeros pasos",
   "help_s1_register": "<strong>Crear cuenta:</strong> Ajustes → Cuenta → \"Registrarse\". Confirma tu correo con el enlace que recibirás.",
   "help_s1_signin": "<strong>Iniciar sesión:</strong> Accede con correo y contraseña. El plan Free permite hasta 5 ejercicios, una lista de entrenamiento y acceso completo a las funciones de dibujo y televisor.",
-  "help_s1_pro": "<strong>Activar Pro:</strong> Ajustes → Pro → elige un plan (mensual o anual). Elimina el límite de 5 ejercicios y permite listas de entrenamiento ilimitadas y códigos de golpe propios (próximamente).",
+  "help_s1_pro": "<strong>Activar Pro:</strong> Ajustes → Pro → elige un plan (mensual o anual). Elimina el límite de 5 ejercicios y permite listas de entrenamiento ilimitadas.",
 
   "help_s2_title": "2. Dibujar un ejercicio",
   "help_s2_intro": "La vista principal es la mesa de tenis de mesa en vertical (jugador abajo, rival arriba).",
@@ -324,7 +324,7 @@
 
   "help_s7_title": "7. Suscripción Pro",
   "help_s7_free": "<strong>Free:</strong> 5 ejercicios, 1 lista de entrenamiento, modo dibujo y TV completos.",
-  "help_s7_pro": "<strong>Pro:</strong> Ejercicios ilimitados, listas ilimitadas, códigos de golpe propios (planeado), sincronización en la nube (planeada).",
+  "help_s7_pro": "<strong>Pro:</strong> Ejercicios ilimitados, listas ilimitadas, sincronización en la nube (planeada).",
   "help_s7_buy": "<strong>Contratar:</strong> Ajustes → Pro → pulsa una tarjeta de plan → completa el pago en Stripe Checkout. Vuelves a la app y Pro está activo de inmediato.",
   "help_s7_manage": "<strong>Gestionar:</strong> Ajustes → Cuenta → \"Gestionar suscripción\" abre el portal de cliente de Stripe: cambiar método de pago, ver facturas, cancelar.",
   "help_s7_cancel": "<strong>Cancelar:</strong> La suscripción sigue activa hasta el final del periodo pagado — no se pierde acceso a mitad de mes. Luego pasa a modo Free.",

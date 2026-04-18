@@ -281,7 +281,7 @@
   "help_s1_title": "1. Erste Schritte",
   "help_s1_register": "<strong>Konto anlegen:</strong> Einstellungen → Account → „Registrieren\". E-Mail bestätigen über den Link, der per Mail kommt.",
   "help_s1_signin": "<strong>Anmelden:</strong> Mit E-Mail + Passwort einloggen. Im Free-Plan kannst du bis zu 5 Übungen anlegen, eine Trainingsliste führen und alle Zeichen- und TV-Funktionen voll nutzen.",
-  "help_s1_pro": "<strong>Pro freischalten:</strong> Einstellungen → Pro → Plan wählen (monatlich oder jährlich). Hebt das 5-Übungen-Limit auf, erlaubt unbegrenzt Trainingslisten und eigene Schlagart-Codes (kommt).",
+  "help_s1_pro": "<strong>Pro freischalten:</strong> Einstellungen → Pro → Plan wählen (monatlich oder jährlich). Hebt das 5-Übungen-Limit auf und erlaubt unbegrenzt Trainingslisten.",
 
   "help_s2_title": "2. Übung zeichnen",
   "help_s2_intro": "Hauptansicht ist der Tischtennis-Tisch im Hochformat (Spieler unten, Gegner oben).",
@@ -324,7 +324,7 @@
 
   "help_s7_title": "7. Pro-Abo",
   "help_s7_free": "<strong>Free:</strong> 5 Übungen, 1 Trainingsliste, voller Zeichen- und TV-Modus.",
-  "help_s7_pro": "<strong>Pro:</strong> Unbegrenzte Übungen, unbegrenzte Trainingslisten, eigene Schlagart-Codes (geplant), Cloud-Sync (geplant).",
+  "help_s7_pro": "<strong>Pro:</strong> Unbegrenzte Übungen, unbegrenzte Trainingslisten, Cloud-Sync (geplant).",
   "help_s7_buy": "<strong>Buchen:</strong> Einstellungen → Pro → Plan-Karte anklicken → Stripe-Checkout abschließen. Direkt zurück zur App, Pro-Status ist sofort aktiv.",
   "help_s7_manage": "<strong>Verwalten:</strong> Einstellungen → Account → „Abo verwalten\" öffnet das Stripe-Kundenportal: Zahlungsmittel ändern, Rechnungen einsehen, Abo kündigen.",
   "help_s7_cancel": "<strong>Kündigen:</strong> Abo läuft bis zum Ende der bezahlten Periode weiter — kein Zugriffsverlust mitten im Monat. Danach Free-Modus.",
