@@ -20,6 +20,7 @@ const SETTINGS_SUB_MAP: Record<string, string> = {
   '/settings/tv': 'settings_nav_tv',
   '/settings/display': 'settings_nav_display',
   '/settings/pro': 'settings_nav_pro',
+  '/settings/help': 'settings_nav_help',
   '/settings/about': 'settings_nav_about',
 };
 

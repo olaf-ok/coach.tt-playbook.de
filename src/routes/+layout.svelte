@@ -7,6 +7,7 @@
 	import MobileTabBar from '$lib/components/MobileTabBar.svelte';
 	import MobileHeader from '$lib/components/MobileHeader.svelte';
 	import MobileHint from '$lib/components/MobileHint.svelte';
+	import PullToRefresh from '$lib/components/PullToRefresh.svelte';
 	import Splash from '$lib/splash/Splash.svelte';
 	import { shouldShowSplash, SPLASH_SESSION_KEY } from '$lib/splash/splash-state';
 	import { theme } from '$lib/theme/store.svelte';
@@ -76,6 +77,7 @@
 </div>
 
 {#if !hideChrome}<MobileHint />{/if}
+{#if !hideChrome}<PullToRefresh />{/if}
 
 <style>
 	.app-root {
