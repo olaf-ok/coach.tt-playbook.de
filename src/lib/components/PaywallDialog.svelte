@@ -81,6 +81,12 @@
 
     <p class="note">{m.paywall_note()}</p>
 
+    <p class="legal-links">
+      <a href="/legal/terms" target="_blank" rel="noopener">{m.legal_terms_link()}</a>
+      <span aria-hidden="true"> · </span>
+      <a href="/legal/privacy" target="_blank" rel="noopener">{m.legal_privacy_link()}</a>
+    </p>
+
     <footer class="foot">
       <button type="button" class="text-btn" onclick={onClose}>{m.paywall_later()}</button>
       <a
@@ -238,6 +244,19 @@
     color: var(--color-text-secondary);
     margin: 0;
     text-align: center;
+  }
+  .legal-links {
+    margin: 0;
+    text-align: center;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+  }
+  .legal-links a {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+  }
+  .legal-links a:hover {
+    color: var(--color-text-primary);
   }
   .foot {
     display: flex;

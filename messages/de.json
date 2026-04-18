@@ -218,6 +218,8 @@
   "paywall_sub": "Du hast deine {limit} Gratis-Übungen erstellt. Schalte Pro frei und speichere unbegrenzt.",
   "paywall_feature_unlimited": "Unbegrenzte Übungen und Trainingslisten",
   "paywall_feature_multidevice": "Mehrere Geräte synchronisieren",
+  "legal_terms_link": "Nutzungsbedingungen",
+  "legal_privacy_link": "Datenschutz",
   "paywall_feature_community": "Frühe Features & Trainer-Community",
   "paywall_plan_monthly": "Monatlich",
   "paywall_plan_monthly_select": "Monatlich wählen",

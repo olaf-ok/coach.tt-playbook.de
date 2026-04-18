@@ -15,7 +15,9 @@
 
 	let { children } = $props();
 
-	const hideChrome = $derived($page.url.pathname.startsWith('/tv'));
+	const hideChrome = $derived(
+		$page.url.pathname.startsWith('/tv') || $page.url.pathname.startsWith('/legal')
+	);
 	const isTvView = $derived($page.url.pathname.startsWith('/tv'));
 
 	let showSplash = $state(false);

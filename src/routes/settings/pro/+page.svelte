@@ -109,6 +109,12 @@
     </div>
 
   {/if}
+
+  <p class="legal-links">
+    <a href="/legal/terms" target="_blank" rel="noopener">{m.legal_terms_link()}</a>
+    <span aria-hidden="true"> · </span>
+    <a href="/legal/privacy" target="_blank" rel="noopener">{m.legal_privacy_link()}</a>
+  </p>
 </section>
 
 <style>
@@ -307,5 +313,18 @@
     border-radius: 10px;
     padding: 10px 14px;
     font-size: 13px;
+  }
+  .legal-links {
+    margin: 16px 0 0;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+  .legal-links a {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+  }
+  .legal-links a:hover {
+    color: var(--color-text-primary);
   }
 </style>

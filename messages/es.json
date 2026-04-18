@@ -218,6 +218,8 @@
   "paywall_sub": "Has creado tus {limit} ejercicios gratis. Desbloquea Pro para tener ilimitados.",
   "paywall_feature_unlimited": "Ejercicios y listas de entrenamiento ilimitados",
   "paywall_feature_multidevice": "Sincroniza varios dispositivos",
+  "legal_terms_link": "Condiciones de uso",
+  "legal_privacy_link": "Privacidad",
   "paywall_feature_community": "Funciones tempranas y comunidad de entrenadores",
   "paywall_plan_monthly": "Mensual",
   "paywall_plan_monthly_select": "Elegir mensual",

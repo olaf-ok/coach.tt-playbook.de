@@ -218,6 +218,8 @@
   "paywall_sub": "You've created your {limit} free exercises. Unlock Pro for unlimited.",
   "paywall_feature_unlimited": "Unlimited exercises and training lists",
   "paywall_feature_multidevice": "Sync multiple devices",
+  "legal_terms_link": "Terms of Service",
+  "legal_privacy_link": "Privacy Policy",
   "paywall_feature_community": "Early features & coach community",
   "paywall_plan_monthly": "Monthly",
   "paywall_plan_monthly_select": "Choose monthly",

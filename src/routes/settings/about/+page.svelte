@@ -40,6 +40,11 @@
       <dd><a href="https://ok-marked.com" target="_blank" rel="noopener">ok-marked.com</a></dd>
     </dl>
   </div>
+
+  <nav class="legal-nav" aria-label="Legal">
+    <a href="/legal/terms">{m.legal_terms_link()}</a>
+    <a href="/legal/privacy">{m.legal_privacy_link()}</a>
+  </nav>
 </section>
 
 <style>
@@ -122,5 +127,17 @@
   }
   a:hover {
     text-decoration: underline;
+  }
+  .legal-nav {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+  }
+  .legal-nav a {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+  }
+  .legal-nav a:hover {
+    color: var(--color-text-primary);
   }
 </style>
