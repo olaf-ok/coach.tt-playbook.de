@@ -6,6 +6,7 @@
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import MobileTabBar from '$lib/components/MobileTabBar.svelte';
 	import MobileHeader from '$lib/components/MobileHeader.svelte';
+	import MobileHint from '$lib/components/MobileHint.svelte';
 	import Splash from '$lib/splash/Splash.svelte';
 	import { shouldShowSplash, SPLASH_SESSION_KEY } from '$lib/splash/splash-state';
 	import { theme } from '$lib/theme/store.svelte';
@@ -73,6 +74,8 @@
 		{#if !hideChrome}<MobileTabBar />{/if}
 	</div>
 </div>
+
+{#if !hideChrome}<MobileHint />{/if}
 
 <style>
 	.app-root {
