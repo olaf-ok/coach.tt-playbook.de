@@ -16,6 +16,7 @@ export interface StrokeRenderOptions {
 export class StrokeRenderer {
   private group: Konva.Group;
   private arrow!: Konva.Arrow;
+  private labelBg!: Konva.Circle;
   private label!: Konva.Text;
   private controlHandle: Konva.Circle | null = null;
   private stroke: Stroke;
@@ -84,14 +85,33 @@ export class StrokeRenderer {
       ? `${this.stroke.number}·`
       : `${this.stroke.number}`;
 
-    this.label = new Konva.Text({
-      x: mid.x + 6 * this.scale,
-      y: mid.y - 8 * this.scale,
-      text: labelText,
-      fontSize: 12 * this.scale,
-      fontFamily: 'Inter',
+    const radius = 11 * this.scale;
+    const fontSize = 14 * this.scale;
+    const offset = 14 * this.scale;
+    const cx = mid.x + offset;
+    const cy = mid.y - offset;
+
+    this.labelBg = new Konva.Circle({
+      x: cx,
+      y: cy,
+      radius,
       fill: color,
-      fontStyle: '600',
+      listening: false,
+    });
+    this.group.add(this.labelBg);
+
+    this.label = new Konva.Text({
+      x: cx - radius,
+      y: cy - radius,
+      width: radius * 2,
+      height: radius * 2,
+      text: labelText,
+      fontSize,
+      fontFamily: 'Inter',
+      fill: '#ffffff',
+      fontStyle: '700',
+      align: 'center',
+      verticalAlign: 'middle',
       listening: false,
     });
     this.group.add(this.label);
