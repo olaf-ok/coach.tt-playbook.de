@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { setLocale, getLocale } from '$lib/paraglide/runtime';
+import { setLocale } from '$lib/paraglide/runtime';
 
 export type LanguageMode = 'system' | 'de' | 'en' | 'es';
 
@@ -13,8 +13,7 @@ function readMode(): LanguageMode {
 }
 
 export const language = $state({
-  mode: readMode(),
-  current: (browser ? getLocale() : 'de') as 'de' | 'en' | 'es'
+  mode: readMode()
 });
 
 export function setLanguage(mode: LanguageMode): void {
