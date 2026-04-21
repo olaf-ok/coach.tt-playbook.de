@@ -1,6 +1,6 @@
 import type { PageLoad } from './$types';
-import { listAllPlaylists } from '$lib/db/playlists';
-import { listAllExercises } from '$lib/db/exercises';
+import { listActive as listActivePlaylists } from '$lib/db/playlists';
+import { listActive as listActiveExercises } from '$lib/db/exercises';
 import { browser } from '$app/environment';
 
 export const ssr = false;
@@ -8,8 +8,8 @@ export const ssr = false;
 export const load: PageLoad = async () => {
   if (!browser) return { playlists: [], exercises: [] };
   const [playlists, exercises] = await Promise.all([
-    listAllPlaylists(),
-    listAllExercises(),
+    listActivePlaylists(),
+    listActiveExercises(),
   ]);
   return { playlists, exercises };
 };
