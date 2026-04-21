@@ -1,6 +1,7 @@
 import { db } from '../db/database';
 import { PushQueue } from './queue';
 import { syncStatus } from './status.svelte';
+import { hookBypass } from './dbhooks';
 import type { Exercise } from '../types/exercise';
 import type { Playlist } from '../types/playlist';
 import type { SettingsRecord } from '../types/settings';
@@ -35,29 +36,36 @@ function createClient() {
       if (!res.ok) throw new Error(`pull ${res.status}`);
       const payload = await res.json();
 
-      await db.transaction('rw', db.exercises, db.playlists, db.settings, async () => {
-        for (const ex of payload.exercises) {
-          await db.exercises.put({
-            ...(ex.data as Exercise),
-            deletedAt: ex.deletedAt,
-            updatedAt: ex.updatedAt,
-          });
-        }
-        for (const pl of payload.playlists) {
-          await db.playlists.put({
-            ...(pl.data as Playlist),
-            deletedAt: pl.deletedAt,
-            updatedAt: pl.updatedAt,
-          });
-        }
-        if (payload.settings) {
-          await db.settings.put({
-            id: 'default',
-            updatedAt: payload.settings.updatedAt,
-            data: payload.settings.data,
-          } as SettingsRecord);
-        }
-      });
+      // Bypass hooks during pull so server timestamps are preserved and
+      // pulled rows are not re-enqueued into PushQueue (pull-loop prevention).
+      hookBypass.active = true;
+      try {
+        await db.transaction('rw', db.exercises, db.playlists, db.settings, async () => {
+          for (const ex of payload.exercises) {
+            await db.exercises.put({
+              ...(ex.data as Exercise),
+              deletedAt: ex.deletedAt,
+              updatedAt: ex.updatedAt,
+            });
+          }
+          for (const pl of payload.playlists) {
+            await db.playlists.put({
+              ...(pl.data as Playlist),
+              deletedAt: pl.deletedAt,
+              updatedAt: pl.updatedAt,
+            });
+          }
+          if (payload.settings) {
+            await db.settings.put({
+              id: 'default',
+              updatedAt: payload.settings.updatedAt,
+              data: payload.settings.data,
+            } as SettingsRecord);
+          }
+        });
+      } finally {
+        hookBypass.active = false;
+      }
 
       setLastSyncAt(payload.serverTime);
       syncStatus.syncSucceeded();
@@ -133,9 +141,16 @@ function createClient() {
     currentUserId = null;
     localStorage.removeItem(LAST_SYNC_KEY);
     await queue.clear();
-    await db.exercises.clear();
-    await db.playlists.clear();
-    await db.settings.clear();
+    // Bypass hooks during clear: Dexie fires 'deleting' hook for each row on clear().
+    // We don't want soft-delete logic or re-enqueue to run during a forced local wipe.
+    hookBypass.active = true;
+    try {
+      await db.exercises.clear();
+      await db.playlists.clear();
+      await db.settings.clear();
+    } finally {
+      hookBypass.active = false;
+    }
     syncStatus.reset();
   }
 
@@ -145,9 +160,17 @@ function createClient() {
     if (!res.ok) throw new Error(`reset ${res.status}`);
     await queue.clear();
     localStorage.removeItem(LAST_SYNC_KEY);
-    await db.exercises.clear();
-    await db.playlists.clear();
-    await db.settings.clear();
+    // Bypass hooks during reset clear: server is authoritative and a subsequent pull()
+    // will repopulate local data. Soft-delete and re-enqueue must not fire here.
+    // Note: db.clear() may or may not fire 'deleting' hooks in Dexie — bypass guards both cases.
+    hookBypass.active = true;
+    try {
+      await db.exercises.clear();
+      await db.playlists.clear();
+      await db.settings.clear();
+    } finally {
+      hookBypass.active = false;
+    }
     await pull();
   }
 
