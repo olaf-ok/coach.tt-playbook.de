@@ -5,7 +5,10 @@ export type Action =
   | 'signup'
   | 'reset'
   | 'resendVerification'
-  | 'billingCheckout';
+  | 'billingCheckout'
+  | 'syncPull'
+  | 'syncPush'
+  | 'syncReset';
 
 interface Limit {
   max: number;
@@ -18,6 +21,9 @@ export const LIMITS: Record<Action, Limit> = {
   reset: { max: 3, windowMs: 60 * 60 * 1000 },
   resendVerification: { max: 3, windowMs: 60 * 60 * 1000 },
   billingCheckout: { max: 5, windowMs: 60 * 1000 },
+  syncPull: { max: 60, windowMs: 60 * 1000 },
+  syncPush: { max: 60, windowMs: 60 * 1000 },
+  syncReset: { max: 3, windowMs: 60 * 60 * 1000 },
 };
 
 interface Row {
