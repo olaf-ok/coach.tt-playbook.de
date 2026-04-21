@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { invalidateAll } from '$app/navigation';
 	import favicon from '$lib/assets/favicon.svg';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import MobileTabBar from '$lib/components/MobileTabBar.svelte';
@@ -35,6 +36,33 @@
 
 	let showSplash = $state(false);
 	let showMergeDialog = $state<{ local: number; server: number } | null>(null);
+	let syncInitializedFor: string | null = null;
+
+	async function initializeSyncForUser(userId: string) {
+		// Sync-Trigger registrieren (focus, online, visibility).
+		installSyncTriggers();
+
+		// Lokale Datenmenge VOR dem ersten Pull messen, damit der Delta
+		// später korrekt berechnet werden kann.
+		const localCount = await collectLocalCount();
+
+		// syncClient.init setzt currentUserId und führt einen initialen Pull durch.
+		await syncClient.init(userId);
+
+		// Delta = Datensätze die der Pull hinzugefügt hat (vereinfachte Heuristik,
+		// bei gleichen IDs kann es zu Unterabschätzung kommen – ist laut Plan akzeptiert).
+		const postPullCount = (await db.exercises.count()) + (await db.playlists.count());
+		const serverCount = Math.max(0, postPullCount - localCount);
+
+		const action = decideInitialAction(localCount, serverCount);
+
+		if (action.kind === 'pushOnly') {
+			await pushAllLocalAsNew();
+		} else if (action.kind === 'needsMergeChoice') {
+			showMergeDialog = { local: localCount, server: serverCount };
+		}
+		// action.kind === 'noop': nichts zu tun
+	}
 
 	onMount(() => {
 		// DB-Hooks müssen VOR dem ersten Dexie-Zugriff registriert sein.
@@ -49,33 +77,27 @@
 				sessionStorage.setItem(SPLASH_SESSION_KEY, '1');
 				showSplash = true;
 			}
-
-			if (!auth.user) return;
-
-			// Sync-Trigger registrieren (focus, online, visibility).
-			installSyncTriggers();
-
-			// Lokale Datenmenge VOR dem ersten Pull messen, damit der Delta
-			// später korrekt berechnet werden kann.
-			const localCount = await collectLocalCount();
-
-			// syncClient.init setzt currentUserId und führt einen initialen Pull durch.
-			await syncClient.init(auth.user.id);
-
-			// Delta = Datensätze die der Pull hinzugefügt hat (vereinfachte Heuristik,
-			// bei gleichen IDs kann es zu Unterabschätzung kommen – ist laut Plan akzeptiert).
-			const postPullCount = (await db.exercises.count()) + (await db.playlists.count());
-			const serverCount = Math.max(0, postPullCount - localCount);
-
-			const action = decideInitialAction(localCount, serverCount);
-
-			if (action.kind === 'pushOnly') {
-				await pushAllLocalAsNew();
-			} else if (action.kind === 'needsMergeChoice') {
-				showMergeDialog = { local: localCount, server: serverCount };
-			}
-			// action.kind === 'noop': nichts zu tun
 		})();
+
+		// Re-invalidate SvelteKit-loaded data whenever a server pull writes fresh
+		// rows into IndexedDB (archive/playlists/draw pages load once via +page.ts
+		// and are not live-reactive to Dexie without this nudge).
+		const onPulled = () => {
+			void invalidateAll();
+		};
+		window.addEventListener('tt-sync-pulled', onPulled);
+		return () => window.removeEventListener('tt-sync-pulled', onPulled);
+	});
+
+	// Reactive sync-init: fires on first mount once auth resolves, and again
+	// whenever the signed-in user changes mid-session (e.g. after verify-email
+	// auto-login, which doesn't remount the layout).
+	$effect(() => {
+		const userId = auth.user?.id ?? null;
+		if (!userId) return;
+		if (syncInitializedFor === userId) return;
+		syncInitializedFor = userId;
+		void initializeSyncForUser(userId);
 	});
 
 	async function handleMerge(choice: 'keepBoth' | 'serverOnly' | 'localOnly') {

@@ -81,6 +81,12 @@ function createClient() {
 
       setLastSyncAt(payload.serverTime);
       syncStatus.syncSucceeded();
+      // Signal list views (archive/playlists/draw) that IndexedDB was updated
+      // so SvelteKit can re-run +page.ts loaders. Only fire when something
+      // actually changed to avoid spurious invalidations.
+      if (payload.exercises.length || payload.playlists.length || payload.settings) {
+        window.dispatchEvent(new CustomEvent('tt-sync-pulled'));
+      }
     } catch (e) {
       syncStatus.syncFailed((e as Error).message);
     }
