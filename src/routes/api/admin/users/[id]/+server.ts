@@ -9,6 +9,7 @@ import {
   setProUntil,
 } from '../../../../../../server/auth/users';
 import { deleteAllUserSessions } from '../../../../../../server/auth/sessions';
+import { purgeUserSyncData } from '../../../../../../server/sync/reset';
 
 export const PATCH: RequestHandler = async ({ locals, params, request }) => {
   if (!isAdmin(locals.user)) throw error(404);
@@ -46,6 +47,8 @@ export const DELETE: RequestHandler = async ({ locals, params }) => {
   const db = getDatabase();
   // Sessions werden durch CASCADE mitgelöscht, aber explizit macht's offensichtlich.
   deleteAllUserSessions(db, id);
+  // Sync-Tabellen haben keinen FK zu users — manuell purgen, sonst Orphans.
+  purgeUserSyncData(db, id);
   deleteUser(db, id);
   return json({ ok: true });
 };
