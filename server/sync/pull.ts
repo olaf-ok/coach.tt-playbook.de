@@ -14,7 +14,7 @@ function loadEntities(db: AuthDatabase, table: string, userId: string, since: nu
       `SELECT id, updated_at, deleted_at, data FROM ${table}
        WHERE user_id = ? AND updated_at > ? ORDER BY updated_at ASC`
     )
-    .all(userId, since) as Row[];
+    .all(userId, since) as unknown as Row[];
 
   return rows.map((r) => ({
     id: r.id,
