@@ -17,3 +17,7 @@ export async function deletePlaylist(id: string): Promise<void> {
 export async function listAllPlaylists(): Promise<Playlist[]> {
   return await db.playlists.orderBy('updatedAt').reverse().toArray();
 }
+
+export async function listActive(): Promise<Playlist[]> {
+  return await db.playlists.filter((p) => p.deletedAt === null).toArray();
+}

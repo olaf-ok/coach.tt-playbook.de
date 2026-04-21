@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { db } from './database';
-import { saveExercise, loadExercise, deleteExercise, listExerciseIds } from './exercises';
+import { saveExercise, loadExercise, deleteExercise, listExerciseIds, listActive } from './exercises';
 import { createEmptyExercise } from '../types/exercise';
 
 describe('exercises DB', () => {
@@ -50,5 +50,28 @@ describe('exercises DB', () => {
 
     const loaded = await loadExercise(ex.id);
     expect(loaded!.updatedAt).toBeGreaterThan(originalUpdated);
+  });
+});
+
+describe('listActive', () => {
+  beforeEach(async () => {
+    await db.exercises.clear();
+  });
+
+  it('excludes soft-deleted entries', async () => {
+    const a = createEmptyExercise();
+    a.id = 'a';
+    a.name = 'a';
+    a.deletedAt = null;
+    await db.exercises.put(a);
+
+    const b = createEmptyExercise();
+    b.id = 'b';
+    b.name = 'b';
+    b.deletedAt = Date.now();
+    await db.exercises.put(b);
+
+    const rows = await listActive();
+    expect(rows.map((e) => e.id)).toEqual(['a']);
   });
 });

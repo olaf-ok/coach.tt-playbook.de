@@ -23,3 +23,7 @@ export async function listExerciseIds(): Promise<string[]> {
 export async function listAllExercises(): Promise<Exercise[]> {
   return await db.exercises.orderBy('updatedAt').reverse().toArray();
 }
+
+export async function listActive(): Promise<Exercise[]> {
+  return await db.exercises.filter((e) => e.deletedAt === null).toArray();
+}

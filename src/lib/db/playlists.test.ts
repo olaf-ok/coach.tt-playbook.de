@@ -5,6 +5,7 @@ import {
   loadPlaylist,
   deletePlaylist,
   listAllPlaylists,
+  listActive,
 } from './playlists';
 import { createEmptyPlaylist } from '../types/playlist';
 
@@ -54,5 +55,28 @@ describe('playlists DB', () => {
     await savePlaylist(p);
     await deletePlaylist(p.id);
     expect(await loadPlaylist(p.id)).toBeUndefined();
+  });
+});
+
+describe('listActive', () => {
+  beforeEach(async () => {
+    await db.playlists.clear();
+  });
+
+  it('excludes soft-deleted entries', async () => {
+    const a = createEmptyPlaylist();
+    a.id = 'a';
+    a.name = 'a';
+    a.deletedAt = null;
+    await db.playlists.put(a);
+
+    const b = createEmptyPlaylist();
+    b.id = 'b';
+    b.name = 'b';
+    b.deletedAt = Date.now();
+    await db.playlists.put(b);
+
+    const rows = await listActive();
+    expect(rows.map((p) => p.id)).toEqual(['a']);
   });
 });
