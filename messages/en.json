@@ -350,5 +350,10 @@
   "help_s9_theme": "Bright halls → display Light. Dark halls → Dark. The tablet drives both, including the TV.",
 
   "help_s10_title": "10. Help & contact",
-  "help_s10_contact": "Questions, requests, problems: <a href=\"mailto:info@ok-marked.com\">info@ok-marked.com</a>. When reporting a bug, a short note about what you tried and what happened instead helps a lot."
+  "help_s10_contact": "Questions, requests, problems: <a href=\"mailto:info@ok-marked.com\">info@ok-marked.com</a>. When reporting a bug, a short note about what you tried and what happened instead helps a lot.",
+  "initial_sync_title": "Merge data",
+  "initial_sync_body": "Local {local} · Server {server}",
+  "initial_sync_keep_both": "Keep both",
+  "initial_sync_server_only": "Server only",
+  "initial_sync_local_only": "Local only"
 }

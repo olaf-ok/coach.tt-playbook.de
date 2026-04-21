@@ -350,5 +350,10 @@
   "help_s9_theme": "Helle Hallen → Anzeige auf Hell. Dunkle Hallen → Dunkel. Das Tablet steuert beides für TV mit.",
 
   "help_s10_title": "10. Hilfe & Kontakt",
-  "help_s10_contact": "Fragen, Wünsche, Probleme: <a href=\"mailto:info@ok-marked.com\">info@ok-marked.com</a>. Beim Melden eines Bugs hilft eine kurze Beschreibung, was du tun wolltest und was statt dessen passiert ist."
+  "help_s10_contact": "Fragen, Wünsche, Probleme: <a href=\"mailto:info@ok-marked.com\">info@ok-marked.com</a>. Beim Melden eines Bugs hilft eine kurze Beschreibung, was du tun wolltest und was statt dessen passiert ist.",
+  "initial_sync_title": "Daten zusammenführen",
+  "initial_sync_body": "Lokal {local} · Server {server}",
+  "initial_sync_keep_both": "Beide behalten",
+  "initial_sync_server_only": "Nur Server-Daten",
+  "initial_sync_local_only": "Nur lokale Daten"
 }

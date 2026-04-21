@@ -350,5 +350,10 @@
   "help_s9_theme": "Pabellón claro → pantalla Claro. Pabellón oscuro → Oscuro. La tablet controla ambos, incluido el televisor.",
 
   "help_s10_title": "10. Ayuda y contacto",
-  "help_s10_contact": "Dudas, sugerencias, problemas: <a href=\"mailto:info@ok-marked.com\">info@ok-marked.com</a>. Al reportar un fallo, una nota corta sobre qué intentabas hacer y qué pasó en su lugar ayuda mucho."
+  "help_s10_contact": "Dudas, sugerencias, problemas: <a href=\"mailto:info@ok-marked.com\">info@ok-marked.com</a>. Al reportar un fallo, una nota corta sobre qué intentabas hacer y qué pasó en su lugar ayuda mucho.",
+  "initial_sync_title": "Combinar datos",
+  "initial_sync_body": "Local {local} · Servidor {server}",
+  "initial_sync_keep_both": "Conservar ambos",
+  "initial_sync_server_only": "Solo servidor",
+  "initial_sync_local_only": "Solo local"
 }
