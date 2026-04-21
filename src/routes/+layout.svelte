@@ -14,6 +14,17 @@
 	import { tvSession } from '$lib/tv/session.svelte';
 	import { auth } from '$lib/auth/client.svelte';
 	import { billing } from '$lib/billing/client.svelte';
+	import { installDbHooks } from '$lib/sync/dbhooks';
+	import { installSyncTriggers } from '$lib/sync/triggers.svelte';
+	import { syncClient } from '$lib/sync/client.svelte';
+	import {
+		collectLocalCount,
+		decideInitialAction,
+		pushAllLocalAsNew,
+		discardLocalAndPull
+	} from '$lib/sync/initial-sync';
+	import { db } from '$lib/db/database';
+	import InitialSyncMergeDialog from '$lib/components/InitialSyncMergeDialog.svelte';
 
 	let { children } = $props();
 
@@ -23,17 +34,61 @@
 	const isTvView = $derived($page.url.pathname.startsWith('/tv'));
 
 	let showSplash = $state(false);
+	let showMergeDialog = $state<{ local: number; server: number } | null>(null);
 
-	onMount(async () => {
-		theme.init();
-		await auth.init();
-		billing.init();
+	onMount(() => {
+		// DB-Hooks müssen VOR dem ersten Dexie-Zugriff registriert sein.
+		installDbHooks();
 
-		if (shouldShowSplash(sessionStorage, $page.url.pathname)) {
-			sessionStorage.setItem(SPLASH_SESSION_KEY, '1');
-			showSplash = true;
-		}
+		void (async () => {
+			theme.init();
+			await auth.init();
+			billing.init();
+
+			if (shouldShowSplash(sessionStorage, $page.url.pathname)) {
+				sessionStorage.setItem(SPLASH_SESSION_KEY, '1');
+				showSplash = true;
+			}
+
+			if (!auth.user) return;
+
+			// Sync-Trigger registrieren (focus, online, visibility).
+			installSyncTriggers();
+
+			// Lokale Datenmenge VOR dem ersten Pull messen, damit der Delta
+			// später korrekt berechnet werden kann.
+			const localCount = await collectLocalCount();
+
+			// syncClient.init setzt currentUserId und führt einen initialen Pull durch.
+			await syncClient.init(auth.user.id);
+
+			// Delta = Datensätze die der Pull hinzugefügt hat (vereinfachte Heuristik,
+			// bei gleichen IDs kann es zu Unterabschätzung kommen – ist laut Plan akzeptiert).
+			const postPullCount = (await db.exercises.count()) + (await db.playlists.count());
+			const serverCount = Math.max(0, postPullCount - localCount);
+
+			const action = decideInitialAction(localCount, serverCount);
+
+			if (action.kind === 'pushOnly') {
+				await pushAllLocalAsNew();
+			} else if (action.kind === 'needsMergeChoice') {
+				showMergeDialog = { local: localCount, server: serverCount };
+			}
+			// action.kind === 'noop': nichts zu tun
+		})();
 	});
+
+	async function handleMerge(choice: 'keepBoth' | 'serverOnly' | 'localOnly') {
+		showMergeDialog = null;
+		if (choice === 'keepBoth') {
+			await pushAllLocalAsNew();
+		} else if (choice === 'serverOnly') {
+			await discardLocalAndPull();
+		}
+		// 'localOnly': Lokaldaten bleiben erhalten, kein expliziter Push.
+		// Bestehende Zeilen werden erst synchronisiert, wenn der Benutzer
+		// sie bearbeitet und die DB-Hooks einen Push auslösen.
+	}
 
 	// Tablet-Seite: Theme an gepairten TV pushen.
 	// Wichtig: theme.resolved ZUERST lesen, damit Svelte es als Dependency trackt
@@ -78,6 +133,14 @@
 
 {#if !hideChrome}<MobileHint />{/if}
 {#if !hideChrome}<PullToRefresh />{/if}
+
+{#if showMergeDialog}
+	<InitialSyncMergeDialog
+		localCount={showMergeDialog.local}
+		serverCount={showMergeDialog.server}
+		onChoose={handleMerge}
+	/>
+{/if}
 
 <style>
 	.app-root {
