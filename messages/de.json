@@ -355,5 +355,19 @@
   "initial_sync_body": "Lokal {local} · Server {server}",
   "initial_sync_keep_both": "Beide behalten",
   "initial_sync_server_only": "Nur Server-Daten",
-  "initial_sync_local_only": "Nur lokale Daten"
+  "initial_sync_local_only": "Nur lokale Daten",
+  "sync_dot_idle": "Synchronisiert",
+  "sync_dot_syncing": "Wird synchronisiert …",
+  "sync_dot_pending": "{n} Änderung(en) warten",
+  "sync_dot_offline": "Offline — Änderungen werden später gesendet",
+  "sync_dot_error": "Fehler bei der Synchronisierung",
+  "sync_panel_title": "Synchronisierung",
+  "sync_last_at": "Zuletzt synchronisiert: {at}",
+  "sync_button_now": "Jetzt synchronisieren",
+  "sync_button_reset": "Dieses Gerät zurücksetzen",
+  "sync_button_reset_confirm": "Wirklich zurücksetzen",
+  "sync_button_cancel": "Abbrechen",
+  "sync_panel_close": "Schließen",
+  "sync_reset_confirm": "Das löscht deine lokalen Daten und lädt sie frisch vom Server. Sicher?",
+  "sync_notice_info": "Deine Übungen werden ab jetzt zwischen deinen Geräten synchronisiert."
 }

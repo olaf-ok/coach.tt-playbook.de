@@ -355,5 +355,19 @@
   "initial_sync_body": "Local {local} · Servidor {server}",
   "initial_sync_keep_both": "Conservar ambos",
   "initial_sync_server_only": "Solo servidor",
-  "initial_sync_local_only": "Solo local"
+  "initial_sync_local_only": "Solo local",
+  "sync_dot_idle": "Sincronizado",
+  "sync_dot_syncing": "Sincronizando …",
+  "sync_dot_pending": "{n} cambio(s) pendiente(s)",
+  "sync_dot_offline": "Sin conexión — se sincronizará más tarde",
+  "sync_dot_error": "Error de sincronización",
+  "sync_panel_title": "Sincronización",
+  "sync_last_at": "Última sincronización: {at}",
+  "sync_button_now": "Sincronizar ahora",
+  "sync_button_reset": "Restablecer este dispositivo",
+  "sync_button_reset_confirm": "Sí, restablecer",
+  "sync_button_cancel": "Cancelar",
+  "sync_panel_close": "Cerrar",
+  "sync_reset_confirm": "Esto eliminará los datos locales y los descargará de nuevo desde el servidor. ¿Seguro?",
+  "sync_notice_info": "Tus ejercicios ahora se sincronizan entre tus dispositivos."
 }
