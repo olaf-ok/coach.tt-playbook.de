@@ -33,6 +33,10 @@ function createClient() {
       const since = getLastSyncAt();
       const url = since ? `/api/sync/pull?since=${since}` : '/api/sync/pull';
       const res = await fetch(url);
+      if (res.status === 503) {
+        syncStatus.syncSucceeded();  // silent no-op — feature flag disabled server-side
+        return;
+      }
       if (!res.ok) throw new Error(`pull ${res.status}`);
       const payload = await res.json();
 
@@ -116,6 +120,10 @@ function createClient() {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(body),
       });
+      if (res.status === 503) {
+        syncStatus.syncSucceeded();  // silent no-op — feature flag disabled server-side
+        return;
+      }
       if (!res.ok) throw new Error(`push ${res.status}`);
       const result = await res.json();
       await queue.ack({
@@ -165,6 +173,10 @@ function createClient() {
   async function reset(): Promise<void> {
     if (!currentUserId) return;
     const res = await fetch('/api/sync/reset', { method: 'POST' });
+    if (res.status === 503) {
+      syncStatus.syncSucceeded();  // silent no-op — feature flag disabled server-side
+      return;
+    }
     if (!res.ok) throw new Error(`reset ${res.status}`);
     await queue.clear();
     localStorage.removeItem(LAST_SYNC_KEY);
