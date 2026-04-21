@@ -29,10 +29,10 @@ export const termsContent: LegalContent = {
       {
         heading: '3. Leistungsbeschreibung',
         html: `
-          <p>TT Playbook Trainer ist ein digitales Whiteboard für Tischtennistrainer:innen. Der Dienst erlaubt das Zeichnen taktischer Übungen auf Tablet oder Smartphone, das Spiegeln der Zeichnung auf ein TV-Gerät sowie das Speichern von Übungen und Trainingslisten.</p>
+          <p>TT Playbook Trainer ist ein digitales Whiteboard für Tischtennistrainer:innen. Der Dienst erlaubt das Zeichnen taktischer Übungen auf Tablet oder Smartphone, das Spiegeln der Zeichnung auf ein TV-Gerät, das Speichern von Übungen und Trainingslisten sowie — bei angemeldetem Konto — die serverseitige Datensicherung und geräteübergreifende Synchronisation der Trainingsdaten und App-Einstellungen.</p>
           <ul>
-            <li><strong>Free-Plan:</strong> bis zu 5 gespeicherte Übungen, 1 Trainingsliste, voller Zeichen- und TV-Funktionsumfang.</li>
-            <li><strong>Pro-Plan:</strong> unbegrenzte Übungen und Trainingslisten.</li>
+            <li><strong>Free-Plan:</strong> bis zu 5 gespeicherte Übungen, 1 Trainingsliste, voller Zeichen- und TV-Funktionsumfang, Cloud-Sync.</li>
+            <li><strong>Pro-Plan:</strong> unbegrenzte Übungen und Trainingslisten, Cloud-Sync.</li>
           </ul>
         `,
       },
@@ -135,10 +135,10 @@ export const termsContent: LegalContent = {
       {
         heading: '3. Service description',
         html: `
-          <p>TT Playbook Trainer is a digital whiteboard for table tennis coaches. It allows drawing tactical exercises on a tablet or phone, mirroring the drawing on a TV display, and saving exercises and training lists.</p>
+          <p>TT Playbook Trainer is a digital whiteboard for table tennis coaches. It allows drawing tactical exercises on a tablet or phone, mirroring the drawing on a TV display, saving exercises and training lists, and — when signed in — server-side backup and cross-device synchronisation of your training data and app settings.</p>
           <ul>
-            <li><strong>Free plan:</strong> up to 5 saved exercises, 1 training list, full drawing and TV functionality.</li>
-            <li><strong>Pro plan:</strong> unlimited exercises and training lists.</li>
+            <li><strong>Free plan:</strong> up to 5 saved exercises, 1 training list, full drawing and TV functionality, cloud sync.</li>
+            <li><strong>Pro plan:</strong> unlimited exercises and training lists, cloud sync.</li>
           </ul>
         `,
       },
@@ -241,10 +241,10 @@ export const termsContent: LegalContent = {
       {
         heading: '3. Descripción del servicio',
         html: `
-          <p>TT Playbook Trainer es una pizarra digital para entrenadores de tenis de mesa. Permite dibujar ejercicios tácticos en tablet o móvil, reflejarlos en un televisor y guardar ejercicios y listas de entrenamiento.</p>
+          <p>TT Playbook Trainer es una pizarra digital para entrenadores de tenis de mesa. Permite dibujar ejercicios tácticos en tablet o móvil, reflejarlos en un televisor, guardar ejercicios y listas de entrenamiento y —con una cuenta iniciada— realizar copias de seguridad en el servidor y sincronizar los datos de entrenamiento y las preferencias entre dispositivos.</p>
           <ul>
-            <li><strong>Plan gratuito:</strong> hasta 5 ejercicios guardados, 1 lista de entrenamiento, funciones completas de dibujo y TV.</li>
-            <li><strong>Plan Pro:</strong> ejercicios y listas ilimitados.</li>
+            <li><strong>Plan gratuito:</strong> hasta 5 ejercicios guardados, 1 lista de entrenamiento, funciones completas de dibujo y TV, sincronización en la nube.</li>
+            <li><strong>Plan Pro:</strong> ejercicios y listas ilimitados, sincronización en la nube.</li>
           </ul>
         `,
       },

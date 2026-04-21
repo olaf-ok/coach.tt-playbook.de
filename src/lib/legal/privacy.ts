@@ -27,7 +27,7 @@ export const privacyContent: LegalContent = {
             <li><strong>Konto-Daten:</strong> E-Mail-Adresse und Passwort-Hash (Argon2id). Das Passwort im Klartext verlässt nie deinen Browser.</li>
             <li><strong>Session-Cookie:</strong> ein technisch notwendiges HTTP-Only-Cookie zur Anmeldung (Laufzeit 30 Tage, gleitend verlängert).</li>
             <li><strong>Abo-Daten:</strong> Zahlungsstatus, Kunden- und Abonnement-IDs von Stripe. Wir speichern <em>keine</em> Karten- oder Bankdaten.</li>
-            <li><strong>Lokale App-Daten:</strong> deine Übungen, Trainingslisten und Einstellungen (Sprache, Theme) werden ausschließlich in deinem Browser (IndexedDB / localStorage) gespeichert.</li>
+            <li><strong>Lokale App-Daten:</strong> deine Übungen, Trainingslisten und Einstellungen (Sprache, Theme) werden in deinem Browser (IndexedDB / localStorage) gespeichert. Wenn du angemeldet bist, werden sie zusätzlich serverseitig zur geräteübergreifenden Synchronisation abgelegt — siehe Abschnitt 10.</li>
             <li><strong>Server-Logs:</strong> minimale technische Logs (Zeitstempel, HTTP-Status, IP gekürzt) zur Fehleranalyse.</li>
           </ul>
         `,
@@ -107,7 +107,21 @@ export const privacyContent: LegalContent = {
         `,
       },
       {
-        heading: '10. Kontakt',
+        heading: '10. Cloud-Sync und Trainingsdaten',
+        html: `
+          <p>Wenn du ein Konto hast und angemeldet bist, synchronisieren wir deine Übungen, Trainingslisten und App-Einstellungen (Sprache, Theme, Währung) über unsere Server.</p>
+          <ul>
+            <li><strong>Zweck:</strong> geräteübergreifender Zugriff, Datensicherung und Wiederherstellung nach Browser-Cache-Verlust.</li>
+            <li><strong>Speicherort:</strong> Server der OK-MARKED LLC, gehostet bei Mittwald in Deutschland (siehe Abschnitt 5).</li>
+            <li><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO — die Synchronisation ist zentrale Produktfunktion und Teil der Vertragserfüllung.</li>
+            <li><strong>Inhalt:</strong> rein von dir gezeichnete und eingegebene Daten (Pfeile, Notizen, Schlagart-Tags, Titel, Farb- und Zahl-Angaben). Keine externen Inhalte, keine Tracking-Daten.</li>
+            <li><strong>Löschung:</strong> Beim Löschen deines Kontos werden alle serverseitig gespeicherten Trainingsdaten unverzüglich und vollständig entfernt. Du kannst einzelne Übungen oder alle Sync-Daten auch jederzeit in der App zurücksetzen.</li>
+            <li><strong>Abschalten:</strong> Meldest du dich ab, verbleiben die Daten weiterhin lokal in deinem Browser, werden aber nicht mehr mit dem Server synchronisiert.</li>
+          </ul>
+        `,
+      },
+      {
+        heading: '11. Kontakt',
         html: `
           <p>Für Datenschutzanfragen: <a href="mailto:info@ok-marked.com">info@ok-marked.com</a></p>
         `,
@@ -136,7 +150,7 @@ export const privacyContent: LegalContent = {
             <li><strong>Account data:</strong> email address and password hash (Argon2id). Your plaintext password never leaves your browser.</li>
             <li><strong>Session cookie:</strong> a technically required HTTP-only cookie for authentication (30 days, sliding).</li>
             <li><strong>Subscription data:</strong> billing status, customer and subscription IDs from Stripe. We do <em>not</em> store card or bank details.</li>
-            <li><strong>Local app data:</strong> your exercises, training lists and settings (language, theme) are stored only in your browser (IndexedDB / localStorage).</li>
+            <li><strong>Local app data:</strong> your exercises, training lists and settings (language, theme) are stored in your browser (IndexedDB / localStorage). When you are signed in, they are additionally stored on our servers to enable cross-device sync — see section 10.</li>
             <li><strong>Server logs:</strong> minimal technical logs (timestamp, HTTP status, truncated IP) for troubleshooting.</li>
           </ul>
         `,
@@ -216,7 +230,21 @@ export const privacyContent: LegalContent = {
         `,
       },
       {
-        heading: '10. Contact',
+        heading: '10. Cloud sync and training data',
+        html: `
+          <p>When you have an account and are signed in, we synchronise your exercises, training lists and app settings (language, theme, currency) across our servers.</p>
+          <ul>
+            <li><strong>Purpose:</strong> cross-device access, backup, and recovery after browser cache loss.</li>
+            <li><strong>Storage location:</strong> servers of OK-MARKED LLC, hosted by Mittwald in Germany (see section 5).</li>
+            <li><strong>Legal basis:</strong> Art. 6(1)(b) GDPR — the sync is a core product function and part of contract performance.</li>
+            <li><strong>Content:</strong> only data you draw and enter yourself (arrows, notes, stroke-type tags, titles, colour and number info). No external content, no tracking data.</li>
+            <li><strong>Deletion:</strong> when you delete your account, all server-side training data is removed immediately and completely. You can also reset individual exercises or all sync data from within the app at any time.</li>
+            <li><strong>Signing out:</strong> if you sign out, your data remains in your browser but is no longer synchronised with the server.</li>
+          </ul>
+        `,
+      },
+      {
+        heading: '11. Contact',
         html: `
           <p>For privacy requests: <a href="mailto:info@ok-marked.com">info@ok-marked.com</a></p>
         `,
@@ -245,7 +273,7 @@ export const privacyContent: LegalContent = {
             <li><strong>Datos de cuenta:</strong> dirección de correo y hash de la contraseña (Argon2id). Tu contraseña en texto plano nunca sale de tu navegador.</li>
             <li><strong>Cookie de sesión:</strong> una cookie HTTP-only técnicamente necesaria para la autenticación (30 días, renovable).</li>
             <li><strong>Datos de suscripción:</strong> estado de pago e identificadores de cliente y suscripción de Stripe. <em>No</em> almacenamos datos de tarjeta ni bancarios.</li>
-            <li><strong>Datos locales de la app:</strong> tus ejercicios, listas de entrenamiento y preferencias (idioma, tema) se almacenan únicamente en tu navegador (IndexedDB / localStorage).</li>
+            <li><strong>Datos locales de la app:</strong> tus ejercicios, listas de entrenamiento y preferencias (idioma, tema) se almacenan en tu navegador (IndexedDB / localStorage). Cuando has iniciado sesión, también se almacenan en nuestros servidores para sincronización entre dispositivos — véase la sección 10.</li>
             <li><strong>Registros del servidor:</strong> registros técnicos mínimos (marca de tiempo, estado HTTP, IP truncada) para la resolución de incidencias.</li>
           </ul>
         `,
@@ -325,7 +353,21 @@ export const privacyContent: LegalContent = {
         `,
       },
       {
-        heading: '10. Contacto',
+        heading: '10. Sincronización en la nube y datos de entrenamiento',
+        html: `
+          <p>Cuando tienes una cuenta y has iniciado sesión, sincronizamos tus ejercicios, listas de entrenamiento y preferencias (idioma, tema, moneda) a través de nuestros servidores.</p>
+          <ul>
+            <li><strong>Finalidad:</strong> acceso multidispositivo, copia de seguridad y recuperación tras pérdida de caché del navegador.</li>
+            <li><strong>Ubicación:</strong> servidores de OK-MARKED LLC, alojados en Mittwald, Alemania (véase la sección 5).</li>
+            <li><strong>Base jurídica:</strong> art. 6.1.b RGPD — la sincronización es una funcionalidad central y parte de la ejecución del contrato.</li>
+            <li><strong>Contenido:</strong> únicamente datos que tú dibujas e introduces (flechas, notas, etiquetas de tipo de golpe, títulos, colores y números). Sin contenidos externos ni datos de seguimiento.</li>
+            <li><strong>Eliminación:</strong> al eliminar tu cuenta, todos los datos de entrenamiento almacenados en el servidor se borran de inmediato y por completo. También puedes restablecer ejercicios individuales o todos los datos sincronizados desde la app en cualquier momento.</li>
+            <li><strong>Cerrar sesión:</strong> si cierras sesión, tus datos permanecen en tu navegador pero ya no se sincronizan con el servidor.</li>
+          </ul>
+        `,
+      },
+      {
+        heading: '11. Contacto',
         html: `
           <p>Para solicitudes de privacidad: <a href="mailto:info@ok-marked.com">info@ok-marked.com</a></p>
         `,
