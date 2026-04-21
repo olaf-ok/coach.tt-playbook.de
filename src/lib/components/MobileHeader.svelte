@@ -3,10 +3,13 @@
   import { goto } from '$app/navigation';
   import { resolveMobileHeader } from './mobile-nav-utils';
   import { tvSession } from '$lib/tv/session.svelte';
+  import SyncStatusDot from './SyncStatusDot.svelte';
+  import SyncStatusPanel from './SyncStatusPanel.svelte';
   import { m } from '$lib/paraglide/messages';
 
   let info = $derived(resolveMobileHeader($page.url.pathname));
   let tvPaired = $derived(tvSession.status === 'paired');
+  let syncPanelOpen = $state(false);
 
   function title(): string {
     if (!info.titleKey) return '';
@@ -53,6 +56,12 @@
   <h1 class="title">{title()}</h1>
 
   <div class="right">
+    <div class="sync-holder">
+      <SyncStatusDot onclick={() => syncPanelOpen = !syncPanelOpen} />
+      {#if syncPanelOpen}
+        <SyncStatusPanel onclose={() => syncPanelOpen = false} />
+      {/if}
+    </div>
     <button
       type="button"
       class="tv-dot"
@@ -84,7 +93,14 @@
     display: flex;
     align-items: center;
   }
-  .right { justify-content: flex-end; }
+  .right {
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  .sync-holder {
+    position: relative;
+    align-self: center;
+  }
 
   .back {
     width: 40px;
