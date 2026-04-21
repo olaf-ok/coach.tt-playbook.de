@@ -35,6 +35,16 @@ describe('PushPayloadSchema', () => {
     const result = PushPayloadSchema.safeParse({ exercises: [{ id: 'e1' }] });
     expect(result.success).toBe(false);
   });
+
+  it('rejects deletedAt in future beyond clock skew', () => {
+    const tooFuture = Date.now() + MAX_CLOCK_SKEW_MS + 10_000;
+    const result = PushPayloadSchema.safeParse({
+      exercises: [{ id: 'e1', updatedAt: Date.now(), deletedAt: tooFuture, data: {} }],
+      playlists: [],
+      settings: null,
+    });
+    expect(result.success).toBe(false);
+  });
 });
 
 describe('PullQuerySchema', () => {
@@ -50,5 +60,13 @@ describe('PullQuerySchema', () => {
 
   it('rejects negative since', () => {
     expect(PullQuerySchema.safeParse({ since: '-1' }).success).toBe(false);
+  });
+
+  it('rejects empty since', () => {
+    expect(PullQuerySchema.safeParse({ since: '' }).success).toBe(false);
+  });
+
+  it('rejects non-numeric since', () => {
+    expect(PullQuerySchema.safeParse({ since: 'abc' }).success).toBe(false);
   });
 });

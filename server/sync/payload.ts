@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const MAX_CLOCK_SKEW_MS = 60_000;
+// Used by API route handlers (Task 7/8) to cap request body size.
 export const MAX_PAYLOAD_BYTES = 5 * 1024 * 1024;
 
 const timestamp = z
@@ -11,10 +12,19 @@ const timestamp = z
     message: 'updatedAt too far in the future',
   });
 
-const EntityItem = z.object({
+const nullableTimestamp = z
+  .number()
+  .int()
+  .positive()
+  .refine((t) => t <= Date.now() + MAX_CLOCK_SKEW_MS, {
+    message: 'deletedAt too far in the future',
+  })
+  .nullable();
+
+const EntityItemSchema = z.object({
   id: z.string().min(1).max(128),
   updatedAt: timestamp,
-  deletedAt: z.number().int().positive().nullable(),
+  deletedAt: nullableTimestamp,
   data: z.record(z.unknown()),
 });
 
@@ -24,17 +34,18 @@ const SettingsPayload = z.object({
 });
 
 export const PushPayloadSchema = z.object({
-  exercises: z.array(EntityItem).max(5000),
-  playlists: z.array(EntityItem).max(5000),
+  exercises: z.array(EntityItemSchema).max(5000),
+  playlists: z.array(EntityItemSchema).max(5000),
   settings: SettingsPayload.nullable(),
 });
 
 export type PushPayload = z.infer<typeof PushPayloadSchema>;
-export type EntityItemT = z.infer<typeof EntityItem>;
+export type EntityItem = z.infer<typeof EntityItemSchema>;
 
 export const PullQuerySchema = z.object({
   since: z
     .string()
+    .min(1)
     .optional()
     .transform((s) => (s === undefined ? undefined : Number(s)))
     .refine((n) => n === undefined || (Number.isInteger(n) && n >= 0), {
@@ -45,8 +56,8 @@ export const PullQuerySchema = z.object({
 export type PullQuery = z.infer<typeof PullQuerySchema>;
 
 export interface PullResponse {
-  exercises: EntityItemT[];
-  playlists: EntityItemT[];
+  exercises: EntityItem[];
+  playlists: EntityItem[];
   settings: { updatedAt: number; data: Record<string, unknown> } | null;
   serverTime: number;
 }
