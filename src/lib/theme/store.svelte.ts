@@ -1,7 +1,11 @@
+import { writeSyncedSetting } from '$lib/sync/settings-bridge.svelte';
+
 export type ThemeMode = 'auto' | 'light' | 'dark';
 export type ResolvedTheme = 'light' | 'dark';
 
 const STORAGE_KEY = 'tt-playbook-theme';
+
+let applyingSync = false;
 
 function systemTheme(): ResolvedTheme {
   if (typeof window === 'undefined') return 'dark';
@@ -38,6 +42,7 @@ export const theme = {
     resolved = resolve(next);
     if (typeof localStorage !== 'undefined') localStorage.setItem(STORAGE_KEY, next);
     apply(resolved);
+    if (!applyingSync) void writeSyncedSetting('theme', next);
   },
   init() {
     // Runs once on app start. Applies persisted mode + sets up system-theme watcher.
@@ -48,6 +53,14 @@ export const theme = {
         if (mode === 'auto') {
           resolved = systemTheme();
           apply(resolved);
+        }
+      });
+      window.addEventListener('tt-settings-synced', (e) => {
+        const data = (e as CustomEvent).detail as Record<string, unknown>;
+        if (typeof data.theme === 'string') {
+          applyingSync = true;
+          theme.set(data.theme as ThemeMode);
+          applyingSync = false;
         }
       });
     }

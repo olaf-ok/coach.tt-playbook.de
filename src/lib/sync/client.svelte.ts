@@ -67,6 +67,14 @@ function createClient() {
         hookBypass.active = false;
       }
 
+      if (payload.settings?.data) {
+        const data = payload.settings.data as Record<string, unknown>;
+        if (typeof data.theme === 'string') localStorage.setItem('tt-playbook-theme', data.theme);
+        if (typeof data.language === 'string') localStorage.setItem('tt-language-mode', data.language);
+        if (typeof data.billingCurrency === 'string') localStorage.setItem('tt-billing-currency', data.billingCurrency);
+        window.dispatchEvent(new CustomEvent('tt-settings-synced', { detail: data }));
+      }
+
       setLastSyncAt(payload.serverTime);
       syncStatus.syncSucceeded();
     } catch (e) {

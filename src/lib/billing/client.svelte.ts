@@ -1,7 +1,10 @@
 import { detectCurrency, type Currency } from './currency-detection';
 import type { Plan } from './prices';
+import { writeSyncedSetting } from '$lib/sync/settings-bridge.svelte';
 
 const STORAGE_KEY = 'tt-billing-currency';
+
+let applyingSync = false;
 
 function loadStoredCurrency(): Currency | null {
   if (typeof localStorage === 'undefined') return null;
@@ -16,6 +19,16 @@ class BillingState {
   init(): void {
     const stored = loadStoredCurrency();
     this.currency = stored ?? detectCurrency();
+    if (typeof window !== 'undefined') {
+      window.addEventListener('tt-settings-synced', (e) => {
+        const data = (e as CustomEvent).detail as Record<string, unknown>;
+        if (data.billingCurrency === 'eur' || data.billingCurrency === 'usd') {
+          applyingSync = true;
+          this.setCurrency(data.billingCurrency as Currency);
+          applyingSync = false;
+        }
+      });
+    }
   }
 
   setCurrency(c: Currency): void {
@@ -23,6 +36,7 @@ class BillingState {
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem(STORAGE_KEY, c);
     }
+    if (!applyingSync) void writeSyncedSetting('billingCurrency', c);
   }
 
   async startCheckout(plan: Plan): Promise<void> {
