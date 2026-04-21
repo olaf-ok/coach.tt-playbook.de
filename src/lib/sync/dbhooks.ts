@@ -30,24 +30,23 @@ export function installDbHooks(): void {
   });
 
   // Soft-delete: re-insert with deletedAt after the hard-delete commits.
-  // trans.abort() was evaluated but is not viable: in fake-indexeddb it accepts the abort()
-  // call without throwing, but subsequent put() calls on the now-inactive transaction fail
-  // with TransactionInactiveError. In real IndexedDB environments abort() would need the
-  // put() issued before the transaction closes — not safely achievable from a hook callback.
-  // Chosen approach: onsuccess callback fires after the delete transaction commits, allowing
-  // a fresh transaction for the re-insert. Errors are logged so data-loss is visible.
+  // The onsuccess hook fires from within the Dexie transaction scope even
+  // though the delete has technically committed — calling db.exercises.put()
+  // synchronously from there tries to reuse the finished transaction and
+  // throws InvalidStateError ("transaction has finished"). Wrapping in
+  // setTimeout(0) escapes the scope and lets Dexie open a fresh transaction.
   db.exercises.hook('deleting', function (pk, obj) {
     if (hookBypass.active) return;
     const snapshot = { ...(obj as Exercise) };
     const now = Date.now();
     (this as { onsuccess?: () => void }).onsuccess = () => {
-      void (async () => {
-        try {
-          await db.exercises.put({ ...snapshot, deletedAt: now, updatedAt: now });
-        } catch (err) {
-          console.error('[sync] soft-delete re-insert failed for exercise', pk, err);
-        }
-      })();
+      setTimeout(() => {
+        db.exercises
+          .put({ ...snapshot, deletedAt: now, updatedAt: now })
+          .catch((err) =>
+            console.error('[sync] soft-delete re-insert failed for exercise', pk, err),
+          );
+      }, 0);
     };
   });
 
@@ -68,13 +67,13 @@ export function installDbHooks(): void {
     const snapshot = { ...(obj as Playlist) };
     const now = Date.now();
     (this as { onsuccess?: () => void }).onsuccess = () => {
-      void (async () => {
-        try {
-          await db.playlists.put({ ...snapshot, deletedAt: now, updatedAt: now });
-        } catch (err) {
-          console.error('[sync] soft-delete re-insert failed for playlist', pk, err);
-        }
-      })();
+      setTimeout(() => {
+        db.playlists
+          .put({ ...snapshot, deletedAt: now, updatedAt: now })
+          .catch((err) =>
+            console.error('[sync] soft-delete re-insert failed for playlist', pk, err),
+          );
+      }, 0);
     };
   });
 
