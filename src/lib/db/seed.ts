@@ -3,7 +3,7 @@ import type { Exercise } from '../types/exercise';
 
 const SEED_FLAG_KEY = 'tt-playbook-seeded';
 
-const samples: Omit<Exercise, 'id' | 'createdAt' | 'updatedAt'>[] = [
+const samples: Omit<Exercise, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>[] = [
   {
     name: 'VH-Topspin diagonal',
     tags: [],
@@ -108,6 +108,7 @@ export async function seedIfEmpty(): Promise<boolean> {
     id: crypto.randomUUID(),
     createdAt: now - (samples.length - i) * 1000,
     updatedAt: now - (samples.length - i) * 1000,
+    deletedAt: null,
   }));
   await db.exercises.bulkPut(exercises);
   localStorage?.setItem(SEED_FLAG_KEY, '1');

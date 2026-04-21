@@ -24,6 +24,7 @@ export interface Exercise {
   duration: string | null;
   createdAt: number;
   updatedAt: number;
+  deletedAt: number | null;
 }
 
 export function createEmptyExercise(): Exercise {
@@ -37,5 +38,6 @@ export function createEmptyExercise(): Exercise {
     duration: null,
     createdAt: now,
     updatedAt: now,
+    deletedAt: null,
   };
 }

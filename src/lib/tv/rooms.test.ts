@@ -80,6 +80,7 @@ describe('RoomRegistry', () => {
       duration: null,
       createdAt: 0,
       updatedAt: 0,
+      deletedAt: null,
     };
     reg.forwardSync(tablet, exercise);
     expect(tv.messages.at(-1)).toEqual({ type: 'sync', exercise });
@@ -100,6 +101,7 @@ describe('RoomRegistry', () => {
       duration: null,
       createdAt: 0,
       updatedAt: 0,
+      deletedAt: null,
     };
     reg.forwardSync(tv, exercise);
     expect(tablet.messages.at(-1)).toEqual({ type: 'sync', exercise });

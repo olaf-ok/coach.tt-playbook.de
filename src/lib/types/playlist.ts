@@ -4,6 +4,7 @@ export interface Playlist {
   exerciseIds: string[];
   createdAt: number;
   updatedAt: number;
+  deletedAt: number | null;
 }
 
 export function createEmptyPlaylist(): Playlist {
@@ -14,5 +15,6 @@ export function createEmptyPlaylist(): Playlist {
     exerciseIds: [],
     createdAt: now,
     updatedAt: now,
+    deletedAt: null,
   };
 }
