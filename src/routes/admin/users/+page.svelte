@@ -1,6 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
+  interface SyncStats {
+    lastSyncAt: number | null;
+    storageBytes: number;
+  }
+
   interface AdminUser {
     id: string;
     email: string;
@@ -8,6 +13,7 @@
     proUntil: number | null;
     createdAt: number;
     stripeSubscriptionStatus: string | null;
+    sync: SyncStats;
   }
 
   let users = $state<AdminUser[]>([]);
@@ -92,6 +98,27 @@
   function proDays(days: number): number {
     return Date.now() + days * 24 * 60 * 60 * 1000;
   }
+
+  function fmtBytes(bytes: number): string {
+    if (bytes === 0) return '—';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  }
+
+  function fmtLastSync(ts: number | null): string {
+    if (!ts) return 'Nie';
+    const diff = Date.now() - ts;
+    const sec = Math.round(diff / 1000);
+    if (sec < 60) return 'gerade eben';
+    const min = Math.round(sec / 60);
+    if (min < 60) return `vor ${min} Min`;
+    const hr = Math.round(min / 60);
+    if (hr < 24) return `vor ${hr} Std`;
+    const day = Math.round(hr / 24);
+    if (day < 7) return `vor ${day} Tg.`;
+    return fmtDate(ts);
+  }
 </script>
 
 <section class="admin">
@@ -129,6 +156,8 @@
               </span>
             {/if}
             <span class="muted">Angelegt {fmtDate(u.createdAt)}</span>
+            <span class="muted">· Sync {fmtLastSync(u.sync.lastSyncAt)}</span>
+            <span class="muted">· {fmtBytes(u.sync.storageBytes)}</span>
           </div>
           <div class="actions">
             {#if !u.emailVerified}

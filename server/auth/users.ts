@@ -95,6 +95,39 @@ export interface UserSummary {
   stripeSubscriptionStatus: string | null;
 }
 
+export interface SyncStats {
+  lastSyncAt: number | null;
+  storageBytes: number;
+}
+
+export function getSyncStats(db: AuthDatabase, userId: string): SyncStats {
+  const ex = db
+    .prepare(
+      `SELECT MAX(updated_at) AS m, COALESCE(SUM(LENGTH(data)), 0) AS s
+       FROM sync_exercises WHERE user_id = ? AND deleted_at IS NULL`,
+    )
+    .get(userId) as unknown as { m: number | null; s: number };
+  const pl = db
+    .prepare(
+      `SELECT MAX(updated_at) AS m, COALESCE(SUM(LENGTH(data)), 0) AS s
+       FROM sync_playlists WHERE user_id = ? AND deleted_at IS NULL`,
+    )
+    .get(userId) as unknown as { m: number | null; s: number };
+  const se = db
+    .prepare(
+      `SELECT updated_at AS m, LENGTH(data) AS s
+       FROM sync_settings WHERE user_id = ?`,
+    )
+    .get(userId) as unknown as { m: number; s: number } | undefined;
+
+  const maxM = Math.max(Number(ex.m ?? 0), Number(pl.m ?? 0), Number(se?.m ?? 0));
+  const bytes = Number(ex.s ?? 0) + Number(pl.s ?? 0) + Number(se?.s ?? 0);
+  return {
+    lastSyncAt: maxM > 0 ? maxM : null,
+    storageBytes: bytes,
+  };
+}
+
 interface SummaryRow {
   id: string;
   email: string;
