@@ -30,14 +30,11 @@
       <dt>{m.settings_about_imprint_represented()}</dt>
       <dd>Olaf Kranz</dd>
 
-      <dt>{m.settings_about_imprint_phone()}</dt>
-      <dd><a href="tel:+50686921701">+506 86 92 17 01</a></dd>
-
       <dt>{m.settings_about_imprint_email()}</dt>
-      <dd><a href="mailto:info@ok-marked.com">info@ok-marked.com</a></dd>
+      <dd><a href="mailto:info@tt-playbook.de">info@tt-playbook.de</a></dd>
 
       <dt>{m.settings_about_imprint_web()}</dt>
-      <dd><a href="https://ok-marked.com" target="_blank" rel="noopener">ok-marked.com</a></dd>
+      <dd><a href="https://tt-playbook.de" target="_blank" rel="noopener">tt-playbook.de</a></dd>
     </dl>
   </div>
 
