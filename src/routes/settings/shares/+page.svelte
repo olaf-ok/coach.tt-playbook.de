@@ -17,6 +17,7 @@
   let shares = $state<ShareRow[]>([]);
   let loading = $state(true);
   let revoking = $state<Set<string>>(new Set());
+  let copiedSlug = $state<string | null>(null);
   let error = $state<string | null>(null);
 
   const isPro = $derived(auth.isPro);
@@ -53,12 +54,14 @@
     }
   }
 
-  async function copyLink(url: string) {
+  async function copyLink(slug: string, url: string) {
     try {
       await navigator.clipboard.writeText(url);
     } catch {
       // ignore
     }
+    copiedSlug = slug;
+    setTimeout(() => (copiedSlug = null), 2000);
   }
 
   function formatDate(ts: number | null): string {
@@ -111,10 +114,11 @@
             <button
               type="button"
               class="btn-copy"
-              onclick={() => copyLink(`https://coach.tt-playbook.de/s/${share.slug}`)}
+              class:copied={copiedSlug === share.slug}
+              onclick={() => copyLink(share.slug, `https://coach.tt-playbook.de/s/${share.slug}`)}
               disabled={expired}
             >
-              {m.share_dialog_copy_button()}
+              {copiedSlug === share.slug ? m.share_dialog_copied() : m.share_dialog_copy_button()}
             </button>
             <button
               type="button"
@@ -258,6 +262,11 @@
   .btn-copy {
     background: var(--bg-elevated);
     color: var(--color-text-primary);
+  }
+  .btn-copy.copied {
+    background: var(--color-success, #30d158);
+    color: #fff;
+    border-color: transparent;
   }
 
   .btn-revoke {

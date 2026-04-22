@@ -61,7 +61,8 @@
       }
 
       const data = await res.json();
-      shareResult = { url: data.url, expiresAt: data.expiresAt };
+      const publicUrl = `https://coach.tt-playbook.de/s/${data.slug}`;
+      shareResult = { url: publicUrl, expiresAt: data.expiresAt };
     } catch {
       error = m.share_dialog_create_error();
     } finally {
@@ -73,11 +74,12 @@
     if (!shareResult) return;
     try {
       await navigator.clipboard.writeText(shareResult.url);
-      copied = true;
-      setTimeout(() => (copied = false), 2000);
     } catch {
-      // fallback: select the input
+      const el = document.querySelector<HTMLInputElement>('.link-input');
+      if (el) { el.select(); document.execCommand('copy'); }
     }
+    copied = true;
+    setTimeout(() => (copied = false), 2000);
   }
 
   async function nativeShare() {
