@@ -66,6 +66,7 @@
   "draw_save_success": "Saved",
   "draw_save_new": "New exercise",
   "draw_save_error": "Save failed",
+  "draw_share_unsaved_hint": "Create an exercise first, then share it.",
   "draw_many_strokes_warning": "Many strokes ({count}) — colors will start repeating. Consider splitting into multiple exercises.",
   "archive_title": "Archive",
   "archive_count_one": "1 exercise",

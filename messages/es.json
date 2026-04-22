@@ -66,6 +66,7 @@
   "draw_save_success": "Guardado",
   "draw_save_new": "Ejercicio nuevo",
   "draw_save_error": "Error al guardar",
+  "draw_share_unsaved_hint": "Primero crea un ejercicio, luego compártelo.",
   "draw_many_strokes_warning": "Muchos golpes ({count}) — los colores empezarán a repetirse. Considera dividir en varios ejercicios.",
   "archive_title": "Archivo",
   "archive_count_one": "1 ejercicio",

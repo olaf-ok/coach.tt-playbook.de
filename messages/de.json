@@ -66,6 +66,7 @@
   "draw_save_success": "Gespeichert",
   "draw_save_new": "Neue Übung",
   "draw_save_error": "Speichern fehlgeschlagen",
+  "draw_share_unsaved_hint": "Erst Übung anlegen, dann teilen.",
   "draw_many_strokes_warning": "Viele Schläge ({count}) — Farben wiederholen sich ab hier. Übung ggf. in mehrere aufteilen.",
   "archive_title": "Archiv",
   "archive_count_one": "1 Übung",

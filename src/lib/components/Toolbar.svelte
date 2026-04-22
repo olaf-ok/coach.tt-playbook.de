@@ -1,6 +1,7 @@
 <script lang="ts">
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
   import PlusIcon from '$lib/icons/PlusIcon.svelte';
+  import ShareIcon from '$lib/icons/ShareIcon.svelte';
   import SyncStatusButton from './SyncStatusButton.svelte';
   import SyncStatusPanel from './SyncStatusPanel.svelte';
   import { m } from '$lib/paraglide/messages';
@@ -9,6 +10,7 @@
     onSave?: () => void;
     onNew?: () => void;
     onOpenTv?: () => void;
+    onShare?: () => void;
     tvStatus?: string;
   }
 
@@ -16,6 +18,7 @@
     onSave,
     onNew,
     onOpenTv,
+    onShare,
     tvStatus = 'idle',
   }: Props = $props();
 
@@ -49,6 +52,12 @@
       <span class="tv-dot" class:on={tvConnected}></span>
       <span>{m.toolbar_tv_label()}</span>
     </button>
+    {#if onShare}
+      <button type="button" class="btn btn-secondary share-btn" onclick={() => onShare?.()}>
+        <ShareIcon size={16} />
+        <span>{m.share_menu_item()}</span>
+      </button>
+    {/if}
     <button type="button" class="btn btn-secondary" onclick={() => onNew?.()}>
       <PlusIcon size={16} />
       <span>{m.toolbar_new_exercise()}</span>

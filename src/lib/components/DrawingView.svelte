@@ -4,6 +4,7 @@
   import Toolbar from '$lib/components/Toolbar.svelte';
   import StepsPanel from '$lib/components/StepsPanel.svelte';
   import PaywallDialog from '$lib/components/PaywallDialog.svelte';
+  import ShareDialog from '$lib/components/ShareDialog.svelte';
   import { StrokeInputController } from '$lib/canvas/StrokeInput';
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
   import { saveExercise, loadExercise } from '$lib/db/exercises';
@@ -19,6 +20,7 @@
   let selectedStrokeId = $state<string | null>(null);
   let toast = $state<{ text: string; kind: ToastKind } | null>(null);
   let paywallOpen = $state(false);
+  let shareOpen = $state(false);
   let sheetState = $state<SheetState>('peek');
 
   function toggleSheet() {
@@ -119,12 +121,22 @@
   function handleOpenTv() {
     goto('/settings/tv');
   }
+
+  async function handleShare() {
+    if (currentExercise.exercise.strokes.length === 0 && currentExercise.exercise.name.trim() === '') {
+      showToast(m.draw_share_unsaved_hint(), 'info');
+      return;
+    }
+    await handleSave();
+    shareOpen = true;
+  }
 </script>
 
 <Toolbar
   onSave={handleSave}
   onNew={handleNew}
   onOpenTv={handleOpenTv}
+  onShare={handleShare}
   tvStatus={tvSession.status}
 />
 
@@ -156,6 +168,14 @@
 
 {#if paywallOpen}
   <PaywallDialog onClose={() => (paywallOpen = false)} />
+{/if}
+
+{#if shareOpen}
+  <ShareDialog
+    exerciseId={currentExercise.exercise.id}
+    exerciseName={currentExercise.exercise.name || m.draw_default_exercise_name()}
+    onClose={() => (shareOpen = false)}
+  />
 {/if}
 
 <style>
