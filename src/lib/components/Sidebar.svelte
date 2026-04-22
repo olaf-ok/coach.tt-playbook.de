@@ -6,8 +6,6 @@
   import ArchiveIcon from '$lib/icons/ArchiveIcon.svelte';
   import PlaylistIcon from '$lib/icons/PlaylistIcon.svelte';
   import SettingsIcon from '$lib/icons/SettingsIcon.svelte';
-  import SyncStatusDot from './SyncStatusDot.svelte';
-  import SyncStatusPanel from './SyncStatusPanel.svelte';
   import { m } from '$lib/paraglide/messages';
   import type { Component } from 'svelte';
 
@@ -18,7 +16,6 @@
   ];
 
   let activeTab = $derived(pathToTabId($page.url.pathname));
-  let syncPanelOpen = $state(false);
 </script>
 
 <aside class="sidebar">
@@ -26,12 +23,6 @@
     <a href="/draw" class="brand" aria-label={m.sidebar_brand_aria()}>
       <AppIcon size={34} />
     </a>
-    <div class="sync-holder">
-      <SyncStatusDot onclick={() => syncPanelOpen = !syncPanelOpen} />
-      {#if syncPanelOpen}
-        <SyncStatusPanel onclose={() => syncPanelOpen = false} />
-      {/if}
-    </div>
     <div class="tabs">
       {#each topTabs as tab (tab.id)}
         {@const Icon = tab.icon}
@@ -80,11 +71,6 @@
     flex-direction: column;
     align-items: center;
     gap: 16px;
-  }
-  .sync-holder {
-    position: relative;
-    align-self: center;
-    margin-top: 4px;
   }
   .brand {
     width: 52px;

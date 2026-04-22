@@ -8,28 +8,30 @@
   }
 
   let { localCount, serverCount, onChoose }: Props = $props();
-
-  function handleBackdrop(e: MouseEvent) {
-    if (e.target === e.currentTarget) {
-      // Optionally allow backdrop click to close, or prevent it
-      // For now, we require an explicit choice
-    }
-  }
 </script>
 
-<div class="overlay" onclick={handleBackdrop} role="presentation">
-  <div class="dialog" role="dialog" aria-modal="true">
-    <h2>{m.initial_sync_title()}</h2>
-    <p class="body">{m.initial_sync_body({ local: localCount, server: serverCount })}</p>
+<div class="overlay" role="presentation">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="merge-title">
+    <h2 id="merge-title">{m.initial_sync_title()}</h2>
+    <p class="intro">{m.initial_sync_intro()}</p>
+
+    <ul class="counts">
+      <li>{m.initial_sync_local_line({ local: localCount })}</li>
+      <li>{m.initial_sync_server_line({ server: serverCount })}</li>
+    </ul>
+
     <div class="actions">
       <button type="button" class="btn btn-primary" onclick={() => onChoose('keepBoth')}>
-        {m.initial_sync_keep_both()}
+        <span class="btn-label">{m.initial_sync_keep_both()}</span>
+        <span class="btn-note">{m.initial_sync_keep_both_note()}</span>
       </button>
       <button type="button" class="btn btn-secondary" onclick={() => onChoose('serverOnly')}>
-        {m.initial_sync_server_only()}
+        <span class="btn-label">{m.initial_sync_server_only()}</span>
+        <span class="btn-note">{m.initial_sync_server_only_note()}</span>
       </button>
       <button type="button" class="btn btn-secondary" onclick={() => onChoose('localOnly')}>
-        {m.initial_sync_local_only()}
+        <span class="btn-label">{m.initial_sync_local_only()}</span>
+        <span class="btn-note">{m.initial_sync_local_only_note()}</span>
       </button>
     </div>
   </div>
@@ -39,71 +41,100 @@
   .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     display: grid;
     place-items: center;
+    padding: 16px;
     z-index: 1000;
   }
 
   .dialog {
-    background: var(--color-surface);
+    background: var(--bg-elevated);
+    color: var(--color-text-primary);
     padding: 24px;
-    border-radius: 14px;
-    max-width: 440px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    max-width: 460px;
+    width: 100%;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   }
 
   h2 {
-    margin: 0 0 12px 0;
-    font-size: 18px;
+    margin: 0 0 10px 0;
+    font-size: 19px;
     font-weight: 600;
-    color: var(--color-text);
+    color: var(--color-text-primary);
   }
 
-  .body {
-    margin: 0 0 16px 0;
+  .intro {
+    margin: 0 0 14px 0;
     font-size: 14px;
     color: var(--color-text-secondary);
     line-height: 1.5;
+  }
+
+  .counts {
+    list-style: none;
+    margin: 0 0 20px 0;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--color-text-primary);
+  }
+  .counts li {
+    padding: 3px 0;
   }
 
   .actions {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 16px;
   }
 
   .btn {
-    padding: 10px 16px;
+    padding: 12px 16px;
     border-radius: 10px;
     border: 1px solid var(--color-border);
-    background: var(--color-bg);
-    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--color-text-primary);
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.2s;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    transition: background var(--transition-quick), border-color var(--transition-quick), transform 0.15s ease;
   }
-
   .btn:hover {
-    background: var(--color-bg-hover);
-    border-color: var(--color-border-hover);
+    background: var(--bg-glass-hover);
+  }
+  .btn:active {
+    transform: scale(0.98);
+  }
+  .btn-label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .btn-note {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    font-weight: 400;
   }
 
   .btn-primary {
-    background: var(--color-primary);
-    color: var(--color-primary-text);
-    border-color: var(--color-primary);
+    background: var(--color-accent);
+    color: #fff;
+    border-color: var(--color-accent);
+    box-shadow: 0 2px 8px rgba(10, 132, 255, 0.3);
   }
-
   .btn-primary:hover {
-    background: var(--color-primary-hover);
-    border-color: var(--color-primary-hover);
+    opacity: 0.92;
+    background: var(--color-accent);
   }
-
-  .btn-secondary {
-    background: var(--color-bg);
-    color: var(--color-text);
+  .btn-primary .btn-note {
+    color: rgba(255, 255, 255, 0.85);
   }
 </style>

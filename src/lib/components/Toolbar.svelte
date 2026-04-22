@@ -1,6 +1,8 @@
 <script lang="ts">
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
   import PlusIcon from '$lib/icons/PlusIcon.svelte';
+  import SyncStatusButton from './SyncStatusButton.svelte';
+  import SyncStatusPanel from './SyncStatusPanel.svelte';
   import { m } from '$lib/paraglide/messages';
 
   interface Props {
@@ -18,6 +20,7 @@
   }: Props = $props();
 
   const tvConnected = $derived(tvStatus === 'paired');
+  let syncPanelOpen = $state(false);
 </script>
 
 <header class="toolbar">
@@ -29,6 +32,12 @@
   />
 
   <div class="actions">
+    <div class="sync-holder">
+      <SyncStatusButton onclick={() => (syncPanelOpen = !syncPanelOpen)} />
+      {#if syncPanelOpen}
+        <SyncStatusPanel onclose={() => (syncPanelOpen = false)} />
+      {/if}
+    </div>
     <button
       type="button"
       class="tv-btn"
@@ -88,6 +97,12 @@
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
+  }
+
+  .sync-holder {
+    position: relative;
+    display: flex;
+    align-items: center;
   }
 
   .tv-btn {
