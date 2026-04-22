@@ -74,6 +74,8 @@
     <ul>
       <li>{@html m.help_s_share_create()}</li>
       <li>{@html m.help_s_share_view()}</li>
+      <li>{@html m.help_s_share_viewer_message()}</li>
+      <li>{@html m.help_s_share_viewer_coaching()}</li>
       <li>{@html m.help_s_share_manage()}</li>
       <li>{@html m.help_s_share_expire()}</li>
       <li>{m.help_s_share_privacy()}</li>

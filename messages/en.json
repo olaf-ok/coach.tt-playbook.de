@@ -334,6 +334,8 @@
   "help_s_share_intro": "Create a public link to an exercise — the recipient can view it in the browser and step through the strokes without needing the app.",
   "help_s_share_create": "<strong>Create link:</strong> Archive → \"...\" → Share → enter optional message → \"Create link\". The link is ready to copy immediately.",
   "help_s_share_view": "<strong>Viewer:</strong> The recipient opens the link in the browser. All steps are navigable via step buttons + play button.",
+  "help_s_share_viewer_message": "<strong>Message from the coach:</strong> Your personal note is shown once as a popup when the link is first opened. A button at the top of the viewer lets the recipient reopen it anytime.",
+  "help_s_share_viewer_coaching": "<strong>Coaching details per step:</strong> Each step button shows its number and the stroke-type code (e.g. <code>FH-L</code> for Forehand Loop). If you added a free-text note to a step (\"rotate hips\", \"catch the ball early\"), it appears as a colored coaching tip below the step row when the step is tapped — and stays in sync with auto-play.",
   "help_s_share_manage": "<strong>Manage:</strong> Settings → Shared exercises — view all active links and revoke them individually.",
   "help_s_share_expire": "<strong>Expiry:</strong> Free: 30 days, max. 5 active links. Pro: 1 year or \"never\".",
   "help_s_share_privacy": "Shared exercises are public — anyone with the link can view them without logging in.",

@@ -334,6 +334,8 @@
   "help_s_share_intro": "Erstelle einen öffentlichen Link zu einer Übung — der Empfänger kann sie im Browser ansehen und die Schritte durchklicken, ohne die App zu haben.",
   "help_s_share_create": "<strong>Link erstellen:</strong> Archiv → „...\" → Teilen → optionale Nachricht eingeben → „Link erstellen\". Der Link ist sofort kopierbar.",
   "help_s_share_view": "<strong>Viewer:</strong> Der Empfänger öffnet den Link im Browser. Alle Schritte sind per Schritt-Buttons + Play-Button navigierbar.",
+  "help_s_share_viewer_message": "<strong>Nachricht vom Trainer:</strong> Deine persönliche Nachricht erscheint beim ersten Öffnen des Links automatisch als Popup. Über den Button oben im Viewer lässt sie sich jederzeit wieder aufrufen.",
+  "help_s_share_viewer_coaching": "<strong>Coaching-Details pro Schritt:</strong> Jeder Schritt-Button zeigt Nummer und Schlagart-Kürzel (z. B. <code>VH-T</code> für Vorhand-Topspin). Hast du zu einem Schritt einen Freitext-Hinweis notiert („Hüfte rotieren\", „Ball früh nehmen\"), erscheint er beim Antippen des Schritts als farbiger Coaching-Tipp unter der Schrittleiste — auch beim automatischen Durchspielen.",
   "help_s_share_manage": "<strong>Verwalten:</strong> Einstellungen → Geteilte Übungen — hier siehst du alle aktiven Links und kannst sie einzeln widerrufen.",
   "help_s_share_expire": "<strong>Gültigkeit:</strong> Free: 30 Tage, max. 5 aktive Links. Pro: 1 Jahr oder „nie\".",
   "help_s_share_privacy": "Geteilte Übungen sind öffentlich — jeder mit dem Link kann sie ansehen, ohne Login.",

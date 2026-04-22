@@ -334,6 +334,8 @@
   "help_s_share_intro": "Crea un enlace público a un ejercicio — el destinatario puede verlo en el navegador y navegar los pasos sin tener la app.",
   "help_s_share_create": "<strong>Crear enlace:</strong> Archivo → \"...\" → Compartir → escribir mensaje opcional → \"Crear enlace\". El enlace está listo para copiar de inmediato.",
   "help_s_share_view": "<strong>Visor:</strong> El destinatario abre el enlace en el navegador. Todos los pasos son navegables con los botones de paso + botón de reproducción.",
+  "help_s_share_viewer_message": "<strong>Mensaje del entrenador:</strong> Tu mensaje personal aparece automáticamente como ventana emergente la primera vez que se abre el enlace. Con el botón en la parte superior del visor, el destinatario puede abrirlo de nuevo cuando quiera.",
+  "help_s_share_viewer_coaching": "<strong>Detalles de entrenamiento por paso:</strong> Cada botón de paso muestra su número y la abreviatura de la técnica (p. ej. <code>D-L</code> para Loop de derecha). Si añadiste una nota de texto libre a un paso (\"rotar caderas\", \"tomar la pelota temprano\"), aparece como consejo de color debajo de la fila de pasos al tocar el paso — y sigue al modo reproducción automática.",
   "help_s_share_manage": "<strong>Gestionar:</strong> Ajustes → Ejercicios compartidos — aquí ves todos los enlaces activos y puedes revocarlos individualmente.",
   "help_s_share_expire": "<strong>Validez:</strong> Free: 30 días, máx. 5 enlaces activos. Pro: 1 año o \"nunca\".",
   "help_s_share_privacy": "Los ejercicios compartidos son públicos — cualquiera con el enlace puede verlos sin iniciar sesión.",
