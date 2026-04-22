@@ -1,3 +1,5 @@
+import { syncClient } from '$lib/sync/client.svelte';
+
 export interface AuthUser {
   id: string;
   email: string;
@@ -61,6 +63,7 @@ class AuthState {
   async logout(): Promise<void> {
     await fetch('/api/auth/logout', { method: 'POST' });
     this.user = null;
+    await syncClient.clearLocal();
   }
 
   async requestReset(email: string): Promise<void> {
