@@ -41,6 +41,7 @@
   "sidebar_tab_archive": "Archiv",
   "sidebar_tab_playlists": "Trainingslisten",
   "sidebar_settings_aria": "Einstellungen",
+  "sidebar_help_aria": "Anleitung",
   "settings_nav_account": "Account",
   "settings_nav_language": "Sprache",
   "settings_nav_tv": "TV-Verbindung",
@@ -285,7 +286,7 @@
   "settings_about_imprint_phone": "Telefon",
   "settings_about_imprint_email": "E-Mail",
   "settings_about_imprint_web": "Web",
-  "settings_nav_help": "Hilfe",
+  "settings_nav_help": "Anleitung",
   "settings_help_title": "Bedienungsanleitung",
   "help_intro": "Der TT Playbook Trainer ersetzt das physische Whiteboard in der Halle. Du zeichnest Übungen auf Tablet oder Smartphone und überträgst sie live auf einen TV — mit klar nummerierten Pfeilen, Schlagart-Codes und einer Übungs-Bibliothek, die du jederzeit wieder abrufen kannst.",
 
@@ -362,7 +363,7 @@
   "help_s8_tv": "<strong>TV-Verbindung:</strong> QR scannen, Code eingeben, Verbindung trennen.",
   "help_s8_display": "<strong>Anzeige:</strong> Hell, Dunkel oder System-Modus.",
   "help_s8_pro": "<strong>Pro:</strong> Plan buchen, Pro-Status sehen.",
-  "help_s8_help": "<strong>Hilfe:</strong> Diese Bedienungsanleitung.",
+  "help_s8_help": "<strong>Anleitung:</strong> Dieses Dokument.",
   "help_s8_about": "<strong>Über:</strong> App-Version + Impressum.",
 
   "help_s9_title": "10. Tipps für die Halle",

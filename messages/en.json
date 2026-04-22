@@ -41,6 +41,7 @@
   "sidebar_tab_archive": "Archive",
   "sidebar_tab_playlists": "Training Lists",
   "sidebar_settings_aria": "Settings",
+  "sidebar_help_aria": "Guide",
   "settings_nav_account": "Account",
   "settings_nav_language": "Language",
   "settings_nav_tv": "TV Connection",
@@ -285,7 +286,7 @@
   "settings_about_imprint_phone": "Phone",
   "settings_about_imprint_email": "Email",
   "settings_about_imprint_web": "Web",
-  "settings_nav_help": "Help",
+  "settings_nav_help": "Guide",
   "settings_help_title": "User guide",
   "help_intro": "TT Playbook Trainer replaces the physical whiteboard in the hall. Draw exercises on a tablet or phone and beam them live to a TV — with clearly numbered arrows, stroke-type codes and an exercise library you can recall any time.",
 
@@ -362,7 +363,7 @@
   "help_s8_tv": "<strong>TV connection:</strong> Scan QR, enter code, disconnect.",
   "help_s8_display": "<strong>Display:</strong> Light, Dark or system mode.",
   "help_s8_pro": "<strong>Pro:</strong> Subscribe, see Pro status.",
-  "help_s8_help": "<strong>Help:</strong> This user guide.",
+  "help_s8_help": "<strong>Guide:</strong> This document.",
   "help_s8_about": "<strong>About:</strong> App version + legal notice.",
 
   "help_s9_title": "10. Tips for the hall",

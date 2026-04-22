@@ -6,6 +6,7 @@
   import ArchiveIcon from '$lib/icons/ArchiveIcon.svelte';
   import PlaylistIcon from '$lib/icons/PlaylistIcon.svelte';
   import SettingsIcon from '$lib/icons/SettingsIcon.svelte';
+  import HelpIcon from '$lib/icons/HelpIcon.svelte';
   import { m } from '$lib/paraglide/messages';
   import type { Component } from 'svelte';
 
@@ -41,9 +42,17 @@
 
   <div class="bottom">
     <a
+      href="/settings/help"
+      class="tab"
+      class:active={$page.url.pathname === '/settings/help'}
+      aria-label={m.sidebar_help_aria()}
+    >
+      <HelpIcon />
+    </a>
+    <a
       href="/settings"
       class="tab"
-      class:active={$page.url.pathname.startsWith('/settings')}
+      class:active={$page.url.pathname.startsWith('/settings') && $page.url.pathname !== '/settings/help'}
       aria-label={m.sidebar_settings_aria()}
     >
       <SettingsIcon />
@@ -114,6 +123,7 @@
   .bottom {
     display: flex;
     flex-direction: column;
+    gap: 8px;
   }
   @media (max-width: 767.98px) {
     .sidebar { display: none; }

@@ -41,6 +41,7 @@
   "sidebar_tab_archive": "Archivo",
   "sidebar_tab_playlists": "Listas de entrenamiento",
   "sidebar_settings_aria": "Ajustes",
+  "sidebar_help_aria": "Guía",
   "settings_nav_account": "Cuenta",
   "settings_nav_language": "Idioma",
   "settings_nav_tv": "Conexión TV",
@@ -285,7 +286,7 @@
   "settings_about_imprint_phone": "Teléfono",
   "settings_about_imprint_email": "Correo",
   "settings_about_imprint_web": "Web",
-  "settings_nav_help": "Ayuda",
+  "settings_nav_help": "Guía",
   "settings_help_title": "Manual de uso",
   "help_intro": "TT Playbook Trainer sustituye a la pizarra física en el pabellón. Dibujas ejercicios en tablet o móvil y los proyectas en directo a un televisor — con flechas claramente numeradas, códigos de tipo de golpe y una biblioteca de ejercicios siempre disponible.",
 
@@ -362,7 +363,7 @@
   "help_s8_tv": "<strong>Conexión TV:</strong> Escanear QR, introducir código, desconectar.",
   "help_s8_display": "<strong>Pantalla:</strong> Claro, oscuro o modo del sistema.",
   "help_s8_pro": "<strong>Pro:</strong> Contratar plan, ver estado Pro.",
-  "help_s8_help": "<strong>Ayuda:</strong> Este manual de uso.",
+  "help_s8_help": "<strong>Guía:</strong> Este documento.",
   "help_s8_about": "<strong>Acerca de:</strong> Versión de la app + aviso legal.",
 
   "help_s9_title": "10. Consejos para el pabellón",
