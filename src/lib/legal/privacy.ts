@@ -117,6 +117,7 @@ export const privacyContent: LegalContent = {
             <li><strong>Inhalt:</strong> rein von dir gezeichnete und eingegebene Daten (Pfeile, Notizen, Schlagart-Tags, Titel, Farb- und Zahl-Angaben). Keine externen Inhalte, keine Tracking-Daten.</li>
             <li><strong>Löschung:</strong> Beim Löschen deines Kontos werden alle serverseitig gespeicherten Trainingsdaten unverzüglich und vollständig entfernt. Du kannst einzelne Übungen oder alle Sync-Daten auch jederzeit in der App zurücksetzen.</li>
             <li><strong>Abschalten:</strong> Meldest du dich ab, verbleiben die Daten weiterhin lokal in deinem Browser, werden aber nicht mehr mit dem Server synchronisiert.</li>
+            <li><strong>Teilen-Funktion:</strong> Wenn du eine Übung teilst, wird ein öffentlich erreichbarer Link erzeugt. Jede Person mit diesem Link kann die Übung lesen – ohne Login. Du kannst den Link jederzeit unter Einstellungen → Geteilte Übungen widerrufen. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung).</li>
           </ul>
         `,
       },
@@ -240,6 +241,7 @@ export const privacyContent: LegalContent = {
             <li><strong>Content:</strong> only data you draw and enter yourself (arrows, notes, stroke-type tags, titles, colour and number info). No external content, no tracking data.</li>
             <li><strong>Deletion:</strong> when you delete your account, all server-side training data is removed immediately and completely. You can also reset individual exercises or all sync data from within the app at any time.</li>
             <li><strong>Signing out:</strong> if you sign out, your data remains in your browser but is no longer synchronised with the server.</li>
+            <li><strong>Sharing feature:</strong> when you share an exercise, a publicly accessible link is created. Anyone with the link can view the exercise – no login required. You can revoke the link at any time under Settings → Shared exercises. Legal basis: Art. 6(1)(b) GDPR (contract performance).</li>
           </ul>
         `,
       },
@@ -363,6 +365,7 @@ export const privacyContent: LegalContent = {
             <li><strong>Contenido:</strong> únicamente datos que tú dibujas e introduces (flechas, notas, etiquetas de tipo de golpe, títulos, colores y números). Sin contenidos externos ni datos de seguimiento.</li>
             <li><strong>Eliminación:</strong> al eliminar tu cuenta, todos los datos de entrenamiento almacenados en el servidor se borran de inmediato y por completo. También puedes restablecer ejercicios individuales o todos los datos sincronizados desde la app en cualquier momento.</li>
             <li><strong>Cerrar sesión:</strong> si cierras sesión, tus datos permanecen en tu navegador pero ya no se sincronizan con el servidor.</li>
+            <li><strong>Función de compartir:</strong> cuando compartes un ejercicio, se genera un enlace públicamente accesible. Cualquier persona con el enlace puede ver el ejercicio, sin inicio de sesión. Puedes revocar el enlace en cualquier momento desde Ajustes → Ejercicios compartidos. Base jurídica: art. 6.1.b RGPD (ejecución del contrato).</li>
           </ul>
         `,
       },

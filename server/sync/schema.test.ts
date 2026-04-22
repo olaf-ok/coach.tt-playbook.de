@@ -14,10 +14,10 @@ describe('sync schema v3', () => {
     expect(tables).toContain('sync_settings');
   });
 
-  it('bumps user_version to 3', () => {
+  it('bumps user_version to 4 (current)', () => {
     resetSingletonForTests();
     const db = openDatabase(':memory:');
     const row = db.prepare('PRAGMA user_version').get() as { user_version: number };
-    expect(row.user_version).toBe(3);
+    expect(row.user_version).toBe(4);
   });
 });

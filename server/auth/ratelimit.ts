@@ -8,7 +8,12 @@ export type Action =
   | 'billingCheckout'
   | 'syncPull'
   | 'syncPush'
-  | 'syncReset';
+  | 'syncReset'
+  | 'shareCreateFreeH'
+  | 'shareCreateFreeD'
+  | 'shareCreateProH'
+  | 'shareCreateProD'
+  | 'shareView';
 
 interface Limit {
   max: number;
@@ -24,6 +29,11 @@ export const LIMITS: Record<Action, Limit> = {
   syncPull: { max: 60, windowMs: 60 * 1000 },
   syncPush: { max: 60, windowMs: 60 * 1000 },
   syncReset: { max: 3, windowMs: 60 * 60 * 1000 },
+  shareCreateFreeH: { max: 10, windowMs: 60 * 60 * 1000 },
+  shareCreateFreeD: { max: 50, windowMs: 24 * 60 * 60 * 1000 },
+  shareCreateProH: { max: 50, windowMs: 60 * 60 * 1000 },
+  shareCreateProD: { max: 200, windowMs: 24 * 60 * 60 * 1000 },
+  shareView: { max: 200, windowMs: 60 * 1000 },
 };
 
 interface Row {

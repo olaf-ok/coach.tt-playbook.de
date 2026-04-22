@@ -69,6 +69,18 @@
   </article>
 
   <article>
+    <h3>{m.help_s_share_title()}</h3>
+    <p>{m.help_s_share_intro()}</p>
+    <ul>
+      <li>{@html m.help_s_share_create()}</li>
+      <li>{@html m.help_s_share_view()}</li>
+      <li>{@html m.help_s_share_manage()}</li>
+      <li>{@html m.help_s_share_expire()}</li>
+      <li>{m.help_s_share_privacy()}</li>
+    </ul>
+  </article>
+
+  <article>
     <h3>{m.help_s6_title()}</h3>
     <p>{m.help_s6_intro()}</p>
     <ol>

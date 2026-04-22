@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto, invalidateAll } from '$app/navigation';
   import ExerciseCard from '$lib/components/ExerciseCard.svelte';
+  import ShareDialog from '$lib/components/ShareDialog.svelte';
   import SearchIcon from '$lib/icons/SearchIcon.svelte';
   import PlusIcon from '$lib/icons/PlusIcon.svelte';
   import { deleteExercise, saveExercise, loadExercise } from '$lib/db/exercises';
@@ -72,6 +73,13 @@
     await deleteExercise(id);
     await invalidateAll();
   }
+
+  let shareTarget = $state<{ id: string; name: string } | null>(null);
+
+  function share(id: string) {
+    const ex = exercises.find((e) => e.id === id);
+    shareTarget = ex ? { id: ex.id, name: ex.name } : { id, name: '' };
+  }
 </script>
 
 <section class="archive">
@@ -142,11 +150,20 @@
           onRename={rename}
           onDuplicate={duplicate}
           onDelete={remove}
+          onShare={share}
         />
       {/each}
     </div>
   {/if}
 </section>
+
+{#if shareTarget}
+  <ShareDialog
+    exerciseId={shareTarget.id}
+    exerciseName={shareTarget.name}
+    onClose={() => (shareTarget = null)}
+  />
+{/if}
 
 <style>
   .archive {

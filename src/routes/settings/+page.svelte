@@ -7,6 +7,7 @@
     { href: '/settings/tv', label: m.settings_nav_tv() },
     { href: '/settings/display', label: m.settings_nav_display() },
     { href: '/settings/pro', label: m.settings_nav_pro() },
+    { href: '/settings/shares', label: m.settings_nav_shares() },
     { href: '/settings/help', label: m.settings_nav_help() },
     { href: '/settings/about', label: m.settings_nav_about() },
   ];

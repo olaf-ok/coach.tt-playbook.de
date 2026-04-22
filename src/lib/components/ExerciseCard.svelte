@@ -11,9 +11,10 @@
     onRename: (id: string) => void;
     onDuplicate: (id: string) => void;
     onDelete: (id: string) => void;
+    onShare?: (id: string) => void;
   }
 
-  let { exercise, onOpen, onRename, onDuplicate, onDelete }: Props = $props();
+  let { exercise, onOpen, onRename, onDuplicate, onDelete, onShare }: Props = $props();
 
   const strokeCount = $derived(exercise.strokes.length);
   const uniqueTags = $derived(
@@ -36,6 +37,7 @@
       <h3 class="title">{exercise.name || m.exercise_unnamed()}</h3>
       <OverflowMenu
         items={[
+          ...(onShare ? [{ label: m.share_menu_item(), onSelect: () => onShare(exercise.id) }] : []),
           { label: m.archive_action_rename(), onSelect: () => onRename(exercise.id) },
           { label: m.archive_action_duplicate(), onSelect: () => onDuplicate(exercise.id) },
           { label: m.archive_action_delete(), onSelect: () => onDelete(exercise.id), destructive: true },

@@ -15,6 +15,7 @@
     { id: 'tv', href: '/settings/tv', label: m.settings_nav_tv(), available: true },
     { id: 'display', href: '/settings/display', label: m.settings_nav_display(), available: true },
     { id: 'pro', href: '/settings/pro', label: m.settings_nav_pro(), available: true },
+    { id: 'shares', href: '/settings/shares', label: m.settings_nav_shares(), available: true },
     { id: 'help', href: '/settings/help', label: m.settings_nav_help(), available: true },
     { id: 'about', href: '/settings/about', label: m.settings_nav_about(), available: true },
   ];

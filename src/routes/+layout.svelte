@@ -30,7 +30,9 @@
 	let { children } = $props();
 
 	const hideChrome = $derived(
-		$page.url.pathname.startsWith('/tv') || $page.url.pathname.startsWith('/legal')
+		$page.url.pathname.startsWith('/tv') ||
+		$page.url.pathname.startsWith('/legal') ||
+		$page.url.pathname.startsWith('/s/')
 	);
 	const isTvView = $derived($page.url.pathname.startsWith('/tv'));
 
