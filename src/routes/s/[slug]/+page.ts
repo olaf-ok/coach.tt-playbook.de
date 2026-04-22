@@ -9,16 +9,19 @@ export interface SharePageData {
   message: string | null;
   expiresAt: number | null;
   error: number | null;
+  slug: string;
 }
 
 export const load = async ({ params, fetch }: LoadEvent): Promise<SharePageData> => {
+  const slug = (params as { slug: string }).slug;
+
   if (!browser) {
-    return { exercise: null, trainerEmail: null, trainerName: null, message: null, expiresAt: null, error: null };
+    return { exercise: null, trainerEmail: null, trainerName: null, message: null, expiresAt: null, error: null, slug };
   }
 
-  const res = await fetch(`/api/shares/${(params as { slug: string }).slug}`);
+  const res = await fetch(`/api/shares/${slug}`);
   if (!res.ok) {
-    return { exercise: null, trainerEmail: null, trainerName: null, message: null, expiresAt: null, error: res.status };
+    return { exercise: null, trainerEmail: null, trainerName: null, message: null, expiresAt: null, error: res.status, slug };
   }
 
   const data = await res.json();
@@ -29,5 +32,6 @@ export const load = async ({ params, fetch }: LoadEvent): Promise<SharePageData>
     message: data.message,
     expiresAt: data.expiresAt,
     error: null,
+    slug,
   };
 };

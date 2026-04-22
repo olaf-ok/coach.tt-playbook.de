@@ -425,6 +425,8 @@
   "share_viewer_all_steps": "Todo",
   "share_viewer_play": "Reproducir",
   "share_viewer_pause": "Pausa",
+  "share_viewer_message_button": "Mensaje del entrenador",
+  "share_viewer_message_close": "Cerrar",
   "settings_nav_shares": "Ejercicios compartidos",
   "settings_shares_title": "Ejercicios compartidos",
   "settings_shares_active_count": "{n} de {max} enlaces activos (Free)",

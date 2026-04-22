@@ -16,11 +16,30 @@
     trainerName: string | null;
     message: string | null;
     expiresAt: number | null;
+    slug: string;
   }
 
-  let { exercise, trainerEmail, trainerName, message }: Props = $props();
+  let { exercise, trainerEmail, trainerName, message, slug }: Props = $props();
 
   const displayName = $derived(trainerName || trainerEmail.split('@')[0]);
+
+  let messageOpen = $state(false);
+
+  function openMessage() {
+    messageOpen = true;
+  }
+
+  function closeMessage() {
+    messageOpen = false;
+  }
+
+  function onMessageKeydown(ev: KeyboardEvent) {
+    if (ev.key === 'Escape') closeMessage();
+  }
+
+  function onOverlayClick(ev: MouseEvent) {
+    if (ev.target === ev.currentTarget) closeMessage();
+  }
 
   let container: HTMLDivElement;
   let stage: Konva.Stage | null = null;
@@ -90,6 +109,20 @@
       renderStrokes();
     });
     resizeObserver.observe(container);
+
+    // Auto-open message once per slug (sessionStorage)
+    if (message) {
+      try {
+        const key = `ttp-msg-seen-${slug}`;
+        if (!sessionStorage.getItem(key)) {
+          messageOpen = true;
+          sessionStorage.setItem(key, '1');
+        }
+      } catch {
+        // sessionStorage kann blockiert sein (private mode, iframes) → still open once
+        messageOpen = true;
+      }
+    }
   });
 
   $effect(() => {
@@ -164,14 +197,15 @@
       <AppLogo size={28} />
     </a>
     <span class="trainer-name">{displayName}</span>
+    {#if message}
+      <button type="button" class="msg-btn" onclick={openMessage} aria-label={m.share_viewer_message_button()}>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M2 3h12v9H4l-2 2V3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <span class="msg-btn-label">{m.share_viewer_message_button()}</span>
+      </button>
+    {/if}
   </header>
-
-  {#if message}
-    <div class="message-banner">
-      <span class="message-label">{m.share_viewer_message_label()}</span>
-      <p class="message-text">{message}</p>
-    </div>
-  {/if}
 
   <!-- Canvas -->
   <div class="canvas-area" bind:this={container}></div>
@@ -194,14 +228,19 @@
           {m.share_viewer_all_steps()}
         </button>
         {#each exercise.strokes as stroke, i (stroke.id)}
+          {@const strokeLabel = strokeTypeShort(stroke.strokeType)}
           <button
             class="step-btn"
+            class:with-label={strokeLabel}
             class:active={activeStrokeIndex !== null && activeStrokeIndex >= i}
             style:--step-color={getStrokeColor(stroke.number)}
             onclick={() => selectStep(i)}
-            title={stroke.strokeType ? strokeTypeShort(stroke.strokeType) : String(stroke.number)}
+            title={strokeLabel || String(stroke.number)}
           >
-            {stroke.number}
+            <span class="step-num">{stroke.number}</span>
+            {#if strokeLabel}
+              <span class="step-label">{strokeLabel}</span>
+            {/if}
           </button>
         {/each}
         <button class="play-btn" onclick={togglePlay} aria-label={playing ? m.share_viewer_pause() : m.share_viewer_play()}>
@@ -227,6 +266,26 @@
     </a>
   </footer>
 </div>
+
+{#if messageOpen && message}
+  <div
+    class="msg-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="msg-title"
+    tabindex="-1"
+    onclick={onOverlayClick}
+    onkeydown={onMessageKeydown}
+  >
+    <div class="msg-dialog">
+      <h2 id="msg-title" class="msg-title">{m.share_viewer_message_label()}</h2>
+      <p class="msg-text">{message}</p>
+      <button type="button" class="msg-close" onclick={closeMessage}>
+        {m.share_viewer_message_close()}
+      </button>
+    </div>
+  </div>
+{/if}
 
 <style>
   .viewer {
@@ -260,30 +319,96 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex: 1;
+    min-width: 0;
   }
 
-  .message-banner {
-    padding: 12px 20px;
+  .msg-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
     background: var(--bg-elevated);
-    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
     flex-shrink: 0;
+    transition: background 0.15s;
   }
 
-  .message-label {
-    font-size: 11px;
+  .msg-btn:hover {
+    background: var(--bg-glass-hover, var(--bg-elevated));
+  }
+
+  @media (max-width: 480px) {
+    .msg-btn-label {
+      display: none;
+    }
+    .msg-btn {
+      padding: 6px;
+    }
+  }
+
+  .msg-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    z-index: 1000;
+  }
+
+  .msg-dialog {
+    background: var(--bg-elevated);
+    color: var(--color-text-primary);
+    padding: 20px 22px;
+    border-radius: 16px;
+    max-width: 420px;
+    width: 100%;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .msg-title {
+    margin: 0 0 10px 0;
+    font-size: 13px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--color-text-secondary);
-    display: block;
-    margin-bottom: 4px;
   }
 
-  .message-text {
-    font-size: 14px;
+  .msg-text {
+    margin: 0 0 16px 0;
+    font-size: 15px;
     color: var(--color-text-primary);
-    margin: 0;
     line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .msg-close {
+    display: inline-block;
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .msg-close:hover {
+    opacity: 0.9;
   }
 
   .canvas-area {
@@ -349,8 +474,9 @@
   }
 
   .step-btn {
-    width: 32px;
+    min-width: 32px;
     height: 32px;
+    padding: 0;
     border-radius: 999px;
     border: 2px solid var(--step-color);
     background: transparent;
@@ -359,14 +485,45 @@
     font-weight: 700;
     cursor: pointer;
     transition: background 0.15s, color 0.15s;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 6px;
+  }
+
+  .step-btn.with-label {
+    padding: 0 10px 0 4px;
+  }
+
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+  }
+
+  .step-btn.with-label .step-num {
+    border-radius: 999px;
+    background: var(--step-color);
+    color: #000;
+    padding: 0 6px;
+  }
+
+  .step-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
   .step-btn.active {
     background: var(--step-color);
     color: #000;
+  }
+
+  .step-btn.with-label.active .step-num {
+    background: #000;
+    color: var(--step-color);
   }
 
   .play-btn {

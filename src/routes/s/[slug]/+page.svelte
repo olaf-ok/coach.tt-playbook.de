@@ -30,6 +30,7 @@
     trainerName={data.trainerName ?? null}
     message={data.message}
     expiresAt={data.expiresAt}
+    slug={data.slug}
   />
 {/if}
 
