@@ -59,6 +59,14 @@
       : exercise.strokes.slice(0, activeStrokeIndex + 1),
   );
 
+  const activeNote = $derived.by(() => {
+    if (activeStrokeIndex === null) return null;
+    const s = exercise.strokes[activeStrokeIndex];
+    const text = s?.description?.trim();
+    if (!text) return null;
+    return { number: s.number, text };
+  });
+
   function buildTable(width: number, height: number) {
     if (!tableLayer || !strokesLayer) return;
     tableLayer.destroyChildren();
@@ -255,6 +263,13 @@
             </svg>
           {/if}
         </button>
+      </div>
+    {/if}
+
+    {#if activeNote}
+      <div class="note-row" style:--note-color={getStrokeColor(activeNote.number)}>
+        <span class="note-num" aria-hidden="true">{activeNote.number}</span>
+        <p class="note-text">{activeNote.text}</p>
       </div>
     {/if}
   </div>
@@ -539,6 +554,52 @@
     justify-content: center;
     margin-left: auto;
     transition: opacity 0.15s;
+  }
+
+  .note-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--bg-elevated);
+    border-left: 3px solid var(--note-color);
+    animation: note-fade-in 0.2s ease-out;
+  }
+
+  .note-num {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--note-color);
+    color: #000;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+
+  .note-text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--color-text-primary);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  @keyframes note-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .play-btn:hover {
