@@ -3,8 +3,8 @@
   import { getStrokeColor } from '$lib/constants/colors';
   import StrokeTypeButtons from './StrokeTypeButtons.svelte';
   import UndoIcon from '$lib/icons/UndoIcon.svelte';
-  import { isStrokeTypeCode, type StrokeTypeCode } from '$lib/constants/strokeTypes';
-  import { strokeTypeLabel } from '$lib/i18n/stroke-type-labels';
+  import { DEFAULT_STROKE_TYPE_CODES, isStrokeTypeCode, type StrokeTypeCode } from '$lib/constants/strokeTypes';
+  import { strokeTypeLabel, strokeTypeDesc } from '$lib/i18n/stroke-type-labels';
   import { m } from '$lib/paraglide/messages';
   import type { SheetState } from './steps-sheet-state';
 
@@ -33,9 +33,21 @@
     onSheetToggle,
   }: Props = $props();
 
+  function isEmptyOrPreviousDefault(text: string | null | undefined): boolean {
+    if (!text) return true;
+    const trimmed = text.trim();
+    if (!trimmed) return true;
+    return DEFAULT_STROKE_TYPE_CODES.some((c) => strokeTypeDesc(c) === trimmed);
+  }
+
   function setType(code: StrokeTypeCode) {
     if (!selectedStrokeId) return;
     currentExercise.assignStrokeType(selectedStrokeId, code);
+
+    const stroke = currentExercise.exercise.strokes.find((s) => s.id === selectedStrokeId);
+    if (stroke && isEmptyOrPreviousDefault(stroke.description)) {
+      currentExercise.setDescription(selectedStrokeId, strokeTypeDesc(code));
+    }
   }
 
   function setDescription(event: Event, id: string) {
