@@ -15,6 +15,7 @@ export interface ShareRow {
 interface ShareDataRow {
   data: string;
   email: string;
+  trainer_name: string | null;
   message: string | null;
   expires_at: number | null;
 }
@@ -22,6 +23,7 @@ interface ShareDataRow {
 export interface ShareData {
   exercise: Exercise;
   trainerEmail: string;
+  trainerName: string | null;
   message: string | null;
   expiresAt: number | null;
 }
@@ -46,7 +48,7 @@ export function getShareData(db: AuthDatabase, slug: string): ShareData | null {
   const now = Date.now();
   const row = db
     .prepare(
-      `SELECT se.data, u.email, es.message, es.expires_at
+      `SELECT se.data, u.email, u.trainer_name, es.message, es.expires_at
        FROM exercise_shares es
        JOIN sync_exercises se ON se.user_id = es.owner_id AND se.id = es.exercise_id
        JOIN users u ON u.id = es.owner_id
@@ -68,6 +70,7 @@ export function getShareData(db: AuthDatabase, slug: string): ShareData | null {
   return {
     exercise,
     trainerEmail: row.email,
+    trainerName: row.trainer_name,
     message: row.message,
     expiresAt: row.expires_at,
   };

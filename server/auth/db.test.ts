@@ -75,10 +75,10 @@ describe('db migration v2 (stripe fields)', () => {
     db.close();
   });
 
-  it('user_version is 4 after migration', () => {
+  it('user_version is 5 after migration', () => {
     const db = openDatabase(':memory:');
     const row = db.prepare('PRAGMA user_version').get() as { user_version: number };
-    expect(row.user_version).toBe(4);
+    expect(row.user_version).toBe(5);
     db.close();
   });
 });

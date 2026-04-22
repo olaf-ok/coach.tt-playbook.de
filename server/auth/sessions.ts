@@ -8,6 +8,7 @@ export interface SessionUser {
   email: string;
   emailVerified: boolean;
   proUntil: number | null;
+  trainerName: string | null;
 }
 
 export interface CreateSessionOpts {
@@ -41,6 +42,7 @@ interface UserRow {
   email: string;
   email_verified: number;
   pro_until: number | null;
+  trainer_name: string | null;
 }
 
 export function validateAndRefreshSession(db: AuthDatabase, token: string): SessionUser | null {
@@ -55,7 +57,7 @@ export function validateAndRefreshSession(db: AuthDatabase, token: string): Sess
   }
   const newExpires = Date.now() + SESSION_TTL_MS;
   db.prepare(`UPDATE sessions SET expires_at = ? WHERE token_hash = ?`).run(newExpires, tokenHash);
-  const user = db.prepare(`SELECT id, email, email_verified, pro_until FROM users WHERE id = ?`).get(
+  const user = db.prepare(`SELECT id, email, email_verified, pro_until, trainer_name FROM users WHERE id = ?`).get(
     session.user_id,
   ) as UserRow | undefined;
   if (!user) return null;
@@ -64,6 +66,7 @@ export function validateAndRefreshSession(db: AuthDatabase, token: string): Sess
     email: user.email,
     emailVerified: !!user.email_verified,
     proUntil: user.pro_until,
+    trainerName: user.trainer_name,
   };
 }
 

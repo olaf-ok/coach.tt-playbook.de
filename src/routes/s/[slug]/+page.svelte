@@ -27,6 +27,7 @@
   <ShareViewer
     exercise={data.exercise}
     trainerEmail={data.trainerEmail ?? ''}
+    trainerName={data.trainerName ?? null}
     message={data.message}
     expiresAt={data.expiresAt}
   />

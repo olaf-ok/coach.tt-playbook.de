@@ -4,16 +4,18 @@ import { dirname, resolve } from 'node:path';
 import { SCHEMA_V1, SCHEMA_V2 } from './schema';
 import { SCHEMA_V3 } from '../sync/schema';
 import { SCHEMA_V4 } from '../shares/schema';
+import { SCHEMA_V5 } from './schema_v5';
 
 export type AuthDatabase = DatabaseSync;
 
-const CURRENT_USER_VERSION = 4;
+const CURRENT_USER_VERSION = 5;
 
 const MIGRATIONS: Record<number, string> = {
   1: SCHEMA_V1,
   2: SCHEMA_V2,
   3: SCHEMA_V3,
   4: SCHEMA_V4,
+  5: SCHEMA_V5,
 };
 
 export function openDatabase(path: string): AuthDatabase {

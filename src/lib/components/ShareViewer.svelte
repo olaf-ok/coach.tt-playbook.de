@@ -13,11 +13,14 @@
   interface Props {
     exercise: Exercise;
     trainerEmail: string;
+    trainerName: string | null;
     message: string | null;
     expiresAt: number | null;
   }
 
-  let { exercise, trainerEmail, message }: Props = $props();
+  let { exercise, trainerEmail, trainerName, message }: Props = $props();
+
+  const displayName = $derived(trainerName || trainerEmail.split('@')[0]);
 
   let container: HTMLDivElement;
   let stage: Konva.Stage | null = null;
@@ -160,7 +163,7 @@
     <a href="https://coach.tt-playbook.de" class="logo-link" aria-label="TT Playbook Coach">
       <AppLogo size={28} />
     </a>
-    <span class="trainer-name">{trainerEmail}</span>
+    <span class="trainer-name">{displayName}</span>
   </header>
 
   {#if message}

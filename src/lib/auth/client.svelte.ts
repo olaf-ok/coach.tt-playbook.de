@@ -5,6 +5,7 @@ export interface AuthUser {
   email: string;
   emailVerified: boolean;
   proUntil: number | null;
+  trainerName: string | null;
 }
 
 class AuthState {

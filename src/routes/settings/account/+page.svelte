@@ -16,6 +16,30 @@
   let portalBusy = $state(false);
   let toast = $state<{ kind: 'ok' | 'info' | 'error'; msg: string } | null>(null);
 
+  let trainerName = $state(auth.user?.trainerName ?? '');
+  let trainerNameBusy = $state(false);
+  let trainerNameSaved = $state(false);
+
+  async function saveTrainerName() {
+    if (trainerNameBusy) return;
+    trainerNameBusy = true;
+    try {
+      const res = await fetch('/api/profile', {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ trainerName: trainerName.trim() }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (auth.user) auth.user.trainerName = data.trainerName;
+        trainerNameSaved = true;
+        setTimeout(() => (trainerNameSaved = false), 2000);
+      }
+    } finally {
+      trainerNameBusy = false;
+    }
+  }
+
   async function openPortal() {
     portalBusy = true;
     try {
@@ -121,6 +145,30 @@
       <span class="badge" class:pro={auth.isPro}>{formatPro(auth.user.proUntil)}</span>
     </div>
 
+    <div class="trainer-name-section">
+      <label class="tn-label" for="trainer-name">{m.account_trainer_name_label()}</label>
+      <div class="tn-row">
+        <input
+          id="trainer-name"
+          type="text"
+          class="tn-input"
+          bind:value={trainerName}
+          placeholder={m.account_trainer_name_placeholder()}
+          maxlength="60"
+        />
+        <button
+          type="button"
+          class="btn secondary tn-save"
+          class:saved={trainerNameSaved}
+          onclick={saveTrainerName}
+          disabled={trainerNameBusy}
+        >
+          {trainerNameSaved ? m.account_trainer_name_saved() : m.account_trainer_name_save()}
+        </button>
+      </div>
+      <p class="tn-hint">{m.account_trainer_name_hint()}</p>
+    </div>
+
     <div class="actions">
       {#if auth.isPro}
         <button type="button" class="btn secondary" onclick={openPortal} disabled={portalBusy}>
@@ -222,6 +270,22 @@
     border: 1px solid var(--color-border);
   }
   .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+  .trainer-name-section {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 18px 20px; background: var(--bg-surface);
+    border: 1px solid var(--color-border); border-radius: var(--radius-panel);
+  }
+  .tn-label { font-size: 13px; font-weight: 600; color: var(--color-text-secondary); }
+  .tn-row { display: flex; gap: 8px; }
+  .tn-input {
+    flex: 1; min-width: 0;
+    padding: 10px 12px; background: var(--bg-elevated);
+    border: 1px solid var(--color-border); border-radius: var(--radius-button);
+    color: var(--color-text-primary); font-size: 15px;
+  }
+  .tn-save { padding: 10px 16px; flex-shrink: 0; }
+  .tn-save.saved { background: var(--color-success, #30d158); color: #fff; border-color: transparent; }
+  .tn-hint { font-size: 12px; color: var(--color-text-secondary); margin: 0; }
   .actions { display: flex; gap: 10px; flex-wrap: wrap; }
   .toast {
     padding: 12px 16px;
