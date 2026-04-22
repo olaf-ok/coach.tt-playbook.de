@@ -29,27 +29,55 @@
   });
 </script>
 
-<div class="tags">
-  {#each DEFAULT_STROKE_TYPE_CODES as code (code)}
-    {@const label = strokeTypeLabel(code)}
-    <button
-      type="button"
-      class="tag"
-      class:active={activeType === code}
-      title={label.full}
-      onclick={() => handleClick(code)}
-    >
-      {label.short}
-    </button>
-  {/each}
-  {#if hintCode}
-    <span class="hint" transition:fade={{ duration: 180 }}>
-      {strokeTypeLabel(hintCode).full}
-    </span>
-  {/if}
+<div class="wrap">
+  <div class="hint-slot" aria-live="polite">
+    {#if hintCode}
+      <span class="hint" transition:fade={{ duration: 180 }}>
+        {strokeTypeLabel(hintCode).full}
+      </span>
+    {/if}
+  </div>
+  <div class="tags">
+    {#each DEFAULT_STROKE_TYPE_CODES as code (code)}
+      {@const label = strokeTypeLabel(code)}
+      <button
+        type="button"
+        class="tag"
+        class:active={activeType === code}
+        title={label.full}
+        onclick={() => handleClick(code)}
+      >
+        {label.short}
+      </button>
+    {/each}
+  </div>
 </div>
 
 <style>
+  .wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .hint-slot {
+    min-height: 22px;
+    display: flex;
+    align-items: center;
+  }
+
+  .hint {
+    padding: 3px 12px;
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+
   .tags {
     display: flex;
     flex-wrap: wrap;
@@ -74,17 +102,5 @@
   .tag.active {
     background: var(--color-primary);
     color: #000;
-  }
-
-  .hint {
-    align-self: center;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: var(--bg-elevated);
-    color: var(--color-text-primary);
-    font-size: 12px;
-    font-weight: 500;
-    white-space: nowrap;
-    border: 1px solid var(--color-border);
   }
 </style>
