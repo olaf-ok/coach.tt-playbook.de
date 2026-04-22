@@ -4,7 +4,7 @@
   import StrokeTypeButtons from './StrokeTypeButtons.svelte';
   import UndoIcon from '$lib/icons/UndoIcon.svelte';
   import { DEFAULT_STROKE_TYPE_CODES, isStrokeTypeCode, type StrokeTypeCode } from '$lib/constants/strokeTypes';
-  import { strokeTypeLabel, strokeTypeDesc } from '$lib/i18n/stroke-type-labels';
+  import { strokeTypeLabel } from '$lib/i18n/stroke-type-labels';
   import { m } from '$lib/paraglide/messages';
   import type { SheetState } from './steps-sheet-state';
 
@@ -37,7 +37,10 @@
     if (!text) return true;
     const trimmed = text.trim();
     if (!trimmed) return true;
-    return DEFAULT_STROKE_TYPE_CODES.some((c) => strokeTypeDesc(c) === trimmed);
+    return DEFAULT_STROKE_TYPE_CODES.some((c) => {
+      const label = strokeTypeLabel(c);
+      return label.full === trimmed || label.desc === trimmed;
+    });
   }
 
   function setType(code: StrokeTypeCode) {
@@ -46,7 +49,7 @@
 
     const stroke = currentExercise.exercise.strokes.find((s) => s.id === selectedStrokeId);
     if (stroke && isEmptyOrPreviousDefault(stroke.description)) {
-      currentExercise.setDescription(selectedStrokeId, strokeTypeDesc(code));
+      currentExercise.setDescription(selectedStrokeId, strokeTypeLabel(code).full);
     }
   }
 
