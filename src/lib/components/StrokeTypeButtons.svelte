@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { fade } from 'svelte/transition';
+  import { onDestroy } from 'svelte';
   import { DEFAULT_STROKE_TYPE_CODES, type StrokeTypeCode } from '$lib/constants/strokeTypes';
   import { strokeTypeLabel } from '$lib/i18n/stroke-type-labels';
 
@@ -8,6 +10,23 @@
   }
 
   let { activeType, onSelect }: Props = $props();
+
+  let hintCode = $state<StrokeTypeCode | null>(null);
+  let hintTimer: ReturnType<typeof setTimeout> | null = null;
+
+  function handleClick(code: StrokeTypeCode) {
+    onSelect(code);
+    hintCode = code;
+    if (hintTimer) clearTimeout(hintTimer);
+    hintTimer = setTimeout(() => {
+      hintCode = null;
+      hintTimer = null;
+    }, 2000);
+  }
+
+  onDestroy(() => {
+    if (hintTimer) clearTimeout(hintTimer);
+  });
 </script>
 
 <div class="tags">
@@ -18,11 +37,16 @@
       class="tag"
       class:active={activeType === code}
       title={label.full}
-      onclick={() => onSelect(code)}
+      onclick={() => handleClick(code)}
     >
       {label.short}
     </button>
   {/each}
+  {#if hintCode}
+    <span class="hint" transition:fade={{ duration: 180 }}>
+      {strokeTypeLabel(hintCode).full}
+    </span>
+  {/if}
 </div>
 
 <style>
@@ -50,5 +74,17 @@
   .tag.active {
     background: var(--color-primary);
     color: #000;
+  }
+
+  .hint {
+    align-self: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--bg-elevated);
+    color: var(--color-text-primary);
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    border: 1px solid var(--color-border);
   }
 </style>
