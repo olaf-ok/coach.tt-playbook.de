@@ -36,6 +36,12 @@
     <ul>
       <li>{m.help_s3_save()}</li>
       <li>{m.help_s3_overwrite()}</li>
+      <li>{@html m.help_s3_sync_intro()}</li>
+      <li>{@html m.help_s3_sync_status()}</li>
+      <li>{@html m.help_s3_sync_offline()}</li>
+      <li>{@html m.help_s3_sync_manual()}</li>
+      <li>{@html m.help_s3_sync_merge()}</li>
+      <li>{@html m.help_s3_sync_reset()}</li>
     </ul>
   </article>
 

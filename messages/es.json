@@ -299,9 +299,15 @@
   "help_s2_undo": "<strong>Deshacer:</strong> Botón \"Deshacer\" (flecha curva) en la cabecera del panel — quita la última flecha.",
   "help_s2_new": "<strong>Nuevo ejercicio:</strong> El botón \"+ Nuevo\" en la barra de herramientas reinicia la mesa.",
 
-  "help_s3_title": "3. Guardar un ejercicio",
+  "help_s3_title": "3. Guardar y sincronizar",
   "help_s3_save": "Pon un nombre (barra superior), luego \"Guardar\". Plan Free: máximo 5 ejercicios — al intentar guardar el sexto aparece la propuesta de Pro.",
   "help_s3_overwrite": "Editar un ejercicio existente y volver a \"Guardar\" lo sobrescribe.",
+  "help_s3_sync_intro": "<strong>Sincronización automática:</strong> Una vez iniciada la sesión, los ejercicios y las listas de entrenamiento se sincronizan automáticamente entre todos tus dispositivos. No hay nada que activar manualmente.",
+  "help_s3_sync_status": "<strong>Estado de sincronización en la barra superior:</strong> A la izquierda del botón TV, un punto de color con etiqueta muestra el estado actual — <em>verde \"Sync\" = todo al día, azul \"Sincronizando\" = transferencia en curso, amarillo \"N pendiente\" = cambios esperando conexión, gris \"Sin conexión\" = sin red, rojo \"Error\" = sincronización fallida.</em>",
+  "help_s3_sync_offline": "<strong>Trabajar sin conexión:</strong> Sin internet puedes seguir dibujando y guardando. Los cambios se ponen en cola y se suben en cuanto vuelva la conexión.",
+  "help_s3_sync_manual": "<strong>Sincronizar ahora:</strong> Toca el botón de sincronización en la barra superior. Se abre un panel con la hora de la última sincronización y un botón \"Sincronizar ahora\" para un empuje manual.",
+  "help_s3_sync_merge": "<strong>Combinar datos al iniciar sesión por primera vez:</strong> Cuando inicias sesión en un dispositivo que ya contiene ejercicios locales y tu cuenta también tiene ejercicios guardados, la app pregunta: <em>Combinar todo</em> (recomendado — no se pierde nada, se conservan ambos lados), <em>Usar solo los datos de la cuenta</em> (los ejercicios del dispositivo se reemplazarán) o <em>Conservar solo los datos del dispositivo</em> (los ejercicios de la cuenta se sobrescribirán).",
+  "help_s3_sync_reset": "<strong>Restablecer este dispositivo:</strong> En la parte inferior del panel de sincronización hay \"Restablecer este dispositivo\" — elimina todos los datos locales y los vuelve a descargar desde tu cuenta. Útil si algo se atasca.",
 
   "help_s4_title": "4. Archivo",
   "help_s4_overview": "<strong>Vista general:</strong> Todos los ejercicios guardados con miniatura, nombre y número de golpes.",

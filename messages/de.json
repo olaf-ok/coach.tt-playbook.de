@@ -299,9 +299,15 @@
   "help_s2_undo": "<strong>Zurück:</strong> „Zurück\"-Button (gebogener Pfeil) im Panel-Header — macht den letzten Pfeil rückgängig.",
   "help_s2_new": "<strong>Neue Übung:</strong> „+ Neu\"-Button in der Toolbar setzt den Tisch zurück.",
 
-  "help_s3_title": "3. Übung speichern",
+  "help_s3_title": "3. Speichern & Synchronisation",
   "help_s3_save": "Name vergeben (Toolbar oben), dann „Speichern\". Free-Plan: maximal 5 Übungen — beim Versuch, eine sechste zu speichern, erscheint die Pro-Aufforderung.",
   "help_s3_overwrite": "Bestehende Übung bearbeiten + erneut „Speichern\" überschreibt sie.",
+  "help_s3_sync_intro": "<strong>Automatische Synchronisation:</strong> Sobald du angemeldet bist, werden Übungen und Trainingslisten automatisch zwischen allen deinen Geräten abgeglichen. Nichts, was du manuell triggern musst.",
+  "help_s3_sync_status": "<strong>Sync-Status in der Toolbar:</strong> Links neben dem TV-Button zeigt ein farbiger Punkt mit Label den aktuellen Zustand — <em>grün „Sync\" = alles aktuell, blau „Sync läuft\" = gerade Übertragung, gelb „N offen\" = Änderungen warten auf Verbindung, grau „Offline\" = keine Verbindung, rot „Fehler\" = Abgleich fehlgeschlagen.</em>",
+  "help_s3_sync_offline": "<strong>Offline arbeiten:</strong> Ohne Internet kannst du weiter zeichnen und speichern. Änderungen landen in einer Warteschlange und werden hochgeladen, sobald die Verbindung zurück ist.",
+  "help_s3_sync_manual": "<strong>Jetzt synchronisieren:</strong> Tippe auf den Sync-Button in der Toolbar. Ein Panel öffnet sich mit dem Zeitpunkt der letzten Synchronisation und einem Knopf „Jetzt synchronisieren\" für den manuellen Anstoß.",
+  "help_s3_sync_merge": "<strong>Daten zusammenführen beim ersten Login:</strong> Wenn du dich auf einem Gerät anmeldest, das bereits lokale Übungen enthält und in deinem Konto ebenfalls welche liegen, fragt die App: <em>Alle zusammenführen</em> (empfohlen — kein Datenverlust, beide Seiten bleiben erhalten), <em>Nur Konto-Daten verwenden</em> (Geräte-Übungen werden ersetzt) oder <em>Nur Geräte-Daten behalten</em> (Konto-Übungen werden überschrieben).",
+  "help_s3_sync_reset": "<strong>Gerät zurücksetzen:</strong> Im Sync-Panel unten gibt es „Dieses Gerät zurücksetzen\" — löscht alle lokalen Daten und lädt sie frisch aus deinem Konto. Nützlich, wenn etwas klemmt.",
 
   "help_s4_title": "4. Archiv",
   "help_s4_overview": "<strong>Übersicht:</strong> Alle gespeicherten Übungen mit Mini-Vorschau (Thumbnail), Name, Anzahl Schläge.",

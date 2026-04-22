@@ -299,9 +299,15 @@
   "help_s2_undo": "<strong>Undo:</strong> \"Undo\" button (curved arrow) in the panel header — removes the last arrow.",
   "help_s2_new": "<strong>New exercise:</strong> \"+ New\" button in the toolbar resets the table.",
 
-  "help_s3_title": "3. Saving an exercise",
+  "help_s3_title": "3. Saving & sync",
   "help_s3_save": "Set a name (toolbar at the top), then \"Save\". Free plan: max 5 exercises — when you try to save a 6th, the Pro prompt appears.",
   "help_s3_overwrite": "Editing an existing exercise + \"Save\" again overwrites it.",
+  "help_s3_sync_intro": "<strong>Automatic sync:</strong> Once you are signed in, exercises and training lists sync automatically across all your devices. Nothing you need to trigger manually.",
+  "help_s3_sync_status": "<strong>Sync status in the toolbar:</strong> Left of the TV button, a coloured dot with a label shows the current state — <em>green \"Sync\" = all up to date, blue \"Syncing\" = transfer in progress, yellow \"N pending\" = changes waiting for connection, grey \"Offline\" = no connection, red \"Error\" = sync failed.</em>",
+  "help_s3_sync_offline": "<strong>Working offline:</strong> Without internet you can keep drawing and saving. Changes go into a queue and upload as soon as the connection is back.",
+  "help_s3_sync_manual": "<strong>Sync now:</strong> Tap the sync button in the toolbar. A panel opens showing the last sync time and a \"Sync now\" button for a manual push.",
+  "help_s3_sync_merge": "<strong>Merging data on first login:</strong> When you sign in on a device that already has local exercises and your account also contains exercises, the app asks: <em>Merge all</em> (recommended — nothing is lost, both sides are kept), <em>Use account data only</em> (device exercises are replaced), or <em>Keep device data only</em> (account exercises are overwritten).",
+  "help_s3_sync_reset": "<strong>Reset this device:</strong> At the bottom of the sync panel there is \"Reset this device\" — deletes all local data and re-downloads from your account. Handy when something gets stuck.",
 
   "help_s4_title": "4. Archive",
   "help_s4_overview": "<strong>Overview:</strong> All saved exercises with mini preview (thumbnail), name, stroke count.",
