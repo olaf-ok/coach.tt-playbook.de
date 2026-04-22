@@ -7,6 +7,7 @@
   import PlaylistIcon from '$lib/icons/PlaylistIcon.svelte';
   import SettingsIcon from '$lib/icons/SettingsIcon.svelte';
   import HelpIcon from '$lib/icons/HelpIcon.svelte';
+  import NotationIcon from '$lib/icons/NotationIcon.svelte';
   import { m } from '$lib/paraglide/messages';
   import type { Component } from 'svelte';
 
@@ -42,6 +43,14 @@
 
   <div class="bottom">
     <a
+      href="/settings/notation"
+      class="tab"
+      class:active={$page.url.pathname === '/settings/notation'}
+      aria-label={m.sidebar_notation_aria()}
+    >
+      <NotationIcon />
+    </a>
+    <a
       href="/settings/help"
       class="tab"
       class:active={$page.url.pathname === '/settings/help'}
@@ -52,7 +61,7 @@
     <a
       href="/settings"
       class="tab"
-      class:active={$page.url.pathname.startsWith('/settings') && $page.url.pathname !== '/settings/help'}
+      class:active={$page.url.pathname.startsWith('/settings') && $page.url.pathname !== '/settings/help' && $page.url.pathname !== '/settings/notation'}
       aria-label={m.sidebar_settings_aria()}
     >
       <SettingsIcon />

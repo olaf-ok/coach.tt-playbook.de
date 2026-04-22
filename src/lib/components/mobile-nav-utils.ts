@@ -21,7 +21,9 @@ const SETTINGS_SUB_MAP: Record<string, string> = {
   '/settings/display': 'settings_nav_display',
   '/settings/pro': 'settings_nav_pro',
   '/settings/help': 'settings_nav_help',
+  '/settings/notation': 'settings_nav_notation',
   '/settings/about': 'settings_nav_about',
+  '/settings/shares': 'settings_nav_shares',
 };
 
 export function resolveMobileHeader(pathname: string): MobileHeaderInfo {
