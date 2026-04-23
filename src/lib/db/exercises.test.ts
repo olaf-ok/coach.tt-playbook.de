@@ -81,6 +81,24 @@ describe('listActive', () => {
     const rows = await listActive();
     expect(rows.map((e) => e.id)).toEqual(['a']);
   });
+
+  it('sorts alphabetically by name, numeric-aware and case-insensitive', async () => {
+    const names = ['Demo 10', 'demo 02', 'Aufschlag', 'demo 01', 'Block-Konter'];
+    for (const n of names) {
+      const e = createEmptyExercise();
+      e.name = n;
+      await db.exercises.put(e);
+    }
+
+    const rows = await listActive();
+    expect(rows.map((e) => e.name)).toEqual([
+      'Aufschlag',
+      'Block-Konter',
+      'demo 01',
+      'demo 02',
+      'Demo 10'
+    ]);
+  });
 });
 
 describe('countActive', () => {

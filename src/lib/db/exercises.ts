@@ -25,7 +25,10 @@ export async function listAllExercises(): Promise<Exercise[]> {
 }
 
 export async function listActive(): Promise<Exercise[]> {
-  return await db.exercises.filter((e) => e.deletedAt === null).toArray();
+  const rows = await db.exercises.filter((e) => e.deletedAt === null).toArray();
+  return rows.sort((a, b) =>
+    a.name.localeCompare(b.name, undefined, { sensitivity: 'base', numeric: true })
+  );
 }
 
 export async function countActive(): Promise<number> {
