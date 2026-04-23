@@ -24,7 +24,6 @@
 		pushAllLocalAsNew,
 		discardLocalAndPull
 	} from '$lib/sync/initial-sync';
-	import { db } from '$lib/db/database';
 	import InitialSyncMergeDialog from '$lib/components/InitialSyncMergeDialog.svelte';
 
 	let { children } = $props();
@@ -51,9 +50,10 @@
 		// syncClient.init setzt currentUserId und führt einen initialen Pull durch.
 		await syncClient.init(userId);
 
-		// Delta = Datensätze die der Pull hinzugefügt hat (vereinfachte Heuristik,
-		// bei gleichen IDs kann es zu Unterabschätzung kommen – ist laut Plan akzeptiert).
-		const postPullCount = (await db.exercises.count()) + (await db.playlists.count());
+		// Delta = Datensätze die der Pull hinzugefügt hat. Beide Counts MÜSSEN
+		// dieselbe Semantik nutzen (nur aktive Rows); db.*.count() zählt sonst
+		// Tombstones mit und triggert den Merge-Dialog bei jedem Reload.
+		const postPullCount = await collectLocalCount();
 		const serverCount = Math.max(0, postPullCount - localCount);
 
 		const action = decideInitialAction(localCount, serverCount);
@@ -94,9 +94,13 @@
 	// Reactive sync-init: fires on first mount once auth resolves, and again
 	// whenever the signed-in user changes mid-session (e.g. after verify-email
 	// auto-login, which doesn't remount the layout).
+	// Skipped on chrome-less routes (/tv, /s/, /legal): TV is a dumb display,
+	// /s/ is a public share viewer, /legal is static — none of them should
+	// trigger syncClient.init or show the merge dialog.
 	$effect(() => {
 		const userId = auth.user?.id ?? null;
 		if (!userId) return;
+		if (hideChrome) return;
 		if (syncInitializedFor === userId) return;
 		syncInitializedFor = userId;
 		void initializeSyncForUser(userId);
