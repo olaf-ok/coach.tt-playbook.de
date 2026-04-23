@@ -27,3 +27,7 @@ export async function listAllExercises(): Promise<Exercise[]> {
 export async function listActive(): Promise<Exercise[]> {
   return await db.exercises.filter((e) => e.deletedAt === null).toArray();
 }
+
+export async function countActive(): Promise<number> {
+  return await db.exercises.filter((e) => e.deletedAt === null).count();
+}

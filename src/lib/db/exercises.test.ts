@@ -1,6 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { db } from './database';
-import { saveExercise, loadExercise, deleteExercise, listExerciseIds, listActive } from './exercises';
+import {
+  saveExercise,
+  loadExercise,
+  deleteExercise,
+  listExerciseIds,
+  listActive,
+  countActive
+} from './exercises';
 import { createEmptyExercise } from '../types/exercise';
 
 describe('exercises DB', () => {
@@ -73,5 +80,31 @@ describe('listActive', () => {
 
     const rows = await listActive();
     expect(rows.map((e) => e.id)).toEqual(['a']);
+  });
+});
+
+describe('countActive', () => {
+  beforeEach(async () => {
+    await db.exercises.clear();
+  });
+
+  it('counts only non-tombstoned entries', async () => {
+    const a = createEmptyExercise();
+    a.id = 'a';
+    a.deletedAt = null;
+    await db.exercises.put(a);
+
+    const b = createEmptyExercise();
+    b.id = 'b';
+    b.deletedAt = Date.now();
+    await db.exercises.put(b);
+
+    const c = createEmptyExercise();
+    c.id = 'c';
+    c.deletedAt = Date.now();
+    await db.exercises.put(c);
+
+    expect(await db.exercises.count()).toBe(3);
+    expect(await countActive()).toBe(1);
   });
 });

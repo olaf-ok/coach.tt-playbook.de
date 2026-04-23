@@ -7,8 +7,7 @@
   import ShareDialog from '$lib/components/ShareDialog.svelte';
   import { StrokeInputController } from '$lib/canvas/StrokeInput';
   import { currentExercise } from '$lib/stores/currentExercise.svelte';
-  import { saveExercise, loadExercise } from '$lib/db/exercises';
-  import { db } from '$lib/db/database';
+  import { saveExercise, loadExercise, countActive } from '$lib/db/exercises';
   import { tvSession } from '$lib/tv/session.svelte';
   import { auth } from '$lib/auth/client.svelte';
   import { FREE_EXERCISE_LIMIT } from '$lib/pro/status.svelte';
@@ -91,7 +90,7 @@
       if (!auth.isPro) {
         const existing = await loadExercise(currentExercise.exercise.id);
         if (!existing) {
-          const count = await db.exercises.count();
+          const count = await countActive();
           if (count >= FREE_EXERCISE_LIMIT) {
             paywallOpen = true;
             return;
