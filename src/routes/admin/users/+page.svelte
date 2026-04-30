@@ -221,6 +221,10 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    width: 100%;
   }
   @media (max-width: 480px) {
     .admin {

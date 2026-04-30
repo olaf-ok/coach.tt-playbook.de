@@ -5,6 +5,8 @@
   import ArchiveIcon from '$lib/icons/ArchiveIcon.svelte';
   import PlaylistIcon from '$lib/icons/PlaylistIcon.svelte';
   import MoreIcon from '$lib/icons/MoreIcon.svelte';
+  import AdminIcon from '$lib/icons/AdminIcon.svelte';
+  import { auth } from '$lib/auth/client.svelte';
   import { m } from '$lib/paraglide/messages';
   import type { Component } from 'svelte';
 
@@ -31,6 +33,17 @@
       <span class="tab-label">{tab.label}</span>
     </a>
   {/each}
+  {#if auth.user?.isAdmin}
+    <a
+      href="/admin/users"
+      class="tab"
+      class:active={$page.url.pathname.startsWith('/admin')}
+      aria-current={$page.url.pathname.startsWith('/admin') ? 'page' : undefined}
+    >
+      <span class="tab-icon"><AdminIcon /></span>
+      <span class="tab-label">Admin</span>
+    </a>
+  {/if}
 </nav>
 
 <style>

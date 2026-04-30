@@ -6,6 +6,7 @@ export interface AuthUser {
   emailVerified: boolean;
   proUntil: number | null;
   trainerName: string | null;
+  isAdmin: boolean;
 }
 
 class AuthState {

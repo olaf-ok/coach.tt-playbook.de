@@ -10,6 +10,8 @@
   import NotationIcon from '$lib/icons/NotationIcon.svelte';
   import { m } from '$lib/paraglide/messages';
   import type { Component } from 'svelte';
+  import AdminIcon from '$lib/icons/AdminIcon.svelte';
+  import { auth } from '$lib/auth/client.svelte';
 
   const topTabs: Array<{ id: TabId; href: string; label: string; icon: Component }> = [
     { id: 'draw', href: '/draw', label: m.sidebar_tab_draw(), icon: DrawIcon },
@@ -42,6 +44,16 @@
   </div>
 
   <div class="bottom">
+    {#if auth.user?.isAdmin}
+      <a
+        href="/admin/users"
+        class="tab"
+        class:active={$page.url.pathname.startsWith('/admin')}
+        aria-label="Admin"
+      >
+        <AdminIcon />
+      </a>
+    {/if}
     <a
       href="/settings/notation"
       class="tab"
