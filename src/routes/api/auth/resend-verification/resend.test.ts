@@ -17,6 +17,8 @@ vi.mock('../../../../../server/auth/db', async () => {
 vi.mock('../../../../../server/auth/mailer', () => ({
   sendVerificationMail: vi.fn(async () => {}),
   sendResetMail: vi.fn(async () => {}),
+  sendNewUserNotification: vi.fn(async () => {}),
+  detectLang: vi.fn(() => 'de'),
 }));
 
 import { POST } from './+server';

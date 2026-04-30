@@ -4,12 +4,13 @@ import { getDatabase } from '../../../../../server/auth/db';
 import { hashPassword } from '../../../../../server/auth/password';
 import { createUser, findUserByEmail, EMAIL_REGEX } from '../../../../../server/auth/users';
 import { createVerificationToken } from '../../../../../server/auth/verification';
-import { sendVerificationMail } from '../../../../../server/auth/mailer';
+import { sendVerificationMail, sendNewUserNotification, detectLang } from '../../../../../server/auth/mailer';
 import { checkAndConsume } from '../../../../../server/auth/ratelimit';
 
 const GENERIC_OK = { message: 'Bestätigungs-Mail verschickt, falls die Adresse gültig ist.' };
 
 export const POST: RequestHandler = async ({ request, getClientAddress }) => {
+  const lang = detectLang(request.headers.get('accept-language'));
   const ip = getClientAddress();
   const db = getDatabase();
 
@@ -44,8 +45,11 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
   const user = await createUser(db, email, hash);
   const token = createVerificationToken(db, user.id);
 
-  sendVerificationMail(email, token).catch((err) => {
+  sendVerificationMail(email, token, lang).catch((err) => {
     console.error('sendVerificationMail failed:', err);
+  });
+  sendNewUserNotification(email).catch((err) => {
+    console.error('sendNewUserNotification failed:', err);
   });
 
   return json(GENERIC_OK);

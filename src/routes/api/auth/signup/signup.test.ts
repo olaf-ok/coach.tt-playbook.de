@@ -19,6 +19,8 @@ vi.mock('../../../../../server/auth/db', async () => {
 vi.mock('../../../../../server/auth/mailer', () => ({
   sendVerificationMail: vi.fn(async () => {}),
   sendResetMail: vi.fn(async () => {}),
+  sendNewUserNotification: vi.fn(async () => {}),
+  detectLang: vi.fn(() => 'de'),
 }));
 
 import { POST } from './+server';
@@ -53,7 +55,7 @@ describe('POST /api/auth/signup', () => {
     expect(rows).toHaveLength(1);
     expect(rows[0].email).toBe('a@b.de');
 
-    expect(sendVerificationMail).toHaveBeenCalledWith('a@b.de', expect.any(String));
+    expect(sendVerificationMail).toHaveBeenCalledWith('a@b.de', expect.any(String), expect.any(String));
   });
 
   it('lehnt zu kurzes Passwort ab (400)', async () => {
