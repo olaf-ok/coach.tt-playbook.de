@@ -89,6 +89,7 @@ export function updatePasswordHash(db: AuthDatabase, userId: string, newHash: st
 export interface UserSummary {
   id: string;
   email: string;
+  trainerName: string | null;
   emailVerified: boolean;
   proUntil: number | null;
   createdAt: number;
@@ -131,6 +132,7 @@ export function getSyncStats(db: AuthDatabase, userId: string): SyncStats {
 interface SummaryRow {
   id: string;
   email: string;
+  trainer_name: string | null;
   email_verified: number;
   pro_until: number | null;
   created_at: number;
@@ -140,13 +142,14 @@ interface SummaryRow {
 export function listUsers(db: AuthDatabase): UserSummary[] {
   const rows = db
     .prepare(
-      `SELECT id, email, email_verified, pro_until, created_at, stripe_subscription_status
+      `SELECT id, email, trainer_name, email_verified, pro_until, created_at, stripe_subscription_status
        FROM users ORDER BY created_at DESC`,
     )
     .all() as unknown as SummaryRow[];
   return rows.map((r) => ({
     id: r.id,
     email: r.email,
+    trainerName: r.trainer_name,
     emailVerified: !!r.email_verified,
     proUntil: r.pro_until,
     createdAt: r.created_at,

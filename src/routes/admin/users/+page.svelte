@@ -9,6 +9,7 @@
   interface AdminUser {
     id: string;
     email: string;
+    trainerName: string | null;
     emailVerified: boolean;
     proUntil: number | null;
     createdAt: number;
@@ -138,7 +139,12 @@
     <div class="grid">
       {#each users as u (u.id)}
         <article class="row" class:busy={busyId === u.id}>
-          <div class="email">{u.email}</div>
+          <div class="identity">
+            {#if u.trainerName}
+              <span class="trainer-name">{u.trainerName}</span>
+            {/if}
+            <span class="email">{u.email}</span>
+          </div>
           <div class="meta">
             <span class="badge" class:ok={u.emailVerified} class:warn={!u.emailVerified}>
               {u.emailVerified ? 'E-Mail bestätigt' : 'E-Mail unbestätigt'}
@@ -216,6 +222,12 @@
     flex-direction: column;
     gap: 20px;
   }
+  @media (max-width: 480px) {
+    .admin {
+      padding: 16px;
+      gap: 14px;
+    }
+  }
   header {
     display: flex;
     justify-content: space-between;
@@ -268,11 +280,25 @@
   .row.busy {
     opacity: 0.6;
   }
+  .identity {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .trainer-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
   .email {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    word-break: break-all;
+  }
+  .identity:not(:has(.trainer-name)) .email {
     font-size: 16px;
     font-weight: 600;
     color: var(--color-text-primary);
-    word-break: break-all;
   }
   .meta {
     display: flex;
@@ -326,7 +352,7 @@
     border-top: 1px solid var(--color-border);
   }
   .actions button {
-    padding: 7px 12px;
+    padding: 9px 14px;
     background: var(--bg-elevated);
     border: 1px solid var(--color-border);
     border-radius: 8px;
@@ -334,6 +360,7 @@
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
+    min-height: 40px;
   }
   .actions button:hover:not([disabled]) {
     background: var(--color-accent);
